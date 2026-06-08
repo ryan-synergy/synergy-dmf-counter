@@ -900,6 +900,7 @@
       <div id="room-override-block"></div>
       <div id="existing-cond-block"></div>
       <div id="fixtures-list"></div>
+      <div id="room-type-breakdown"></div>
       <button class="add-btn" onclick="openFixtureModal()">
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
         Add Fixture Group
@@ -1723,10 +1724,51 @@ function renderRoomDetail() {
   const list = document.getElementById('fixtures-list');
   if (!r.fixtures.length) {
     list.innerHTML = `<div class="empty" style="padding:30px 0"><div class="empty-title">No fixtures yet</div><div class="empty-sub">Tap Add Fixture Group below</div></div>`;
+    document.getElementById('room-type-breakdown').innerHTML = '';
     return;
   }
   list.innerHTML = r.fixtures.map(f => renderFixtureItem(f)).join('');
+  renderRoomTypeBreakdown();
 }
+
+function renderRoomTypeBreakdown() {
+  const r = room(); if (!r || !r.fixtures.length) return;
+  const total = r.fixtures.reduce((s,f) => s+(f.qty||0), 0);
+  const byType = {};
+  r.fixtures.forEach(f => {
+    const key = [f.size, f.trim].filter(Boolean).join(' ') || 'Unspecified';
+    byType[key] = (byType[key] || 0) + (f.qty || 0);
+  });
+  const rows = Object.entries(byType).sort((a,b) => b[1]-a[1]);
+  if (rows.length <= 1 && r.fixtures.length <= 1) {
+    // Only one group, not worth showing
+    document.getElementById('room-type-breakdown').innerHTML = '';
+    return;
+  }
+  let html = `<div class="card" style="margin-top:2px;border-left:3px solid var(--brand);">
+    <div class="card-hd">Room Breakdown</div>
+    <div class="card-body no-top">`;
+  rows.forEach(([k,v]) => {
+    const pct = Math.round((v/total)*100);
+    const barW = Math.max(4, pct);
+    html += `<div style="display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid var(--line-2);">
+      <div style="flex:1;font-size:13px;font-weight:500;color:var(--ink-2);">${k}</div>
+      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+        <div style="width:60px;height:5px;background:var(--line);border-radius:3px;overflow:hidden;">
+          <div style="width:${barW}%;height:100%;background:var(--brand);border-radius:3px;"></div>
+        </div>
+        <div style="font-size:11px;color:var(--ink-5);width:28px;text-align:right;">${pct}%</div>
+        <div style="font-size:13px;font-weight:700;color:var(--ink);width:24px;text-align:right;">${v}</div>
+      </div>
+    </div>`;
+  });
+  // totals footer
+  html += `<div style="display:flex;justify-content:space-between;padding:7px 0 2px;">
+    <div style="font-size:12px;font-weight:700;color:var(--ink-4);">Total</div>
+    <div style="font-size:13px;font-weight:800;color:var(--ink);">${total}</div>
+  </div>`;
+  html += `</div></div>`;
+  document.getElementById('room-type-breakdown').innerHTML = html;
 
 function renderFixtureItem(f) {
   const constTag = f.construction==='retro'
@@ -2024,7 +2066,7 @@ function saveRoom_confirm() {
 function deleteFixture(id) {
   if (!confirm('Remove this fixture group?')) return;
   room().fixtures = room().fixtures.filter(f => f.id !== id);
-  saveJobs(); renderRoomDetail();
+  saveJobs(); renderRoomDetail(); renderRoomTypeBreakdown();
 }
 
 function duplicateFixture(id) {
@@ -2033,7 +2075,7 @@ function duplicateFixture(id) {
   const copy = { ...src, id: genId(), label: src.label ? src.label + ' (copy)' : '' };
   const idx = r.fixtures.findIndex(f => f.id === id);
   r.fixtures.splice(idx + 1, 0, copy);
-  saveJobs(); renderRoomDetail();
+  saveJobs(); renderRoomDetail(); renderRoomTypeBreakdown();
 }
 
 // ═══════════════════════════════════════════════
