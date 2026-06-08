@@ -2084,6 +2084,27 @@ function renderSummary() {
 
   let html = '';
 
+  // ─── BY FIXTURE TYPE (size + trim combo) ─────────────────────
+  if (grand) {
+    const byType = {};
+    allFx.forEach(f => {
+      const key = [f.size, f.trim].filter(Boolean).join(' ') || 'Unspecified';
+      byType[key] = (byType[key] || 0) + (f.qty || 0);
+    });
+    html += `<div class="sec-lbl">By Fixture Type</div><div class="card"><div class="card-body">`;
+    Object.entries(byType).sort((a,b) => b[1]-a[1]).forEach(([k,v]) => {
+      const pct = Math.round((v/grand)*100);
+      html += `<div class="summary-row">
+        <div class="summary-key">${k}</div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+          <div style="font-size:11px;color:var(--ink-5);">${pct}%</div>
+          <div class="summary-val">${v}</div>
+        </div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  }
+
   // ─── BY ROOM (with optional floor grouping) ─────────────────
   html += `<div class="sec-lbl">By Room</div>`;
   if (!j.rooms.length) {
