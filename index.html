@@ -1161,6 +1161,7 @@ let currentJobId  = null;
 let currentRoomId = null;
 let editingFixtureId = null;
 let editingECId      = null;
+let editingRoomId    = null;
 
 // Summary state
 let summaryGroupByFloor = false;
@@ -1495,6 +1496,7 @@ function renderRoomRow(r, idx, groupLen, floorId) {
           <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
         </button>
       </div>
+      <button class="room-del" onclick="editRoom('${r.id}');event.stopPropagation()" aria-label="Edit room" title="Rename room" style="color:var(--ink-4)"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
       <button class="room-del" onclick="deleteRoom(event,'${r.id}')" aria-label="Delete"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
       <span class="room-chev">›</span>
     </div>
@@ -1583,6 +1585,7 @@ function onRoomDragEnd(e) {
 // ═══════════════════════════════════════════════
 
 function addRoom() {
+  editingRoomId = null;
   document.getElementById('room-modal-title').textContent = 'Add Room';
   document.getElementById('room-modal-save-btn').textContent = 'Add Room';
   document.getElementById('room-name-input').value = '';
@@ -1594,6 +1597,20 @@ function addRoom() {
   document.getElementById('room-quick-chips').innerHTML = avail.map(r =>
     `<button class="chip" onclick="quickRoom('${r}')">${r}</button>`
   ).join('');
+  document.getElementById('room-modal').style.display = 'flex';
+  setTimeout(() => document.getElementById('room-name-input').focus(), 200);
+}
+
+function editRoom(id) {
+  editingRoomId = id;
+  const r = job().rooms.find(x => x.id === id); if (!r) return;
+  document.getElementById('room-modal-title').textContent = 'Edit Room';
+  document.getElementById('room-modal-save-btn').textContent = 'Save Changes';
+  document.getElementById('room-name-input').value = r.name;
+  document.getElementById('room-new-floor-input').value = '';
+  document.getElementById('room-new-floor-input').style.display = 'none';
+  populateFloorDropdown(r.floorId || '');
+  document.getElementById('room-quick-chips').innerHTML = '';
   document.getElementById('room-modal').style.display = 'flex';
   setTimeout(() => document.getElementById('room-name-input').focus(), 200);
 }
@@ -1633,7 +1650,15 @@ function saveRoomFromModal() {
     j.floors.push(newFloor);
     floorId = newFloor.id;
   }
-  j.rooms.push({ id:genId(), name, floorId: floorId || null, fixtures:[], override:null, existingConditions:[] });
+  if (editingRoomId) {
+    // Edit existing room
+    const r = j.rooms.find(x => x.id === editingRoomId);
+    if (r) { r.name = name; r.floorId = floorId || null; }
+  } else {
+    // Add new room
+    j.rooms.push({ id:genId(), name, floorId: floorId || null, fixtures:[], override:null, existingConditions:[] });
+  }
+  editingRoomId = null;
   saveJobs();
   closeRoomModal();
   renderRooms();
