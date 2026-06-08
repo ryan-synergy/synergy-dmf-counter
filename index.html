@@ -1736,12 +1736,13 @@ function renderRoomTypeBreakdown() {
   const total = r.fixtures.reduce((s,f) => s+(f.qty||0), 0);
   const byType = {};
   r.fixtures.forEach(f => {
-    const key = [f.size, f.trim].filter(Boolean).join(' ') || 'Unspecified';
+    const typeKey  = [f.size, f.trim].filter(Boolean).join(' ') || 'Unspecified';
+    const constKey = f.construction === 'retro' ? 'retro' : 'new';
+    const key = typeKey + '||' + constKey;
     byType[key] = (byType[key] || 0) + (f.qty || 0);
   });
   const rows = Object.entries(byType).sort((a,b) => b[1]-a[1]);
   if (rows.length <= 1 && r.fixtures.length <= 1) {
-    // Only one group, not worth showing
     document.getElementById('room-type-breakdown').innerHTML = '';
     return;
   }
@@ -1749,16 +1750,25 @@ function renderRoomTypeBreakdown() {
     <div class="card-hd">Room Breakdown</div>
     <div class="card-body no-top">`;
   rows.forEach(([k,v]) => {
+    const [typeLabel, constKey] = k.split('||');
+    const isRetro = constKey === 'retro';
+    const badge = isRetro
+      ? `<span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;background:var(--blue-lt);color:var(--blue);border:1px solid rgba(44,82,130,.2);white-space:nowrap;">Retrofit</span>`
+      : `<span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;background:var(--green-lt);color:var(--green);border:1px solid rgba(45,122,79,.2);white-space:nowrap;">New</span>`;
+    const barColor = isRetro ? 'var(--blue-md)' : 'var(--green)';
     const pct = Math.round((v/total)*100);
     const barW = Math.max(4, pct);
-    html += `<div style="display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid var(--line-2);">
-      <div style="flex:1;font-size:13px;font-weight:500;color:var(--ink-2);">${k}</div>
-      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-        <div style="width:60px;height:5px;background:var(--line);border-radius:3px;overflow:hidden;">
-          <div style="width:${barW}%;height:100%;background:var(--brand);border-radius:3px;"></div>
+    html += `<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line-2);">
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13px;font-weight:500;color:var(--ink-2);">${typeLabel}</div>
+      </div>
+      ${badge}
+      <div style="display:flex;align-items:center;gap:5px;flex-shrink:0;">
+        <div style="width:48px;height:5px;background:var(--line);border-radius:3px;overflow:hidden;">
+          <div style="width:${barW}%;height:100%;background:${barColor};border-radius:3px;"></div>
         </div>
-        <div style="font-size:11px;color:var(--ink-5);width:28px;text-align:right;">${pct}%</div>
-        <div style="font-size:13px;font-weight:700;color:var(--ink);width:24px;text-align:right;">${v}</div>
+        <div style="font-size:11px;color:var(--ink-5);width:26px;text-align:right;">${pct}%</div>
+        <div style="font-size:13px;font-weight:700;color:var(--ink);width:22px;text-align:right;">${v}</div>
       </div>
     </div>`;
   });
