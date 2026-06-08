@@ -1,0 +1,2477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="DMF Counter">
+  <title>Synergy — DMF Lighting Counter</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <style>
+    :root {
+      --ink:      #1c1510;
+      --ink-2:    #2e2720;
+      --ink-3:    #4a433c;
+      --ink-4:    #7a726a;
+      --ink-5:    #a8a098;
+      --line:     #e4ddd5;
+      --line-2:   #ede8e1;
+      --bg:       #ece7df;
+      --surface:  #faf8f5;
+      --surface-2:#f4f0eb;
+      --brand:    #c96828;
+      --brand-lt: #fdf2e8;
+      --green:    #2d7a4f;
+      --green-lt: #eaf4ee;
+      --blue:     #2c5282;
+      --blue-lt:  #ebf2fb;
+      --purple:   #6b46c1;
+      --purple-lt:#f5f0ff;
+      --brand-dk: #a0521e;
+      --teal:     #0f766e;
+      --teal-lt:  #f0fdfa;
+      --amber:    #b45309;
+      --amber-lt: #fffbeb;
+      --cct-warm: #92400e;
+      --cct-warm-lt: #fef3c7;
+      --cct-cool: #1e3a8a;
+      --cct-cool-lt: #eff6ff;
+      --blue-md:  #3b82f6;
+      --green-dk: #145530;
+      --danger:   #b91c1c;
+      --danger-lt:#fef2f2;
+      --r:        10px;
+      --safe-t:   env(safe-area-inset-top, 0px);
+      --safe-b:   env(safe-area-inset-bottom, 0px);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100dvh;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    #app { max-width: 640px; margin: 0 auto; min-height: 100dvh; }
+
+    /* ─── HEADER ─── */
+    .hdr {
+      background: linear-gradient(135deg,#1a1008 0%,#2d1a0a 100%);
+      padding: 13px 18px;
+      padding-top: calc(13px + var(--safe-t));
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 300;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      box-shadow: 0 1px 12px rgba(0,0,0,.2);
+    }
+    .hdr-title { font-size: 16px; font-weight: 600; color: #fff; letter-spacing: -.01em; }
+    .hdr-btn {
+      background: none; border: none; color: var(--brand);
+      font-size: 14px; font-weight: 600; cursor: pointer;
+      padding: 9px; margin: -9px; font-family: inherit; letter-spacing: -.01em;
+    }
+    .hdr-spacer { width: 60px; }
+
+    /* ─── BOTTOM NAV ─── */
+    .bnav {
+      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 100%; max-width: 640px;
+      background: rgba(250,248,245,.92);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      backdrop-filter: blur(20px) saturate(180%);
+      border-top: 1px solid var(--line);
+      display: flex;
+      padding-bottom: var(--safe-b);
+      z-index: 300;
+    }
+    .bnav-tab {
+      flex: 1; display: flex; flex-direction: column; align-items: center;
+      padding: 9px 4px 7px; border: none; background: none;
+      color: var(--ink-5); font-size: 9.5px; font-weight: 600;
+      letter-spacing: .03em; text-transform: uppercase;
+      gap: 4px; cursor: pointer; font-family: inherit;
+      transition: color .15s;
+    }
+    .bnav-tab.on { color: var(--brand); }
+    .bnav-tab svg { width: 20px; height: 20px; }
+
+    /* ─── CONTENT ─── */
+    .content {
+      padding: 14px;
+      padding-bottom: calc(62px + var(--safe-b) + 14px);
+    }
+
+    /* ─── CARDS ─── */
+    .card {
+      background: var(--surface);
+      border-radius: var(--r);
+      border: 1px solid var(--line);
+      margin-bottom: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 6px rgba(60,40,20,.08);
+    }
+    .card-hd {
+      padding: 13px 16px 0;
+      font-size: 10.5px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .07em;
+      color: var(--ink-4);
+    }
+    .card-body { padding: 14px 16px 16px; }
+    .card-body.no-top { padding-top: 10px; }
+
+    /* ─── FIELDS ─── */
+    .f { margin-bottom: 18px; }
+    .f:last-child { margin-bottom: 0; }
+    .f > label {
+      display: block; font-size: 13px; font-weight: 600;
+      color: var(--ink-3); margin-bottom: 8px; letter-spacing: -.01em;
+    }
+    input[type=text], input[type=number], textarea, select {
+      width: 100%; padding: 11px 13px;
+      border: 1.5px solid var(--line);
+      border-radius: 8px;
+      font-size: 15px; font-family: inherit;
+      color: var(--ink); background: var(--surface);
+      -webkit-appearance: none;
+      transition: border-color .15s;
+      line-height: 1.4;
+    }
+    select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a726a' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 13px center; padding-right: 36px; cursor: pointer; }
+    input:focus, textarea:focus, select:focus { outline: none; border-color: var(--ink-3); }
+    textarea { resize: none; height: 72px; }
+    input[type=number] { -moz-appearance: textfield; }
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+    /* ─── CHIPS ─── */
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip {
+      padding: 7px 13px;
+      border-radius: 6px;
+      border: 1.5px solid var(--line);
+      background: var(--surface);
+      font-size: 13.5px; font-weight: 500;
+      color: var(--ink-3);
+      cursor: pointer; font-family: inherit;
+      transition: all .12s; white-space: nowrap; line-height: 1;
+    }
+    .chip.on {
+      background: var(--brand-lt);
+      border-color: var(--brand);
+      color: var(--brand); font-weight: 600;
+    }
+    .chip.ideal {
+      border-color: rgba(45,122,79,.35);
+      background: rgba(45,122,79,.05);
+    }
+    .chip.ideal::after { content: ' ★'; font-size: 10px; opacity: .55; }
+    .chip.on.ideal { background: var(--brand-lt); border-color: var(--brand); color: var(--brand); }
+    .chip.on.ideal::after { content: ' ★'; font-size: 10px; opacity: .7; }
+
+    /* chip color variants */
+    .chip.on.chip-orange { background:var(--brand-lt);  border-color:var(--brand);   color:var(--brand); }
+    .chip.on.chip-blue   { background:var(--blue-lt);   border-color:var(--blue-md); color:var(--blue); }
+    .chip.on.chip-teal   { background:var(--teal-lt);   border-color:var(--teal);    color:var(--teal); }
+    .chip.on.chip-purple { background:var(--purple-lt); border-color:var(--purple);  color:var(--purple); }
+    .chip.on.chip-amber  { background:var(--amber-lt);  border-color:var(--amber);   color:var(--amber); }
+    .chip.on.chip-warm   { background:var(--cct-warm-lt);border-color:var(--cct-warm);color:var(--cct-warm); }
+    .chip.on.chip-cool   { background:var(--cct-cool-lt);border-color:var(--cct-cool);color:var(--cct-cool); }
+    .chip.on.chip-green  { background:var(--green-lt);  border-color:var(--green);   color:var(--green); }
+    .chip.chip-orange:not(.on){ border-color:rgba(201,104,40,.25); }
+    .chip.chip-blue:not(.on)  { border-color:rgba(59,130,246,.22); }
+    .chip.chip-teal:not(.on)  { border-color:rgba(15,118,110,.2); }
+    .chip.chip-purple:not(.on){ border-color:rgba(124,58,237,.2); }
+    .chip.chip-amber:not(.on) { border-color:rgba(180,83,9,.2); }
+    .chip.chip-warm:not(.on)  { border-color:rgba(146,64,14,.2); }
+    .chip.chip-cool:not(.on)  { border-color:rgba(30,58,138,.2); }
+    .chip.chip-green:not(.on) { border-color:rgba(26,107,63,.2); }
+
+    /* ─── COUNTER ─── */
+    .ctr {
+      display: inline-flex; align-items: stretch;
+      border: 1.5px solid var(--line); border-radius: 8px;
+      overflow: hidden; background: var(--surface);
+    }
+    .ctr-btn {
+      width: 44px; border: none; background: var(--surface-2);
+      font-size: 20px; font-weight: 400; color: var(--ink-4);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background .1s; user-select: none;
+    }
+    .ctr-btn:active { background: var(--line); }
+    .ctr input {
+      width: 54px; text-align: center;
+      border: none !important;
+      border-left: 1.5px solid var(--line) !important;
+      border-right: 1.5px solid var(--line) !important;
+      border-radius: 0 !important;
+      font-size: 17px; font-weight: 700;
+      color: var(--ink); padding: 9px 0;
+    }
+    .ctr input:focus { border-color: var(--line) !important; }
+
+    /* ─── CONSTRUCTION TOGGLE ─── */
+    .const-toggle {
+      display: flex; border: 1.5px solid var(--line); border-radius: 8px; overflow: hidden;
+    }
+    .const-opt {
+      flex: 1; padding: 10px;
+      border: none; background: var(--surface);
+      font-size: 13.5px; font-weight: 500; color: var(--ink-4);
+      cursor: pointer; font-family: inherit; text-align: center;
+      transition: all .12s;
+    }
+    .const-opt + .const-opt { border-left: 1.5px solid var(--line); }
+    .const-opt.on.nc { background: var(--green-lt); color: var(--green); font-weight: 700; }
+    .const-opt.on.retro { background: var(--blue-lt); color: var(--blue); font-weight: 700; }
+
+    /* ─── DIVIDER ─── */
+    .div { height: 1px; background: var(--line); margin: 2px 0; }
+
+    /* ─── FLOOR HEADER ─── */
+    .floor-section { margin-bottom: 6px; }
+    .floor-hdr {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 7px 10px 7px 2px; margin-bottom: 4px;
+    }
+    .floor-hdr-left { display: flex; align-items: center; gap: 8px; }
+    .floor-hdr-label {
+      font-size: 11px; font-weight: 700; color: var(--brand);
+      text-transform: uppercase; letter-spacing: .08em;
+    }
+    .floor-hdr-count { font-size: 11px; color: var(--ink-5); }
+    .floor-reorder { display: flex; gap: 2px; }
+    .floor-reorder-btn {
+      background: none; border: none; color: var(--ink-5);
+      cursor: pointer; padding: 5px; border-radius: 5px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .1s, color .1s;
+    }
+    .floor-reorder-btn:active { background: var(--line); color: var(--ink-3); }
+    .floor-reorder-btn:disabled { opacity: .25; pointer-events: none; }
+
+    /* ─── ROOM LIST ─── */
+    .room-row {
+      background: var(--surface); border: 1px solid var(--line);
+      border-radius: var(--r); padding: 13px 14px;
+      margin-bottom: 8px; display: flex; align-items: center;
+      justify-content: space-between;
+      transition: border-color .12s, opacity .15s, transform .15s;
+      cursor: default;
+    }
+    .room-row.dragging { opacity: .5; transform: scale(.98); }
+    .room-row.drag-over { border-color: var(--brand); background: var(--brand-lt); }
+    .room-main { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; cursor: pointer; }
+    .drag-handle {
+      color: var(--ink-5); cursor: grab; padding: 4px 2px;
+      display: flex; align-items: center; flex-shrink: 0;
+      touch-action: none;
+    }
+    .drag-handle:active { cursor: grabbing; }
+    .room-name { font-size: 15px; font-weight: 600; letter-spacing: -.01em; }
+    .room-sub { font-size: 12.5px; color: var(--ink-4); margin-top: 3px; }
+    .room-row-right { display: flex; align-items: center; gap: 2px; }
+    .room-del {
+      background: none; border: none; color: var(--ink-5);
+      cursor: pointer; padding: 8px; margin: -4px;
+      transition: color .15s; display: flex; align-items: center;
+    }
+    .room-del:active { color: var(--danger); }
+    .room-chev { color: var(--ink-5); font-size: 18px; font-weight: 300; margin-left: 2px; }
+    .reorder-btns { display: flex; flex-direction: column; gap: 1px; flex-shrink: 0; }
+    .reorder-btn {
+      background: none; border: none; color: var(--ink-5);
+      cursor: pointer; padding: 3px 4px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 4px; transition: background .1s, color .1s;
+    }
+    .reorder-btn:active { background: var(--line); color: var(--ink-3); }
+    .reorder-btn:disabled { opacity: .2; pointer-events: none; }
+    .override-badge {
+      font-size: 10px; font-weight: 700; padding: 3px 8px;
+      border-radius: 10px;
+      background: linear-gradient(135deg,var(--purple-lt) 0%,#ede9fe 100%);
+      color: var(--purple); border: 1px solid rgba(124,58,237,.25);
+      margin-top: 4px; display: inline-block; letter-spacing: .02em;
+    }
+    .ec-badge {
+      font-size: 10px; font-weight: 700; padding: 3px 8px;
+      border-radius: 10px;
+      background: var(--amber-lt);
+      color: var(--amber); border: 1px solid rgba(180,83,9,.22);
+      margin-top: 4px; display: inline-block; letter-spacing: .02em;
+      margin-left: 4px;
+    }
+    .floor-badge {
+      font-size: 10px; font-weight: 600; padding: 2px 7px;
+      border-radius: 8px; background: var(--brand-lt);
+      color: var(--brand); border: 1px solid rgba(201,104,40,.2);
+      display: inline-block; margin-top: 4px;
+    }
+
+    /* ─── ADD BUTTON ─── */
+    .add-btn {
+      width: 100%; padding: 14px;
+      border: 1.5px dashed var(--line);
+      border-radius: var(--r);
+      background: transparent;
+      color: var(--ink-4); font-size: 14px; font-weight: 600;
+      cursor: pointer; font-family: inherit;
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      letter-spacing: -.01em; transition: all .15s; margin-top: 4px;
+    }
+    .add-btn:active { background: var(--line-2); }
+
+    /* ─── SAVE ROOM BUTTON ─── */
+    .save-room-btn {
+      width: 100%; padding: 15px;
+      background: linear-gradient(135deg,#1a6b3f 0%,#145530 100%);
+      color: #fff; border: none; border-radius: var(--r);
+      font-size: 15px; font-weight: 700;
+      cursor: pointer; font-family: inherit;
+      letter-spacing: -.01em; margin-top: 10px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: all .15s;
+      box-shadow: 0 2px 10px rgba(26,107,63,.3);
+    }
+    .save-room-btn:active { opacity: .9; transform: scale(.99); }
+    .save-room-btn.saved { background: linear-gradient(135deg,#145530 0%,#0d3d22 100%); }
+
+    /* ─── HOME ─── */
+    .home-top {
+      background: linear-gradient(145deg,#1a1008 0%,#2d1a0a 55%,#3d2010 100%);
+      padding: 40px 22px 30px;
+      padding-top: calc(40px + var(--safe-t));
+    }
+    .home-mark { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
+    .home-s {
+      width: 38px; height: 38px;
+      background: linear-gradient(135deg,var(--brand) 0%,#a0521e 100%);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 800; color: #fff; flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(201,104,40,.4);
+    }
+    .home-wordmark { font-size: 20px; font-weight: 700; color: #fff; letter-spacing: -.02em; }
+    .home-sub { font-size: 13px; color: #6b7280; margin-top: 2px; letter-spacing: -.01em; }
+    .home-date { font-size: 12px; color: #4b5563; margin-top: 14px; text-transform: uppercase; letter-spacing: .06em; }
+    .home-content { padding: 18px 14px; }
+
+    .new-btn {
+      width: 100%; padding: 15px;
+      background: linear-gradient(135deg,var(--brand) 0%,#a0521e 100%);
+      color: #fff;
+      border: none; border-radius: var(--r);
+      font-size: 15px; font-weight: 700;
+      cursor: pointer; font-family: inherit;
+      letter-spacing: -.01em; margin-bottom: 22px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      box-shadow: 0 2px 10px rgba(201,104,40,.3);
+    }
+    .new-btn:active { opacity: .9; transform: scale(.99); }
+
+    .sec-lbl {
+      font-size: 10.5px; font-weight: 700; color: var(--brand);
+      text-transform: uppercase; letter-spacing: .08em;
+      padding: 0 2px 10px; opacity: .85;
+    }
+
+    .job-row {
+      background: var(--surface); border-radius: var(--r);
+      padding: 14px 16px; margin-bottom: 8px;
+      border: 1px solid var(--line); border-left: 3px solid var(--brand);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: all .12s;
+      box-shadow: 0 1px 4px rgba(60,40,20,.06);
+    }
+    .job-row:active { background: var(--surface-2); }
+    .job-row-left { flex: 1; min-width: 0; }
+    .job-title { font-size: 15px; font-weight: 600; letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .job-meta { font-size: 12px; color: var(--ink-4); margin-top: 3px; }
+    .job-del {
+      background: none; border: none; color: var(--ink-5);
+      cursor: pointer; padding: 8px; margin: -8px -8px -8px 4px;
+      transition: color .15s; display: flex; align-items: center;
+    }
+    .job-del:active { color: var(--danger); }
+
+    /* ─── DEFAULTS BANNER ─── */
+    .defaults-banner {
+      background: linear-gradient(135deg,var(--purple-lt) 0%,#ede9fe 100%);
+      border: 1px solid rgba(124,58,237,.22);
+      border-radius: var(--r); padding: 13px 16px; margin-bottom: 10px;
+      cursor: pointer; transition: all .12s;
+      box-shadow: 0 1px 6px rgba(124,58,237,.08);
+    }
+    .defaults-banner:active { opacity: .85; }
+    .defaults-banner-hd {
+      font-size: 12px; font-weight: 700; color: var(--purple);
+      text-transform: uppercase; letter-spacing: .06em; margin-bottom: 5px;
+    }
+    .defaults-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+    .default-tag {
+      font-size: 12px; font-weight: 500; padding: 3px 9px;
+      border-radius: 5px; background: rgba(107,70,193,.1);
+      border: 1px solid rgba(107,70,193,.15); color: var(--purple);
+    }
+    .defaults-edit-hint { font-size: 11.5px; color: var(--purple); opacity: .7; margin-top: 7px; }
+
+    /* ─── ROOM HEADER ─── */
+    .room-header-block {
+      background: linear-gradient(145deg,#1a1008 0%,#2d1a0a 55%,#3d2415 100%); padding: 26px 22px 22px;
+      padding-top: calc(26px + var(--safe-t));
+    }
+    .room-header-name { font-size: 20px; font-weight: 700; color: #fff; letter-spacing: -.02em; }
+    .room-header-meta { font-size: 13px; color: #6b7280; margin-top: 5px; }
+    .room-stat-row { display: flex; gap: 12px; margin-top: 14px; }
+    .room-stat { flex: 1; border-radius: 10px; padding: 11px 12px; text-align: center; }
+    .room-stat:first-child { background: rgba(59,130,246,.18); border: 1px solid rgba(59,130,246,.28); }
+    .room-stat:last-child  { background: rgba(201,104,40,.22); border: 1px solid rgba(201,104,40,.32); }
+    .room-stat-num { font-size: 24px; font-weight: 800; color: #fff; letter-spacing: -.02em; }
+    .room-stat-lbl { font-size: 10px; color: rgba(255,255,255,.55); text-transform: uppercase; letter-spacing: .06em; margin-top: 2px; }
+
+    /* ─── ROOM DEFAULTS OVERRIDE CARD ─── */
+    .room-override-card {
+      border-radius: var(--r); padding: 13px 16px; margin-bottom: 10px;
+      border: 1.5px solid rgba(107,70,193,.25);
+      background: var(--purple-lt);
+    }
+    .room-override-hd {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .room-override-label {
+      font-size: 11px; font-weight: 700; color: var(--purple);
+      text-transform: uppercase; letter-spacing: .06em;
+    }
+    .room-override-edit {
+      font-size: 12px; font-weight: 600; color: var(--purple);
+      background: none; border: none; cursor: pointer; font-family: inherit; padding: 0;
+    }
+    .room-override-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .room-default-tag {
+      font-size: 12px; font-weight: 500; padding: 3px 9px;
+      border-radius: 5px; background: rgba(107,70,193,.1);
+      border: 1px solid rgba(107,70,193,.15); color: var(--purple);
+    }
+    .room-inherit-tag {
+      font-size: 12px; font-weight: 500; padding: 3px 9px;
+      border-radius: 5px; background: rgba(0,0,0,.04);
+      border: 1px solid var(--line-2); color: var(--ink-5);
+    }
+    .set-override-btn {
+      width: 100%; padding: 11px; margin-top: 8px;
+      border: 1.5px dashed rgba(107,70,193,.3);
+      border-radius: 8px; background: transparent;
+      font-size: 13px; font-weight: 600; color: var(--purple);
+      cursor: pointer; font-family: inherit; letter-spacing: -.01em;
+    }
+
+    /* ─── EXISTING CONDITIONS ─── */
+    .ec-section {
+      border-radius: var(--r); margin-bottom: 10px;
+      border: 1.5px solid rgba(180,83,9,.22);
+      background: var(--amber-lt);
+      overflow: hidden;
+    }
+    .ec-section-hd {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 11px 14px;
+    }
+    .ec-section-label {
+      font-size: 11px; font-weight: 700; color: var(--amber);
+      text-transform: uppercase; letter-spacing: .06em;
+    }
+    .ec-add-btn {
+      font-size: 12px; font-weight: 600; color: var(--amber);
+      background: none; border: none; cursor: pointer; font-family: inherit; padding: 0;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .ec-list { padding: 0 12px 12px; }
+    .ec-item {
+      background: var(--surface); border: 1px solid rgba(180,83,9,.15);
+      border-radius: 8px; padding: 11px 12px; margin-bottom: 6px;
+    }
+    .ec-item:last-child { margin-bottom: 0; }
+    .ec-item-hd { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 6px; }
+    .ec-item-title { font-size: 13.5px; font-weight: 600; color: var(--ink-2); }
+    .ec-item-qty {
+      background: var(--amber); color: #fff;
+      font-size: 12px; font-weight: 700; padding: 2px 9px;
+      border-radius: 16px; white-space: nowrap; flex-shrink: 0; margin-left: 8px;
+    }
+    .ec-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
+    .ec-tag {
+      font-size: 11px; font-weight: 500; padding: 2px 8px;
+      border-radius: 4px; border: 1px solid rgba(180,83,9,.18);
+      background: rgba(180,83,9,.07); color: var(--amber);
+    }
+    .ec-tag.lamp { background: var(--surface-2); color: var(--ink-3); border-color: var(--line); }
+    .ec-note { font-size: 11.5px; color: var(--ink-4); font-style: italic; }
+    .ec-actions { display: flex; gap: 6px; margin-top: 8px; }
+    .ec-edit-btn, .ec-del-btn {
+      flex: 1; padding: 6px; border-radius: 6px; border: 1.5px solid var(--line);
+      background: none; font-size: 12px; font-weight: 600;
+      cursor: pointer; font-family: inherit;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ec-edit-btn { color: var(--ink-3); }
+    .ec-del-btn  { color: var(--danger); border-color: rgba(192,57,43,.2); }
+    .ec-edit-btn:active { background: var(--line-2); }
+    .ec-del-btn:active  { background: var(--danger-lt); }
+    .ec-empty {
+      font-size: 12.5px; color: var(--amber); opacity: .7;
+      padding: 0 14px 12px; font-style: italic;
+    }
+    /* Summary EC toggle */
+    .toggle-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px;
+      background: var(--surface); border: 1px solid var(--line);
+      border-radius: var(--r); margin-bottom: 10px;
+      cursor: pointer;
+    }
+    .toggle-row-label { font-size: 13.5px; font-weight: 600; color: var(--ink-3); }
+    .toggle-pill {
+      width: 40px; height: 22px; border-radius: 11px;
+      border: none; cursor: pointer; padding: 2px; transition: background .2s;
+      flex-shrink: 0;
+      display: flex; align-items: center;
+    }
+    .toggle-pill.on { background: var(--brand); justify-content: flex-end; }
+    .toggle-pill.off { background: var(--ink-5); justify-content: flex-start; }
+    .toggle-knob { width: 18px; height: 18px; border-radius: 50%; background: #fff; flex-shrink: 0; }
+
+    /* ─── FIXTURE ITEM ─── */
+    .fixture-item {
+      background: var(--surface); border: 1px solid var(--line);
+      border-radius: var(--r); padding: 14px 16px; margin-bottom: 8px;
+      border-left-width: 3px;
+    }
+    .fixture-item.fi-nc    { border-left-color: var(--green); }
+    .fixture-item.fi-retro { border-left-color: var(--blue-md); }
+    .fixture-header {
+      display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px;
+    }
+    .fixture-title { font-size: 15px; font-weight: 700; letter-spacing: -.01em; }
+    .fixture-sub { font-size: 12px; color: var(--ink-4); margin-top: 2px; font-weight: 400; letter-spacing: -.01em; }
+    .fixture-qty {
+      background: var(--brand); color: #fff;
+      font-size: 13px; font-weight: 700; padding: 3px 10px;
+      border-radius: 20px; white-space: nowrap; flex-shrink: 0; margin-left: 8px;
+    }
+    .fixture-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+    .ftag {
+      font-size: 11.5px; font-weight: 500; padding: 3px 9px;
+      border-radius: 5px; border: 1px solid var(--line-2);
+      background: var(--surface-2); color: var(--ink-3);
+    }
+    .ftag.c { background: var(--brand-lt); color: var(--brand); border-color: rgba(201,104,40,.2); }
+    .ftag.g { background: var(--green-lt); color: var(--green); border-color: rgba(45,122,79,.2); }
+    .ftag.b { background: var(--blue-lt); color: var(--blue); border-color: rgba(44,82,130,.2); }
+    .ftag.p { background: var(--purple-lt); color: var(--purple); border-color: rgba(107,70,193,.2); }
+    .fixture-note { font-size: 12.5px; color: var(--ink-4); font-style: italic; margin-top: 6px; }
+    .fixture-actions { display: flex; gap: 8px; margin-top: 12px; }
+    .fixture-edit-btn, .fixture-dup-btn, .fixture-del-btn {
+      flex: 1; padding: 8px; border-radius: 7px; border: 1.5px solid var(--line);
+      background: none; font-size: 13px; font-weight: 600;
+      cursor: pointer; font-family: inherit; letter-spacing: -.01em;
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+    }
+    .fixture-edit-btn { color: var(--ink-3); }
+    .fixture-dup-btn  { color: var(--blue); border-color: rgba(44,82,130,.2); }
+    .fixture-del-btn  { color: var(--danger); border-color: rgba(192,57,43,.2); }
+    .fixture-edit-btn:active { background: var(--line-2); }
+    .fixture-dup-btn:active  { background: var(--blue-lt); }
+    .fixture-del-btn:active  { background: rgba(192,57,43,.08); }
+
+    /* ─── SUMMARY ─── */
+    .summary-hero {
+      background: linear-gradient(145deg,#1a1008 0%,#2d1a0a 55%,#3d2415 100%); padding: 28px 22px 24px;
+      padding-top: calc(28px + var(--safe-t));
+    }
+    .summary-title { font-size: 22px; font-weight: 700; color: #fff; letter-spacing: -.02em; }
+    .summary-sub { font-size: 13px; color: #6b7280; margin-top: 4px; }
+    .total-pill {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg,var(--brand) 0%,var(--brand-dk,#a0521e) 100%);
+      color: #fff; padding: 10px 20px; border-radius: 24px; margin-top: 16px;
+      font-size: 14px; font-weight: 700;
+      box-shadow: 0 3px 12px rgba(201,104,40,.35);
+    }
+    .total-num { font-size: 26px; font-weight: 800; letter-spacing: -.02em; }
+    .summary-row {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      padding: 11px 0;
+    }
+    .summary-row + .summary-row { border-top: 1px solid var(--line-2); }
+    .summary-key { font-size: 14px; color: var(--ink-3); flex: 1; }
+    .summary-val { font-size: 14px; font-weight: 700; color: var(--ink); flex-shrink: 0; margin-left: 10px; }
+
+    /* ─── MODAL ─── */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,.45);
+      z-index: 500; display: flex; align-items: flex-end; justify-content: center;
+      animation: fadeIn .15s ease;
+    }
+    @keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
+    .modal {
+      background: var(--bg); width: 100%; max-width: 640px;
+      border-radius: 18px 18px 0 0;
+      max-height: 92dvh; overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      animation: slideUp .2s ease;
+      padding-bottom: calc(24px + var(--safe-b));
+    }
+    @keyframes slideUp { from { transform:translateY(100%) } to { transform:translateY(0) } }
+    .modal-handle { width: 36px; height: 4px; background: var(--line); border-radius: 2px; margin: 12px auto 8px; }
+    .modal-hdr {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 18px 16px;
+    }
+    .modal-title { font-size: 17px; font-weight: 700; letter-spacing: -.02em; }
+    .modal-close {
+      background: var(--surface-2); border: none;
+      width: 28px; height: 28px; border-radius: 50%;
+      font-size: 16px; color: var(--ink-4);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    .modal-body { padding: 0 16px; }
+    .modal-footer { padding: 16px 16px 0; display: flex; gap: 10px; }
+    .btn-primary {
+      flex: 1; padding: 14px;
+      background: var(--brand); color: #fff;
+      border: none; border-radius: var(--r);
+      font-size: 15px; font-weight: 700;
+      cursor: pointer; font-family: inherit; letter-spacing: -.01em;
+    }
+    .btn-primary:active { opacity: .9; }
+    .btn-secondary {
+      flex: 1; padding: 14px;
+      background: var(--surface-2); color: var(--ink-3);
+      border: 1.5px solid var(--line); border-radius: var(--r);
+      font-size: 15px; font-weight: 600;
+      cursor: pointer; font-family: inherit; letter-spacing: -.01em;
+    }
+    .btn-secondary:active { background: var(--line); }
+
+    /* ─── DEFAULTS HINT IN MODAL ─── */
+    .modal-source-banner {
+      padding: 9px 13px; border-radius: 8px; margin-bottom: 16px;
+      font-size: 12px; font-weight: 500; line-height: 1.4;
+    }
+    .modal-source-banner.house { background: var(--purple-lt); color: var(--purple); border: 1px solid rgba(107,70,193,.2); }
+    .modal-source-banner.room  { background: var(--green-lt); color: var(--green); border: 1px solid rgba(45,122,79,.2); }
+
+    /* ─── SHARE / COPY BUTTONS ─── */
+    .share-btn {
+      width: 100%; padding: 14px;
+      background: #27201a; color: #fff;
+      border: none; border-radius: var(--r);
+      font-size: 14px; font-weight: 600;
+      cursor: pointer; font-family: inherit; letter-spacing: -.01em;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      margin-bottom: 10px;
+    }
+    .share-btn:active { opacity: .85; }
+    .copy-btn {
+      width: 100%; padding: 14px;
+      background: var(--surface); color: var(--ink-3);
+      border: 1.5px solid var(--line); border-radius: var(--r);
+      font-size: 14px; font-weight: 600;
+      cursor: pointer; font-family: inherit; letter-spacing: -.01em;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      margin-bottom: 10px;
+    }
+    .copy-btn:active { background: var(--line-2); }
+
+    /* ─── MISC ─── */
+    .empty { text-align: center; padding: 36px 20px; color: var(--ink-4); }
+    .empty-title { font-size: 15px; font-weight: 600; color: var(--ink-3); margin-bottom: 6px; }
+    .empty-sub { font-size: 13px; line-height: 1.4; }
+    .tag-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 5px; }
+    .info-tag {
+      font-size: 11.5px; font-weight: 500; padding: 3px 9px;
+      border-radius: 5px; background: var(--surface-2);
+      border: 1px solid var(--line-2); color: var(--ink-4);
+    }
+    .lumen-hint { font-size: 11px; color: var(--ink-5); margin-top: 5px; font-style: italic; }
+
+    /* ─── SAVE TOAST ─── */
+    #save-toast {
+      position: fixed;
+      bottom: calc(62px + var(--safe-b) + 10px);
+      left: 50%; transform: translateX(-50%) translateY(6px);
+      background: rgba(28,21,16,.82);
+      color: #fff; font-size: 12px; font-weight: 600;
+      padding: 6px 16px; border-radius: 20px;
+      opacity: 0; transition: opacity .18s, transform .18s;
+      pointer-events: none; z-index: 400;
+      letter-spacing: .02em; white-space: nowrap;
+    }
+    #save-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ─── BACK BUTTON ─── */
+    .back-btn {
+      background: none; border: none; color: #9ca3af;
+      font-size: 13px; font-weight: 600; padding: 0;
+      cursor: pointer; margin-bottom: 10px; font-family: inherit;
+      display: inline-flex; align-items: center; gap: 4px;
+      touch-action: manipulation; letter-spacing: -.01em;
+    }
+    .back-btn:active { color: #fff; }
+
+    /* ─── GLOBAL ─── */
+    button { touch-action: manipulation; }
+    .page { display: none; }
+    .page.active { display: block; }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ═══ HOME PAGE ═══ -->
+  <div id="pg-home" class="page active">
+    <div class="home-top">
+      <div class="home-mark">
+        <div class="home-s">S</div>
+        <div>
+          <div class="home-wordmark">DMF Counter</div>
+          <div class="home-sub">Lighting Job Walk Tool</div>
+        </div>
+      </div>
+      <div class="home-date" id="home-date"></div>
+    </div>
+    <div class="home-content">
+      <button class="new-btn" onclick="newJob()">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        New Job Walk
+      </button>
+      <div class="sec-lbl">Recent Jobs</div>
+      <div id="jobs-list"></div>
+    </div>
+  </div>
+
+  <!-- ═══ JOB INFO PAGE ═══ -->
+  <div id="pg-job" class="page">
+    <div class="hdr" style="background:#27201a">
+      <button class="hdr-btn" onclick="goHome()">← Jobs</button>
+      <div class="hdr-title" id="job-hdr-title">New Job Walk</div>
+      <button class="hdr-btn" onclick="goDefaults()">Defaults →</button>
+    </div>
+    <div class="content">
+      <div class="card">
+        <div class="card-hd">Project Info</div>
+        <div class="card-body no-top">
+          <div class="f">
+            <label>Client / Project Name</label>
+            <input type="text" id="job-name" placeholder="e.g. Johnson Residence CDM" oninput="updateJobField('name',this.value)">
+          </div>
+          <div class="f">
+            <label>Address</label>
+            <input type="text" id="job-addr" placeholder="123 Ocean View Dr, Newport Beach" oninput="updateJobField('address',this.value)">
+          </div>
+          <div class="f" style="margin-bottom:0">
+            <label>Notes</label>
+            <textarea id="job-notes" placeholder="Builder, GC, scope notes..." oninput="updateJobField('notes',this.value)"></textarea>
+          </div>
+        </div>
+      </div>
+      <button class="new-btn" style="margin-top:4px" onclick="goDefaults()">
+        Set House Defaults →
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══ HOUSE DEFAULTS PAGE ═══ -->
+  <div id="pg-defaults" class="page">
+    <div class="hdr">
+      <button class="hdr-btn" onclick="goJob()">← Info</button>
+      <div class="hdr-title">House Defaults</div>
+      <button class="hdr-btn" onclick="saveDefaultsAndGo()">Rooms →</button>
+    </div>
+    <div class="content">
+      <div class="card" style="background:var(--purple-lt);border-color:rgba(107,70,193,.2);margin-bottom:14px;">
+        <div class="card-body">
+          <div style="font-size:13px;color:var(--purple);line-height:1.5;">
+            <strong>Set your house standard spec here.</strong> Every room will inherit these defaults — you only need to pick what's <em>different</em> in each room.
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hd">Construction Type</div>
+        <div class="card-body no-top">
+          <div class="f" style="margin-bottom:0">
+            <div class="const-toggle">
+              <button class="const-opt on nc" id="def-const-nc" onclick="setDefConst('new')">🏗 New Construction</button>
+              <button class="const-opt" id="def-const-retro" onclick="setDefConst('retro')">🔧 Retrofit / Remodel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hd">Aperture Size</div>
+        <div class="card-body no-top">
+          <div class="f" style="margin-bottom:0"><div class="chips" id="def-chips-size"></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hd">Shape</div>
+        <div class="card-body no-top">
+          <div class="f" style="margin-bottom:0"><div class="chips" id="def-chips-shape"></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hd">Trim Type</div>
+        <div class="card-body no-top">
+          <div class="f" style="margin-bottom:0"><div class="chips" id="def-chips-trim"></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hd">CCT (Kelvin)</div>
+        <div class="card-body no-top">
+          <div class="f" style="margin-bottom:0"><div class="chips" id="def-chips-cct"></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hd">Lumen Output</div>
+        <div class="card-body no-top">
+          <div class="f" style="margin-bottom:0">
+            <div class="chips" id="def-chips-lm"></div>
+            <div class="lumen-hint">DMF modules are field-selectable</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hd">Trim Finish</div>
+        <div class="card-body no-top">
+          <div class="f" style="margin-bottom:0"><div class="chips" id="def-chips-finish"></div></div>
+        </div>
+      </div>
+      <button class="new-btn" style="margin-top:4px" onclick="saveDefaultsAndGo()">
+        Start Counting Rooms →
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══ ROOMS PAGE ═══ -->
+  <div id="pg-rooms" class="page">
+    <div class="hdr">
+      <button class="hdr-btn" onclick="goDefaults()">← Defaults</button>
+      <div class="hdr-title">Rooms</div>
+      <button class="hdr-btn" onclick="goSummary()">Summary →</button>
+    </div>
+    <div class="content">
+      <div id="house-defaults-banner"></div>
+      <div id="rooms-list"></div>
+      <button class="add-btn" onclick="addRoom()">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        Add Room
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══ ROOM DETAIL PAGE ═══ -->
+  <div id="pg-room" class="page">
+    <div class="room-header-block">
+      <button class="back-btn" onclick="goRooms()">← Back to Rooms</button>
+      <div class="room-header-name" id="room-detail-name"></div>
+      <div class="room-header-meta" id="room-detail-meta"></div>
+      <div class="room-stat-row">
+        <div class="room-stat">
+          <div class="room-stat-num" id="room-stat-fixtures">0</div>
+          <div class="room-stat-lbl">Fixture Groups</div>
+        </div>
+        <div class="room-stat">
+          <div class="room-stat-num" id="room-stat-total">0</div>
+          <div class="room-stat-lbl">Total Lights</div>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <div id="room-override-block"></div>
+      <div id="existing-cond-block"></div>
+      <div id="fixtures-list"></div>
+      <button class="add-btn" onclick="openFixtureModal()">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        Add Fixture Group
+      </button>
+      <button class="save-room-btn" id="save-room-btn" onclick="saveRoom_confirm()">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        <span id="save-room-label">Save Room</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══ SUMMARY PAGE ═══ -->
+  <div id="pg-summary" class="page">
+    <div class="summary-hero">
+      <button class="back-btn" onclick="goRooms()">← Rooms</button>
+      <div class="summary-title" id="sum-project-name">Project</div>
+      <div class="summary-sub" id="sum-address"></div>
+      <div class="total-pill">
+        <span>Total Fixtures</span>
+        <span class="total-num" id="sum-total">0</span>
+      </div>
+    </div>
+    <div class="content">
+      <div id="summary-toggles"></div>
+      <div id="summary-content"></div>
+      <div id="export-btns"></div>
+      <button class="share-btn" onclick="shareReport()">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+        Share Report
+      </button>
+      <button class="copy-btn" onclick="copyReport()">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Copy to Clipboard
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══ BOTTOM NAV ═══ -->
+  <nav class="bnav" id="main-bnav" style="display:none">
+    <button class="bnav-tab" id="bnav-jobs" onclick="goHome()">
+      <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Jobs
+    </button>
+    <button class="bnav-tab" id="bnav-defaults" onclick="goDefaults()">
+      <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M20 12h2M2 12h2M17.66 17.66l1.41 1.41M4.93 19.07l1.41-1.41"/></svg>
+      Defaults
+    </button>
+    <button class="bnav-tab" id="bnav-rooms" onclick="goRooms()">
+      <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+      Rooms
+    </button>
+    <button class="bnav-tab" id="bnav-sum" onclick="goSummary()">
+      <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 0 1 7 7h2M15 7h2a5 5 0 0 1 0 10h-2M8 12h8"/></svg>
+      Summary
+    </button>
+  </nav>
+  <div id="save-toast" aria-live="polite">Saved</div>
+</div>
+
+<!-- ═══ FIXTURE MODAL ═══ -->
+<div id="fixture-modal" class="modal-overlay" style="display:none" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-hdr">
+      <div class="modal-title" id="modal-title">Add Fixture Group</div>
+      <button class="modal-close" onclick="closeFixtureModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="modal-source-banner" class="modal-source-banner house" style="display:none"></div>
+      <div class="f">
+        <label>Group Label <span style="font-weight:400;color:var(--ink-5)">(optional)</span></label>
+        <input type="text" id="fx-label" placeholder="e.g. General ambient, Art lights, Cove…" autocomplete="off" oninput="fxState.label=this.value">
+      </div>
+      <div class="f">
+        <label>Quantity</label>
+        <div class="ctr">
+          <button class="ctr-btn" onclick="adjQty(-1)">−</button>
+          <input type="number" id="fx-qty" value="1" min="1" max="99">
+          <button class="ctr-btn" onclick="adjQty(1)">+</button>
+        </div>
+      </div>
+      <div class="f">
+        <label>Construction Type</label>
+        <div class="const-toggle">
+          <button class="const-opt on nc" id="fx-const-nc" onclick="setFxConst('new')">🏗 New Construction</button>
+          <button class="const-opt" id="fx-const-retro" onclick="setFxConst('retro')">🔧 Retrofit / Remodel</button>
+        </div>
+      </div>
+      <div class="f"><label>Aperture Size</label><div class="chips" id="fx-chips-size"></div></div>
+      <div class="f"><label>Shape</label><div class="chips" id="fx-chips-shape"></div></div>
+      <div class="f"><label>Trim Type</label><div class="chips" id="fx-chips-trim"></div></div>
+      <div class="f"><label>CCT (Kelvin)</label><div class="chips" id="fx-chips-cct"></div></div>
+      <div class="f">
+        <label>Lumen Output</label>
+        <div class="chips" id="fx-chips-lm"></div>
+        <div class="lumen-hint">DMF modules are field-selectable</div>
+      </div>
+      <div class="f"><label>Trim Finish</label><div class="chips" id="fx-chips-finish"></div></div>
+      <div class="f">
+        <label>Notes (optional)</label>
+        <textarea id="fx-notes" placeholder="e.g. Over kitchen island, accent lighting..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeFixtureModal()">Cancel</button>
+      <button class="btn-primary" onclick="saveFixture()">Save Fixture Group</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ROOM NAME MODAL ═══ -->
+<div id="room-modal" class="modal-overlay" style="display:none" onclick="closeRoomModalOutside(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-hdr">
+      <div class="modal-title" id="room-modal-title">Add Room</div>
+      <button class="modal-close" onclick="closeRoomModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="f">
+        <label>Room Name</label>
+        <input type="text" id="room-name-input" placeholder="e.g. Master Bedroom, Kitchen, Entry" autocomplete="off">
+      </div>
+      <div class="f">
+        <label>Floor <span style="font-weight:400;color:var(--ink-5)">(optional)</span></label>
+        <select id="room-floor-select" onchange="onFloorSelectChange(this)"></select>
+        <input type="text" id="room-new-floor-input" placeholder="Floor name (e.g. Second Floor, Basement)" autocomplete="off" style="display:none;margin-top:8px">
+      </div>
+      <div class="f" style="margin-bottom:0">
+        <label>Quick Select</label>
+        <div class="chips" id="room-quick-chips" style="flex-wrap:wrap;"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeRoomModal()">Cancel</button>
+      <button class="btn-primary" id="room-modal-save-btn" onclick="saveRoomFromModal()">Add Room</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ROOM OVERRIDE MODAL ═══ -->
+<div id="room-override-modal" class="modal-overlay" style="display:none" onclick="closeRoomOverrideOutside(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-hdr">
+      <div class="modal-title" id="room-override-modal-title">Room Defaults</div>
+      <button class="modal-close" onclick="closeRoomOverrideModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="card" style="background:var(--green-lt);border-color:rgba(45,122,79,.2);margin-bottom:14px;">
+        <div class="card-body" style="padding:12px 14px">
+          <div style="font-size:12.5px;color:var(--green);line-height:1.5;">
+            Override the house defaults for this room only. New fixtures added here will start from these settings.
+          </div>
+        </div>
+      </div>
+      <div class="f">
+        <label>Construction Type</label>
+        <div class="const-toggle">
+          <button class="const-opt on nc" id="ro-const-nc" onclick="setROConst('new')">🏗 New Construction</button>
+          <button class="const-opt" id="ro-const-retro" onclick="setROConst('retro')">🔧 Retrofit / Remodel</button>
+        </div>
+      </div>
+      <div class="f"><label>Size</label><div class="chips" id="ro-chips-size"></div></div>
+      <div class="f"><label>Shape</label><div class="chips" id="ro-chips-shape"></div></div>
+      <div class="f"><label>Trim Type</label><div class="chips" id="ro-chips-trim"></div></div>
+      <div class="f"><label>CCT</label><div class="chips" id="ro-chips-cct"></div></div>
+      <div class="f"><label>Lumen Output</label><div class="chips" id="ro-chips-lm"></div></div>
+      <div class="f" style="margin-bottom:0"><label>Trim Finish</label><div class="chips" id="ro-chips-finish"></div></div>
+    </div>
+    <div class="modal-footer" style="flex-direction:column;gap:8px;">
+      <button class="btn-primary" onclick="saveRoomOverride()">Save Room Defaults</button>
+      <button id="clear-override-btn" class="btn-secondary" onclick="clearRoomOverride()" style="display:none;color:var(--danger);border-color:rgba(192,57,43,.2);">Clear Override — Use House Defaults</button>
+      <button class="btn-secondary" onclick="closeRoomOverrideModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ EXISTING CONDITIONS MODAL ═══ -->
+<div id="ec-modal" class="modal-overlay" style="display:none" onclick="closeECModalOutside(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-hdr">
+      <div class="modal-title" id="ec-modal-title">Existing Conditions</div>
+      <button class="modal-close" onclick="closeECModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="card" style="background:var(--amber-lt);border-color:rgba(180,83,9,.2);margin-bottom:14px;">
+        <div class="card-body" style="padding:11px 14px">
+          <div style="font-size:12.5px;color:var(--amber);line-height:1.5;">
+            Record what's currently in the ceiling. Used for retrofit planning and DMF submittal context.
+          </div>
+        </div>
+      </div>
+      <div class="f">
+        <label>Description <span style="font-weight:400;color:var(--ink-5)">(optional)</span></label>
+        <input type="text" id="ec-label" placeholder="e.g. General downlights, Adjustable art lights…" autocomplete="off">
+      </div>
+      <div class="f">
+        <label>Quantity</label>
+        <div class="ctr">
+          <button class="ctr-btn" onclick="adjECQty(-1)">−</button>
+          <input type="number" id="ec-qty" value="1" min="1" max="99">
+          <button class="ctr-btn" onclick="adjECQty(1)">+</button>
+        </div>
+      </div>
+      <div class="f">
+        <label>Existing Size</label>
+        <div class="chips" id="ec-chips-size"></div>
+      </div>
+      <div class="f">
+        <label>Fixture Type</label>
+        <div class="chips" id="ec-chips-type"></div>
+      </div>
+      <div class="f" style="margin-bottom:0">
+        <label>Lamp Type</label>
+        <div class="chips" id="ec-chips-lamp"></div>
+      </div>
+      <div class="f" style="margin-top:18px">
+        <label>Notes <span style="font-weight:400;color:var(--ink-5)">(optional)</span></label>
+        <textarea id="ec-notes" placeholder="e.g. 3 shower units need wet-location housing, above counter…"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeECModal()">Cancel</button>
+      <button class="btn-primary" onclick="saveEC()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════
+//  DATA MODEL
+// ═══════════════════════════════════════════════
+
+const STORE_KEY = 'dmf_jobs_v2';
+
+function loadJobs() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY)) || []; }
+  catch(e) { return []; }
+}
+function saveJobs() {
+  localStorage.setItem(STORE_KEY, JSON.stringify(jobs));
+  flashSaved();
+}
+function flashSaved() {
+  const t = document.getElementById('save-toast');
+  if (!t) return;
+  t.classList.add('show');
+  clearTimeout(window._st);
+  window._st = setTimeout(() => t.classList.remove('show'), 1600);
+}
+function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+
+const BLANK_SPEC = () => ({ construction:'new', size:'', shape:'', trim:'', cct:'', lm:'', finish:'', label:'' });
+
+let jobs = loadJobs();
+let currentJobId  = null;
+let currentRoomId = null;
+let editingFixtureId = null;
+let editingECId      = null;
+
+// Summary state
+let summaryGroupByFloor = false;
+let summaryShowExisting = true;
+
+// Drag state
+let dragSrcId   = null;
+let dragOverId  = null;
+
+// Temp state for modals
+let tempRO  = BLANK_SPEC();
+let fxState = {};
+let ecState = {};
+
+function job()  { return jobs.find(j => j.id === currentJobId); }
+function room() { return job() && job().rooms.find(r => r.id === currentRoomId); }
+
+function effectiveDefaults() {
+  const j = job();
+  const r = room();
+  const base = { ...BLANK_SPEC(), ...(j?.defaults || {}) };
+  if (r?.override) return { ...base, ...r.override };
+  return base;
+}
+
+// ═══════════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════════
+
+const ALL_PAGES = ['pg-home','pg-job','pg-defaults','pg-rooms','pg-room','pg-summary'];
+
+function showPage(id) {
+  ALL_PAGES.forEach(p => document.getElementById(p).classList.toggle('active', p === id));
+  const bnav = document.getElementById('main-bnav');
+  bnav.style.display = (id === 'pg-home') ? 'none' : 'flex';
+  if (id !== 'pg-home') {
+    document.getElementById('bnav-jobs').classList.toggle('on', id === 'pg-job');
+    document.getElementById('bnav-defaults').classList.toggle('on', id === 'pg-defaults');
+    document.getElementById('bnav-rooms').classList.toggle('on', id === 'pg-rooms' || id === 'pg-room');
+    document.getElementById('bnav-sum').classList.toggle('on', id === 'pg-summary');
+  }
+  window.scrollTo(0, 0);
+}
+
+function goHome()     { showPage('pg-home'); renderHome(); }
+function goJob()      { showPage('pg-job'); renderJobForm(); }
+function goDefaults() { showPage('pg-defaults'); renderDefaultsForm(); }
+function goRooms()    { showPage('pg-rooms'); renderRooms(); }
+function goRoom(rid)  { currentRoomId = rid; showPage('pg-room'); renderRoomDetail(); }
+function goSummary()  { showPage('pg-summary'); renderSummary(); }
+
+function saveDefaultsAndGo() {
+  saveJobs();
+  goRooms();
+}
+
+// ═══════════════════════════════════════════════
+//  HOME
+// ═══════════════════════════════════════════════
+
+function renderHome() {
+  const now = new Date();
+  document.getElementById('home-date').textContent =
+    now.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  const list = document.getElementById('jobs-list');
+  if (!jobs.length) {
+    list.innerHTML = `<div class="empty"><div class="empty-title">No jobs yet</div><div class="empty-sub">Tap New Job Walk above to get started</div></div>`;
+    return;
+  }
+  list.innerHTML = jobs.slice().reverse().map(j => {
+    const total = (j.rooms||[]).reduce((s,r) => s + (r.fixtures||[]).reduce((a,f) => a+(f.qty||0),0), 0);
+    const rooms  = (j.rooms||[]).length;
+    const floors = (j.floors||[]).length;
+    return `<div class="job-row" onclick="openJob('${j.id}')">
+      <div class="job-row-left">
+        <div class="job-title">${j.name||'Untitled Job'}</div>
+        <div class="job-meta">${j.address||'No address'} · ${fmtDate(j.created)}</div>
+        <div class="tag-row">
+          <span class="info-tag">${rooms} room${rooms!==1?'s':''}</span>
+          <span class="info-tag">${total} light${total!==1?'s':''}</span>
+          ${floors ? `<span class="info-tag">${floors} floor${floors!==1?'s':''}</span>` : ''}
+        </div>
+      </div>
+      <button class="job-del" onclick="deleteJob(event,'${j.id}')" aria-label="Delete"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+    </div>`;
+  }).join('');
+}
+
+function newJob() {
+  const j = { id:genId(), name:'', address:'', notes:'', created:Date.now(),
+               defaults: BLANK_SPEC(), floors:[], rooms:[] };
+  jobs.push(j);
+  saveJobs();
+  currentJobId = j.id;
+  goJob();
+}
+
+function openJob(id) { currentJobId = id; goJob(); }
+
+function deleteJob(e, id) {
+  e.stopPropagation();
+  if (!confirm('Delete this job walk?')) return;
+  jobs = jobs.filter(j => j.id !== id);
+  saveJobs();
+  renderHome();
+}
+
+function fmtDate(ts) {
+  if (!ts) return '';
+  return new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+}
+
+// ═══════════════════════════════════════════════
+//  JOB INFO
+// ═══════════════════════════════════════════════
+
+function renderJobForm() {
+  const j = job(); if (!j) return;
+  document.getElementById('job-name').value  = j.name    || '';
+  document.getElementById('job-addr').value  = j.address || '';
+  document.getElementById('job-notes').value = j.notes   || '';
+  document.getElementById('job-hdr-title').textContent = j.name || 'New Job Walk';
+}
+
+function updateJobField(field, val) {
+  const j = job(); if (!j) return;
+  j[field] = val;
+  saveJobs();
+  if (field === 'name') document.getElementById('job-hdr-title').textContent = val || 'New Job Walk';
+}
+
+// ═══════════════════════════════════════════════
+//  HOUSE DEFAULTS
+// ═══════════════════════════════════════════════
+
+function renderDefaultsForm() {
+  const j = job(); if (!j) return;
+  const d = j.defaults || BLANK_SPEC();
+  renderAllChips('def', d.construction || 'new', d);
+  setDefConst(d.construction || 'new', true);
+}
+
+function setDefConst(val, silent) {
+  const j = job(); if (!j) return;
+  if (!j.defaults) j.defaults = BLANK_SPEC();
+  j.defaults.construction = val;
+  if (!silent) saveJobs();
+  const nc = document.getElementById('def-const-nc');
+  const rt = document.getElementById('def-const-retro');
+  if (val === 'new') {
+    nc.classList.add('on','nc'); nc.classList.remove('retro');
+    rt.classList.remove('on','nc','retro');
+  } else {
+    rt.classList.add('on','retro'); rt.classList.remove('nc');
+    nc.classList.remove('on','nc','retro');
+  }
+  renderAllChips('def', val, j.defaults);
+}
+
+function defChip(el, key) {
+  const j = job(); if (!j) return;
+  if (!j.defaults) j.defaults = BLANK_SPEC();
+  const wasOn = el.classList.contains('on');
+  j.defaults[key] = wasOn ? '' : el.dataset.val;
+  saveJobs();
+  renderChips('def', key, j.defaults.construction || 'new', j.defaults[key]);
+}
+
+// ═══════════════════════════════════════════════
+//  FLOORS
+// ═══════════════════════════════════════════════
+
+function getFloors() { return job()?.floors || []; }
+
+function getFloorName(id) {
+  if (!id) return '';
+  return getFloors().find(f => f.id === id)?.name || '';
+}
+
+function moveFloorUp(fid) {
+  const j = job(); if (!j) return;
+  const idx = j.floors.findIndex(f => f.id === fid);
+  if (idx <= 0) return;
+  [j.floors[idx-1], j.floors[idx]] = [j.floors[idx], j.floors[idx-1]];
+  saveJobs();
+  renderRooms();
+}
+
+function moveFloorDown(fid) {
+  const j = job(); if (!j) return;
+  const idx = j.floors.findIndex(f => f.id === fid);
+  if (idx < 0 || idx >= j.floors.length - 1) return;
+  [j.floors[idx], j.floors[idx+1]] = [j.floors[idx+1], j.floors[idx]];
+  saveJobs();
+  renderRooms();
+}
+
+// ═══════════════════════════════════════════════
+//  ROOMS PAGE
+// ═══════════════════════════════════════════════
+
+const COMMON_ROOMS = [
+  'Entry','Foyer','Living Room','Kitchen','Dining Room','Family Room','Great Room',
+  'Master Bedroom','Master Bathroom','Master Closet',
+  'Bedroom 2','Bedroom 3','Bedroom 4','Guest Bedroom',
+  'Bathroom','Powder Room','Hallway',
+  'Office / Study','Library','Theater / Media Room',
+  'Game Room','Wine Cellar','Gym / Fitness',
+  'Laundry Room','Mudroom','Garage',
+  'Outdoor / Patio','Pool House','Cabana'
+];
+
+function renderRooms() {
+  const j = job(); if (!j) return;
+
+  // House defaults banner
+  const d = j.defaults || {};
+  const dTags = [
+    d.construction === 'retro' ? '🔧 Retrofit' : '🏗 New Construction',
+    d.size, d.shape, d.trim, d.cct, d.lm, d.finish]
+    .filter(Boolean);
+  document.getElementById('house-defaults-banner').innerHTML = `
+    <div class="defaults-banner" onclick="goDefaults()">
+      <div class="defaults-banner-hd">House Defaults</div>
+      <div class="defaults-chips">
+        ${dTags.length ? dTags.map(t=>`<span class="default-tag">${t}</span>`).join('') : '<span style="font-size:12px;color:var(--purple);opacity:.6">Not set — tap to configure</span>'}
+      </div>
+      <div class="defaults-edit-hint">Tap to edit ›</div>
+    </div>`;
+
+  const list = document.getElementById('rooms-list');
+  if (!j.rooms.length) {
+    list.innerHTML = `<div class="empty"><div class="empty-title">No rooms yet</div><div class="empty-sub">Add the first room below</div></div>`;
+    return;
+  }
+
+  const floors  = j.floors || [];
+  const hasFloors = floors.length > 0;
+
+  if (!hasFloors) {
+    // Flat list
+    list.innerHTML = j.rooms.map((r,i) => renderRoomRow(r, i, j.rooms.length, null)).join('');
+  } else {
+    // Grouped by floor
+    let html = '';
+    // For each floor (in order)
+    floors.forEach((fl, fi) => {
+      const flRooms = j.rooms.filter(r => r.floorId === fl.id);
+      const totalLights = flRooms.reduce((s,r) => s + (r.fixtures||[]).reduce((a,f) => a+(f.qty||0),0), 0);
+      html += `<div class="floor-section">
+        <div class="floor-hdr">
+          <div class="floor-hdr-left">
+            <div class="floor-hdr-label">${fl.name}</div>
+            <div class="floor-hdr-count">${flRooms.length} room${flRooms.length!==1?'s':''} · ${totalLights} light${totalLights!==1?'s':''}</div>
+          </div>
+          <div class="floor-reorder">
+            <button class="floor-reorder-btn" onclick="moveFloorUp('${fl.id}')" ${fi===0?'disabled':''} title="Move floor up">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg>
+            </button>
+            <button class="floor-reorder-btn" onclick="moveFloorDown('${fl.id}')" ${fi===floors.length-1?'disabled':''} title="Move floor down">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+          </div>
+        </div>`;
+      if (!flRooms.length) {
+        html += `<div style="padding:10px 4px;font-size:12.5px;color:var(--ink-5);font-style:italic">No rooms on this floor yet</div>`;
+      } else {
+        html += flRooms.map((r,i) => renderRoomRow(r, i, flRooms.length, fl.id)).join('');
+      }
+      html += `</div>`;
+    });
+    // Unassigned rooms
+    const unassigned = j.rooms.filter(r => !r.floorId || !floors.find(f => f.id === r.floorId));
+    if (unassigned.length) {
+      html += `<div class="floor-section">
+        <div class="floor-hdr">
+          <div class="floor-hdr-left">
+            <div class="floor-hdr-label" style="color:var(--ink-4)">Unassigned</div>
+            <div class="floor-hdr-count">${unassigned.length} room${unassigned.length!==1?'s':''}</div>
+          </div>
+        </div>`;
+      html += unassigned.map((r,i) => renderRoomRow(r, i, unassigned.length, null)).join('');
+      html += `</div>`;
+    }
+    list.innerHTML = html;
+  }
+}
+
+function renderRoomRow(r, idx, groupLen, floorId) {
+  const total  = (r.fixtures||[]).reduce((s,f) => s+(f.qty||0), 0);
+  const groups = (r.fixtures||[]).length;
+  const hasOvr = !!r.override;
+  const hasEC  = !!(r.existingConditions?.length);
+  const flName = getFloorName(r.floorId);
+
+  // Global index for reorder arrows (within the full rooms array, filtered by same floorId)
+  const j = job();
+  const sameGroupRooms = floorId !== null
+    ? j.rooms.filter(x => x.floorId === floorId)
+    : j.rooms.filter(x => !x.floorId || !j.floors?.find(f => f.id === x.floorId));
+  const globalIdx = sameGroupRooms.findIndex(x => x.id === r.id);
+  const isFirst = globalIdx === 0;
+  const isLast  = globalIdx === sameGroupRooms.length - 1;
+
+  return `<div class="room-row" id="rrow-${r.id}"
+      draggable="true"
+      ondragstart="onRoomDragStart(event,'${r.id}')"
+      ondragover="onRoomDragOver(event,'${r.id}')"
+      ondrop="onRoomDrop(event,'${r.id}')"
+      ondragend="onRoomDragEnd(event)">
+    <div class="drag-handle" title="Drag to reorder">
+      <svg width="14" height="14" fill="none" stroke="none" viewBox="0 0 24 24">
+        <circle cx="5" cy="8" r="1.5" fill="currentColor"/><circle cx="5" cy="16" r="1.5" fill="currentColor"/><circle cx="12" cy="8" r="1.5" fill="currentColor"/><circle cx="12" cy="16" r="1.5" fill="currentColor"/>
+      </svg>
+    </div>
+    <div class="room-main" onclick="goRoom('${r.id}')">
+      <div style="flex:1;min-width:0">
+        <div class="room-name">${r.name}</div>
+        <div class="room-sub">${total} light${total!==1?'s':''} · ${groups} group${groups!==1?'s':''}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:2px;">
+          ${hasOvr ? '<span class="override-badge">Override</span>' : ''}
+          ${hasEC  ? '<span class="ec-badge">Existing ✓</span>' : ''}
+        </div>
+      </div>
+    </div>
+    <div class="room-row-right">
+      <div class="reorder-btns">
+        <button class="reorder-btn" onclick="moveRoomUp('${r.id}','${floorId}')" ${isFirst?'disabled':''} title="Move up">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg>
+        </button>
+        <button class="reorder-btn" onclick="moveRoomDown('${r.id}','${floorId}')" ${isLast?'disabled':''} title="Move down">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+      </div>
+      <button class="room-del" onclick="deleteRoom(event,'${r.id}')" aria-label="Delete"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+      <span class="room-chev">›</span>
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════
+//  ROOM REORDER (arrows + drag)
+// ═══════════════════════════════════════════════
+
+function getSameGroupRooms(rid, floorId) {
+  const j = job();
+  if (floorId && floorId !== 'null') {
+    return j.rooms.filter(r => r.floorId === floorId);
+  }
+  return j.rooms.filter(r => !r.floorId || !j.floors?.find(f => f.id === r.floorId));
+}
+
+function moveRoomUp(rid, floorId) {
+  const j = job();
+  const globalIdx = j.rooms.findIndex(r => r.id === rid);
+  const groupRooms = getSameGroupRooms(rid, floorId);
+  const groupIdx   = groupRooms.findIndex(r => r.id === rid);
+  if (groupIdx <= 0) return;
+  const prevId = groupRooms[groupIdx - 1].id;
+  const prevGlobal = j.rooms.findIndex(r => r.id === prevId);
+  [j.rooms[globalIdx], j.rooms[prevGlobal]] = [j.rooms[prevGlobal], j.rooms[globalIdx]];
+  saveJobs();
+  renderRooms();
+}
+
+function moveRoomDown(rid, floorId) {
+  const j = job();
+  const globalIdx = j.rooms.findIndex(r => r.id === rid);
+  const groupRooms = getSameGroupRooms(rid, floorId);
+  const groupIdx   = groupRooms.findIndex(r => r.id === rid);
+  if (groupIdx >= groupRooms.length - 1) return;
+  const nextId = groupRooms[groupIdx + 1].id;
+  const nextGlobal = j.rooms.findIndex(r => r.id === nextId);
+  [j.rooms[globalIdx], j.rooms[nextGlobal]] = [j.rooms[nextGlobal], j.rooms[globalIdx]];
+  saveJobs();
+  renderRooms();
+}
+
+function onRoomDragStart(e, id) {
+  dragSrcId = id;
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', id);
+  setTimeout(() => { const el = document.getElementById('rrow-'+id); if(el) el.classList.add('dragging'); }, 0);
+}
+
+function onRoomDragOver(e, id) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  if (dragOverId !== id) {
+    if (dragOverId) { const prev = document.getElementById('rrow-'+dragOverId); if(prev) prev.classList.remove('drag-over'); }
+    dragOverId = id;
+    const el = document.getElementById('rrow-'+id); if(el) el.classList.add('drag-over');
+  }
+}
+
+function onRoomDrop(e, id) {
+  e.preventDefault();
+  if (dragSrcId && id && dragSrcId !== id) {
+    const j = job();
+    const si = j.rooms.findIndex(r => r.id === dragSrcId);
+    const di = j.rooms.findIndex(r => r.id === id);
+    if (si !== -1 && di !== -1) {
+      const [moved] = j.rooms.splice(si, 1);
+      j.rooms.splice(di, 0, moved);
+      saveJobs();
+    }
+  }
+  onRoomDragEnd(e);
+}
+
+function onRoomDragEnd(e) {
+  if (dragSrcId) { const el = document.getElementById('rrow-'+dragSrcId); if(el) el.classList.remove('dragging'); }
+  if (dragOverId) { const el = document.getElementById('rrow-'+dragOverId); if(el) el.classList.remove('drag-over'); }
+  dragSrcId = null; dragOverId = null;
+  renderRooms();
+}
+
+// ═══════════════════════════════════════════════
+//  ROOM MODAL (add/edit room)
+// ═══════════════════════════════════════════════
+
+function addRoom() {
+  document.getElementById('room-modal-title').textContent = 'Add Room';
+  document.getElementById('room-modal-save-btn').textContent = 'Add Room';
+  document.getElementById('room-name-input').value = '';
+  document.getElementById('room-new-floor-input').value = '';
+  document.getElementById('room-new-floor-input').style.display = 'none';
+  populateFloorDropdown('');
+  const existing = (job()?.rooms||[]).map(r => r.name);
+  const avail = COMMON_ROOMS.filter(r => !existing.includes(r));
+  document.getElementById('room-quick-chips').innerHTML = avail.map(r =>
+    `<button class="chip" onclick="quickRoom('${r}')">${r}</button>`
+  ).join('');
+  document.getElementById('room-modal').style.display = 'flex';
+  setTimeout(() => document.getElementById('room-name-input').focus(), 200);
+}
+
+function populateFloorDropdown(selectedFloorId) {
+  const j = job();
+  const floors = j?.floors || [];
+  const sel = document.getElementById('room-floor-select');
+  sel.innerHTML = `<option value="">No Floor</option>`
+    + floors.map(f => `<option value="${f.id}" ${f.id===selectedFloorId?'selected':''}>${f.name}</option>`).join('')
+    + `<option value="__new__">+ Add New Floor…</option>`;
+}
+
+function onFloorSelectChange(el) {
+  const newInput = document.getElementById('room-new-floor-input');
+  if (el.value === '__new__') {
+    newInput.style.display = 'block';
+    setTimeout(() => newInput.focus(), 100);
+  } else {
+    newInput.style.display = 'none';
+  }
+}
+
+function quickRoom(name) { document.getElementById('room-name-input').value = name; }
+
+function saveRoomFromModal() {
+  const name = document.getElementById('room-name-input').value.trim();
+  if (!name) { alert('Enter a room name.'); return; }
+  const j = job();
+  let floorId = document.getElementById('room-floor-select').value;
+  // Handle new floor creation
+  if (floorId === '__new__') {
+    const newName = document.getElementById('room-new-floor-input').value.trim();
+    if (!newName) { alert('Enter a name for the new floor.'); return; }
+    const newFloor = { id: genId(), name: newName };
+    if (!j.floors) j.floors = [];
+    j.floors.push(newFloor);
+    floorId = newFloor.id;
+  }
+  j.rooms.push({ id:genId(), name, floorId: floorId || null, fixtures:[], override:null, existingConditions:[] });
+  saveJobs();
+  closeRoomModal();
+  renderRooms();
+}
+
+function closeRoomModal() { document.getElementById('room-modal').style.display = 'none'; }
+function closeRoomModalOutside(e) { if (e.target.id === 'room-modal') closeRoomModal(); }
+
+function deleteRoom(e, id) {
+  e.stopPropagation();
+  if (!confirm('Delete this room and all its fixtures?')) return;
+  job().rooms = job().rooms.filter(r => r.id !== id);
+  saveJobs();
+  renderRooms();
+}
+
+// ═══════════════════════════════════════════════
+//  ROOM DETAIL
+// ═══════════════════════════════════════════════
+
+function renderRoomDetail() {
+  const r = room(); if (!r) return;
+  const total  = (r.fixtures||[]).reduce((s,f) => s+(f.qty||0), 0);
+  const flName = getFloorName(r.floorId);
+  document.getElementById('room-detail-name').textContent = r.name;
+  document.getElementById('room-detail-meta').textContent = (job().name || 'Job Walk') + (flName ? ' · ' + flName : '');
+  document.getElementById('room-stat-fixtures').textContent = r.fixtures.length;
+  document.getElementById('room-stat-total').textContent = total;
+
+  // Override block
+  const eff = effectiveDefaults();
+  const hasOvr = !!r.override;
+  const keys = ['construction','size','shape','trim','cct','lm','finish'];
+  let ovrHtml = `<div class="room-override-card" style="margin-bottom:12px;">
+    <div class="room-override-hd">
+      <span class="room-override-label">${hasOvr ? 'Room Override Active' : 'Using House Defaults'}</span>
+      <button class="room-override-edit" onclick="openRoomOverrideModal()">${hasOvr ? 'Edit' : 'Override'}</button>
+    </div>`;
+  if (hasOvr) {
+    ovrHtml += `<div class="room-override-tags">`;
+    const jd = job().defaults || {};
+    keys.forEach(k => {
+      const rv = r.override[k];
+      const dv = k==='construction'? (jd.construction||'new') : (jd[k]||'');
+      const label = k==='construction'? (rv==='retro'?'Retrofit':'New Construction') : rv;
+      if (rv && rv !== dv) ovrHtml += `<span class="room-default-tag">${label}</span>`;
+      else if (rv) ovrHtml += `<span class="room-inherit-tag">${label}</span>`;
+    });
+    ovrHtml += `</div>`;
+  } else {
+    const dTags = [eff.construction==='retro'?'Retrofit':'New Construction',
+      eff.size, eff.shape, eff.trim, eff.cct, eff.lm, eff.finish].filter(Boolean);
+    ovrHtml += `<div class="room-override-tags">${dTags.map(t=>`<span class="room-inherit-tag">${t}</span>`).join('')}</div>`;
+  }
+  ovrHtml += `</div>`;
+  document.getElementById('room-override-block').innerHTML = ovrHtml;
+
+  // Existing conditions block
+  renderExistingConditions();
+
+  // Fixtures
+  const list = document.getElementById('fixtures-list');
+  if (!r.fixtures.length) {
+    list.innerHTML = `<div class="empty" style="padding:30px 0"><div class="empty-title">No fixtures yet</div><div class="empty-sub">Tap Add Fixture Group below</div></div>`;
+    return;
+  }
+  list.innerHTML = r.fixtures.map(f => renderFixtureItem(f)).join('');
+}
+
+function renderFixtureItem(f) {
+  const constTag = f.construction==='retro'
+    ? `<span class="ftag b">Retrofit</span>`
+    : `<span class="ftag g">New Construction</span>`;
+  const tags = [
+    f.size   ? `<span class="ftag c">${f.size}</span>`   : '',
+    f.shape  ? `<span class="ftag">${f.shape}</span>`    : '',
+    f.trim   ? `<span class="ftag">${f.trim}</span>`     : '',
+    f.cct    ? `<span class="ftag">${f.cct}</span>`      : '',
+    f.lm     ? `<span class="ftag">${f.lm}</span>`       : '',
+    f.finish ? `<span class="ftag">${f.finish}</span>`   : '',
+    constTag,
+  ].filter(Boolean).join('');
+  const specSummary = [f.size, f.shape, f.trim].filter(Boolean).join(' · ') || 'Fixture Group';
+  const title  = f.label || specSummary;
+  const subSpec = f.label ? `<div class="fixture-sub">${specSummary}</div>` : '';
+  const fiCls = f.construction==="retro" ? "fixture-item fi-retro" : "fixture-item fi-nc";
+  return `<div class="${fiCls}">
+    <div class="fixture-header">
+      <div><div class="fixture-title">${title}</div>${subSpec}</div>
+      <div class="fixture-qty">${f.qty}×</div>
+    </div>
+    <div class="fixture-tags">${tags}</div>
+    ${f.notes ? `<div class="fixture-note">${f.notes}</div>` : ''}
+    <div class="fixture-actions">
+      <button class="fixture-edit-btn" onclick="openFixtureModal('${f.id}')">Edit</button>
+      <button class="fixture-dup-btn" onclick="duplicateFixture('${f.id}')">Duplicate</button>
+      <button class="fixture-del-btn" onclick="deleteFixture('${f.id}')">Remove</button>
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════
+//  EXISTING CONDITIONS
+// ═══════════════════════════════════════════════
+
+const EC_SIZE_OPTS = ['2"','4"','6"','Other'];
+const EC_TYPE_OPTS = ['Downlight','Adjustable','Wall Wash','Spot / Gimbal','Track','Other'];
+const EC_LAMP_OPTS = ['LED','Halogen','Fluorescent','MR16','Unknown'];
+
+function renderExistingConditions() {
+  const r = room(); if (!r) return;
+  const ecs = r.existingConditions || [];
+  let html = `<div class="ec-section">
+    <div class="ec-section-hd">
+      <span class="ec-section-label">Existing Conditions</span>
+      <button class="ec-add-btn" onclick="openECModal()">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        Add
+      </button>
+    </div>`;
+  if (!ecs.length) {
+    html += `<div class="ec-empty">Nothing recorded yet — tap Add to log what's in the ceiling</div>`;
+  } else {
+    html += `<div class="ec-list">`;
+    ecs.forEach(ec => {
+      const title = ec.label || [ec.size, ec.type].filter(Boolean).join(' ') || 'Existing Fixture';
+      html += `<div class="ec-item">
+        <div class="ec-item-hd">
+          <div class="ec-item-title">${title}</div>
+          <div class="ec-item-qty">${ec.qty}×</div>
+        </div>
+        <div class="ec-tags">
+          ${ec.size  ? `<span class="ec-tag">${ec.size}</span>` : ''}
+          ${ec.type  ? `<span class="ec-tag">${ec.type}</span>` : ''}
+          ${ec.lamp  ? `<span class="ec-tag lamp">${ec.lamp}</span>` : ''}
+        </div>
+        ${ec.notes ? `<div class="ec-note">${ec.notes}</div>` : ''}
+        <div class="ec-actions">
+          <button class="ec-edit-btn" onclick="openECModal('${ec.id}')">Edit</button>
+          <button class="ec-del-btn" onclick="deleteEC('${ec.id}')">Remove</button>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+  html += `</div>`;
+  document.getElementById('existing-cond-block').innerHTML = html;
+}
+
+function openECModal(ecId) {
+  editingECId = ecId || null;
+  const r = room();
+  document.getElementById('ec-modal-title').textContent = ecId ? 'Edit Existing Conditions' : 'Add Existing Conditions';
+  if (ecId) {
+    const existing = (r.existingConditions||[]).find(e => e.id === ecId);
+    ecState = { ...existing };
+  } else {
+    ecState = { qty:1, size:'', type:'', lamp:'', label:'', notes:'' };
+  }
+  document.getElementById('ec-label').value  = ecState.label || '';
+  document.getElementById('ec-qty').value    = ecState.qty || 1;
+  document.getElementById('ec-notes').value  = ecState.notes || '';
+  renderECChips();
+  document.getElementById('ec-modal').style.display = 'flex';
+}
+
+function renderECChips() {
+  const sizeEl = document.getElementById('ec-chips-size');
+  const typeEl = document.getElementById('ec-chips-type');
+  const lampEl = document.getElementById('ec-chips-lamp');
+  sizeEl.innerHTML = EC_SIZE_OPTS.map(v =>
+    `<button class="chip ${ecState.size===v?'on chip-amber':''}" onclick="ecChip(this,'size','${v}')">${v}</button>`
+  ).join('');
+  typeEl.innerHTML = EC_TYPE_OPTS.map(v =>
+    `<button class="chip ${ecState.type===v?'on chip-amber':''}" onclick="ecChip(this,'type','${v}')">${v}</button>`
+  ).join('');
+  lampEl.innerHTML = EC_LAMP_OPTS.map(v =>
+    `<button class="chip ${ecState.lamp===v?'on':''}" onclick="ecChip(this,'lamp','${v}')">${v}</button>`
+  ).join('');
+}
+
+function ecChip(el, field, val) {
+  const wasOn = el.classList.contains('on');
+  ecState[field] = wasOn ? '' : val;
+  renderECChips();
+}
+
+function adjECQty(d) {
+  const inp = document.getElementById('ec-qty');
+  const v = Math.max(1, Math.min(99, (parseInt(inp.value)||1) + d));
+  inp.value = v;
+  ecState.qty = v;
+}
+
+function saveEC() {
+  ecState.label = document.getElementById('ec-label').value.trim();
+  ecState.qty   = parseInt(document.getElementById('ec-qty').value) || 1;
+  ecState.notes = document.getElementById('ec-notes').value.trim();
+  const r = room();
+  if (!r.existingConditions) r.existingConditions = [];
+  if (editingECId) {
+    const idx = r.existingConditions.findIndex(e => e.id === editingECId);
+    if (idx !== -1) r.existingConditions[idx] = { ...ecState, id: editingECId };
+  } else {
+    r.existingConditions.push({ ...ecState, id: genId() });
+  }
+  saveJobs();
+  closeECModal();
+  renderExistingConditions();
+}
+
+function deleteEC(id) {
+  if (!confirm('Remove this entry?')) return;
+  const r = room();
+  r.existingConditions = (r.existingConditions||[]).filter(e => e.id !== id);
+  saveJobs();
+  renderExistingConditions();
+}
+
+function closeECModal() { document.getElementById('ec-modal').style.display = 'none'; }
+function closeECModalOutside(e) { if (e.target.id === 'ec-modal') closeECModal(); }
+
+// ═══════════════════════════════════════════════
+//  ROOM OVERRIDE MODAL
+// ═══════════════════════════════════════════════
+
+function openRoomOverrideModal() {
+  const r = room(); if (!r) return;
+  document.getElementById('room-override-modal-title').textContent = r.name + ' — Defaults';
+  tempRO = { ...(r.override || effectiveDefaults()) };
+  renderAllChips('ro', tempRO.construction || 'new', tempRO);
+  setROConst(tempRO.construction || 'new', true);
+  document.getElementById('clear-override-btn').style.display = r.override ? 'block' : 'none';
+  document.getElementById('room-override-modal').style.display = 'flex';
+}
+
+function closeRoomOverrideModal() { document.getElementById('room-override-modal').style.display = 'none'; }
+function closeRoomOverrideOutside(e) { if (e.target.id === 'room-override-modal') closeRoomOverrideModal(); }
+
+function setROConst(val, silent) {
+  tempRO.construction = val;
+  const nc = document.getElementById('ro-const-nc');
+  const rt = document.getElementById('ro-const-retro');
+  if (val === 'new') {
+    nc.classList.add('on','nc'); nc.classList.remove('retro');
+    rt.classList.remove('on','nc','retro');
+  } else {
+    rt.classList.add('on','retro'); rt.classList.remove('nc');
+    nc.classList.remove('on','nc','retro');
+  }
+  renderAllChips('ro', val, tempRO);
+}
+
+function roChip(el, key) {
+  const wasOn = el.classList.contains('on');
+  tempRO[key] = wasOn ? '' : el.dataset.val;
+  renderChips('ro', key, tempRO.construction || 'new', tempRO[key]);
+}
+
+function saveRoomOverride() {
+  room().override = { ...tempRO };
+  saveJobs();
+  closeRoomOverrideModal();
+  renderRoomDetail();
+}
+
+function clearRoomOverride() {
+  if (!confirm('Remove room override? This room will use house defaults again.')) return;
+  room().override = null;
+  saveJobs();
+  closeRoomOverrideModal();
+  renderRoomDetail();
+}
+
+// ═══════════════════════════════════════════════
+//  FIXTURE MODAL
+// ═══════════════════════════════════════════════
+
+function openFixtureModal(editId) {
+  editingFixtureId = editId || null;
+  const r = room();
+  const hasOvr = !!r?.override;
+  if (editId) {
+    const existing = r.fixtures.find(f => f.id === editId);
+    fxState = { ...existing };
+    document.getElementById('modal-title').textContent = 'Edit Fixture Group';
+    document.getElementById('modal-source-banner').style.display = 'none';
+  } else {
+    const d = effectiveDefaults();
+    fxState = { qty:1, ...d, notes:'' };
+    document.getElementById('modal-title').textContent = 'Add Fixture Group';
+    const banner = document.getElementById('modal-source-banner');
+    banner.style.display = 'block';
+    banner.className = `modal-source-banner ${hasOvr ? 'room' : 'house'}`;
+    banner.textContent = hasOvr ? 'Pre-filled from room override. Change anything below.' : 'Pre-filled from house defaults. Change anything below.';
+  }
+  document.getElementById('fx-label').value = fxState.label || '';
+  document.getElementById('fx-qty').value = fxState.qty || 1;
+  renderAllChips('fx', fxState.construction || 'new', fxState);
+  setFxConst(fxState.construction || 'new', true);
+  document.getElementById('fx-notes').value = fxState.notes || '';
+  document.getElementById('fixture-modal').style.display = 'flex';
+}
+
+function closeFixtureModal() { document.getElementById('fixture-modal').style.display = 'none'; }
+function closeModalOutside(e) { if (e.target.id === 'fixture-modal') closeFixtureModal(); }
+
+function adjQty(d) {
+  const inp = document.getElementById('fx-qty');
+  const v = Math.max(1, Math.min(99, (parseInt(inp.value)||1) + d));
+  inp.value = v; fxState.qty = v;
+}
+
+function setFxConst(val, silent) {
+  fxState.construction = val;
+  const nc = document.getElementById('fx-const-nc');
+  const rt = document.getElementById('fx-const-retro');
+  if (val === 'new') {
+    nc.classList.add('on','nc'); nc.classList.remove('retro');
+    rt.classList.remove('on','nc','retro');
+  } else {
+    rt.classList.add('on','retro'); rt.classList.remove('nc');
+    nc.classList.remove('on','nc','retro');
+  }
+  renderAllChips('fx', val, fxState);
+}
+
+function fxChip(el, key) {
+  const wasOn = el.classList.contains('on');
+  fxState[key] = wasOn ? '' : el.dataset.val;
+  renderChips('fx', key, fxState.construction || 'new', fxState[key]);
+}
+
+function saveFixture() {
+  fxState.label = document.getElementById('fx-label').value.trim();
+  fxState.qty   = parseInt(document.getElementById('fx-qty').value) || 1;
+  fxState.notes = document.getElementById('fx-notes').value.trim();
+  const r = room();
+  if (editingFixtureId) {
+    const idx = r.fixtures.findIndex(f => f.id === editingFixtureId);
+    if (idx !== -1) r.fixtures[idx] = { ...fxState, id: editingFixtureId };
+  } else {
+    r.fixtures.push({ ...fxState, id: genId() });
+  }
+  saveJobs();
+  closeFixtureModal();
+  renderRoomDetail();
+}
+
+function saveRoom_confirm() {
+  saveJobs();
+  const btn = document.getElementById('save-room-btn');
+  const lbl = document.getElementById('save-room-label');
+  if (!btn) return;
+  btn.classList.add('saved'); lbl.textContent = 'Saved ✓';
+  clearTimeout(window._srT);
+  window._srT = setTimeout(() => {
+    goRooms();
+    btn.classList.remove('saved'); lbl.textContent = 'Save Room';
+  }, 900);
+}
+
+function deleteFixture(id) {
+  if (!confirm('Remove this fixture group?')) return;
+  room().fixtures = room().fixtures.filter(f => f.id !== id);
+  saveJobs(); renderRoomDetail();
+}
+
+function duplicateFixture(id) {
+  const r = room();
+  const src = r.fixtures.find(f => f.id === id); if (!src) return;
+  const copy = { ...src, id: genId(), label: src.label ? src.label + ' (copy)' : '' };
+  const idx = r.fixtures.findIndex(f => f.id === id);
+  r.fixtures.splice(idx + 1, 0, copy);
+  saveJobs(); renderRoomDetail();
+}
+
+// ═══════════════════════════════════════════════
+//  SUMMARY
+// ═══════════════════════════════════════════════
+
+function toggleSummaryFloor() {
+  summaryGroupByFloor = !summaryGroupByFloor;
+  renderSummary();
+}
+
+function toggleSummaryEC() {
+  summaryShowExisting = !summaryShowExisting;
+  renderSummary();
+}
+
+function renderSummary() {
+  const j = job(); if (!j) return;
+  document.getElementById('sum-project-name').textContent = j.name || 'Untitled Project';
+  document.getElementById('sum-address').textContent = j.address || '';
+
+  const allFx = j.rooms.flatMap(r => (r.fixtures||[]).map(f => ({...f, _room:r.name, _floorId:r.floorId})));
+  const grand  = allFx.reduce((s,f) => s+(f.qty||0), 0);
+  document.getElementById('sum-total').textContent = grand;
+
+  const hasFloors = (j.floors||[]).length > 0;
+  const hasEC = j.rooms.some(r => (r.existingConditions||[]).length > 0);
+
+  // Toggles
+  let toggleHtml = '';
+  if (hasFloors) {
+    toggleHtml += `<div class="toggle-row" onclick="toggleSummaryFloor()">
+      <span class="toggle-row-label">Group by Floor</span>
+      <button class="toggle-pill ${summaryGroupByFloor?'on':'off'}" onclick="toggleSummaryFloor();event.stopPropagation()">
+        <span class="toggle-knob"></span>
+      </button>
+    </div>`;
+  }
+  if (hasEC) {
+    toggleHtml += `<div class="toggle-row" onclick="toggleSummaryEC()">
+      <span class="toggle-row-label">Show Existing Conditions in Report</span>
+      <button class="toggle-pill ${summaryShowExisting?'on':'off'}" onclick="toggleSummaryEC();event.stopPropagation()">
+        <span class="toggle-knob"></span>
+      </button>
+    </div>`;
+  }
+  document.getElementById('summary-toggles').innerHTML = toggleHtml;
+
+  let html = '';
+
+  // ─── BY ROOM (with optional floor grouping) ─────────────────
+  html += `<div class="sec-lbl">By Room</div>`;
+  if (!j.rooms.length) {
+    html += `<div class="card"><div class="card-body" style="text-align:center;color:var(--ink-4);">No rooms yet</div></div>`;
+  } else if (summaryGroupByFloor && hasFloors) {
+    // Floor → Room
+    const floors = j.floors || [];
+    floors.forEach(fl => {
+      const flRooms = j.rooms.filter(r => r.floorId === fl.id);
+      if (!flRooms.length) return;
+      html += `<div style="font-size:11px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.07em;padding:6px 2px 4px;opacity:.85">${fl.name}</div>`;
+      flRooms.forEach(r => { html += renderSummaryRoom(r); });
+    });
+    const unassigned = j.rooms.filter(r => !r.floorId || !floors.find(f => f.id === r.floorId));
+    if (unassigned.length) {
+      html += `<div style="font-size:11px;font-weight:700;color:var(--ink-4);text-transform:uppercase;letter-spacing:.07em;padding:6px 2px 4px;">Unassigned</div>`;
+      unassigned.forEach(r => { html += renderSummaryRoom(r); });
+    }
+  } else {
+    j.rooms.forEach(r => { html += renderSummaryRoom(r); });
+  }
+
+  // ─── TOTALS BREAKDOWN ───────────────────────────────────────
+  // By size
+  const bySize = {}; allFx.forEach(f=>{ bySize[f.size||'Unspecified']=(bySize[f.size||'Unspecified']||0)+(f.qty||0); });
+  if (Object.keys(bySize).length && grand) {
+    html += `<div class="sec-lbl" style="margin-top:8px">Totals by Size</div><div class="card"><div class="card-body">`;
+    Object.entries(bySize).forEach(([k,v]) => { html += `<div class="summary-row"><div class="summary-key">${k}</div><div class="summary-val">${v}</div></div>`; });
+    html += `</div></div>`;
+  }
+  // By CCT
+  const byCCT = {}; allFx.forEach(f=>{ byCCT[f.cct||'TBD']=(byCCT[f.cct||'TBD']||0)+(f.qty||0); });
+  if (Object.keys(byCCT).length && grand) {
+    html += `<div class="sec-lbl" style="margin-top:8px">Totals by CCT</div><div class="card"><div class="card-body">`;
+    Object.entries(byCCT).forEach(([k,v]) => { html += `<div class="summary-row"><div class="summary-key">${k}</div><div class="summary-val">${v}</div></div>`; });
+    html += `</div></div>`;
+  }
+  // By Trim
+  const byTrim = {}; allFx.forEach(f=>{ byTrim[f.trim||'Unspecified']=(byTrim[f.trim||'Unspecified']||0)+(f.qty||0); });
+  if (Object.keys(byTrim).length && grand) {
+    html += `<div class="sec-lbl" style="margin-top:8px">Totals by Trim Type</div><div class="card"><div class="card-body">`;
+    Object.entries(byTrim).sort((a,b)=>b[1]-a[1]).forEach(([k,v]) => { html += `<div class="summary-row"><div class="summary-key">${k}</div><div class="summary-val">${v}</div></div>`; });
+    html += `</div></div>`;
+  }
+  // By Lumen
+  const byLm = {}; allFx.forEach(f=>{ byLm[f.lm||'TBD']=(byLm[f.lm||'TBD']||0)+(f.qty||0); });
+  if (Object.keys(byLm).length && grand) {
+    html += `<div class="sec-lbl" style="margin-top:8px">Totals by Lumen Output</div><div class="card"><div class="card-body">`;
+    const lmOrder = ['Very High (~1500+ lm)','High (~1000–1250 lm)','Medium (~750 lm)','Low (~175–500 lm)','TBD','Unspecified'];
+    Object.entries(byLm).sort((a,b)=>{ const ai=lmOrder.indexOf(a[0]),bi=lmOrder.indexOf(b[0]); return (ai===-1?99:ai)-(bi===-1?99:bi); })
+      .forEach(([k,v]) => { html += `<div class="summary-row"><div class="summary-key">${k}</div><div class="summary-val">${v}</div></div>`; });
+    html += `</div></div>`;
+  }
+  // By Finish
+  const byFinish = {}; allFx.forEach(f=>{ byFinish[f.finish||'TBD']=(byFinish[f.finish||'TBD']||0)+(f.qty||0); });
+  if (Object.keys(byFinish).length && grand) {
+    html += `<div class="sec-lbl" style="margin-top:8px">Totals by Finish</div><div class="card"><div class="card-body">`;
+    Object.entries(byFinish).sort((a,b)=>b[1]-a[1]).forEach(([k,v]) => { html += `<div class="summary-row"><div class="summary-key">${k}</div><div class="summary-val">${v}</div></div>`; });
+    html += `</div></div>`;
+  }
+  // NC vs Retro
+  const nc    = allFx.filter(f=>f.construction!=='retro').reduce((s,f)=>s+(f.qty||0),0);
+  const retro = allFx.filter(f=>f.construction==='retro').reduce((s,f)=>s+(f.qty||0),0);
+  if (grand) {
+    html += `<div class="sec-lbl" style="margin-top:8px">Construction Type</div><div class="card"><div class="card-body">
+      <div class="summary-row"><div class="summary-key">🏗 New Construction</div><div class="summary-val">${nc}</div></div>
+      <div class="summary-row"><div class="summary-key">🔧 Retrofit / Remodel</div><div class="summary-val">${retro}</div></div>
+    </div></div>`;
+  }
+
+  document.getElementById('summary-content').innerHTML = html;
+  renderExportButtons();
+}
+
+function renderSummaryRoom(r) {
+  const tot = (r.fixtures||[]).reduce((s,f)=>s+(f.qty||0),0);
+  const ecs = r.existingConditions || [];
+  let html = `<div class="card">
+    <div class="card-hd">${r.name} <span style="font-weight:400;color:var(--ink-5)">— ${tot} light${tot!==1?'s':''}</span></div>
+    <div class="card-body no-top">`;
+  if (!r.fixtures.length) {
+    html += `<div style="color:var(--ink-5);font-size:13px;padding:4px 0">No fixtures recorded</div>`;
+  } else {
+    r.fixtures.forEach(f => {
+      const specLabel = [f.size, f.shape, f.trim].filter(Boolean).join(' · ') || 'Unspecified';
+      const rowTitle  = f.label ? f.label : specLabel;
+      const rowSub    = f.label ? specLabel : '';
+      const sub       = [f.cct, f.lm, f.finish, f.construction==='retro'?'Retrofit':'New Construction'].filter(Boolean).join(' · ');
+      html += `<div class="summary-row">
+        <div class="summary-key">
+          <strong>${f.qty}× ${rowTitle}</strong>
+          ${rowSub ? `<div style="font-size:11.5px;color:var(--ink-4);margin-top:1px">${rowSub}</div>` : ''}
+          ${sub    ? `<div style="font-size:11.5px;color:var(--ink-5);margin-top:2px">${sub}</div>` : ''}
+          ${f.notes? `<div style="font-size:11.5px;color:var(--ink-5);font-style:italic;margin-top:2px">${f.notes}</div>` : ''}
+        </div>
+      </div>`;
+    });
+  }
+  // Existing conditions (if toggle on)
+  if (summaryShowExisting && ecs.length) {
+    html += `<div style="border-top:1px solid var(--line-2);margin-top:8px;padding-top:8px;">`;
+    html += `<div style="font-size:10.5px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Existing Conditions</div>`;
+    ecs.forEach(ec => {
+      const ecTitle = ec.label || [ec.size, ec.type].filter(Boolean).join(' ') || 'Existing Fixture';
+      const ecSub   = [ec.size, ec.type, ec.lamp].filter(Boolean).join(' · ');
+      html += `<div class="summary-row">
+        <div class="summary-key" style="color:var(--ink-4)">
+          ${ec.qty}× ${ecTitle}
+          ${ecSub ? `<div style="font-size:11px;color:var(--ink-5);margin-top:1px">${ecSub}</div>` : ''}
+          ${ec.notes ? `<div style="font-size:11px;color:var(--ink-5);font-style:italic;margin-top:1px">${ec.notes}</div>` : ''}
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+  html += `</div></div>`;
+  return html;
+}
+
+// ═══════════════════════════════════════════════
+//  EXPORT
+// ═══════════════════════════════════════════════
+
+function renderExportButtons() {
+  document.getElementById('export-btns').innerHTML = `
+    <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+      <button onclick="exportXL()" style="flex:1;min-width:120px;padding:13px 10px;background:#1d6f42;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:7px;">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Export Excel
+      </button>
+      <button onclick="exportCSV()" style="flex:1;min-width:120px;padding:13px 10px;background:var(--surface);color:var(--ink-3);border:1.5px solid var(--line);border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:7px;">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        CSV
+      </button>
+      <button onclick="exportJSON()" style="flex:1;min-width:120px;padding:13px 10px;background:var(--surface);color:var(--ink-3);border:1.5px solid var(--line);border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:7px;">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        JSON
+      </button>
+    </div>`;
+}
+
+function safeFilename(j) {
+  return (j.name||'DMF').replace(/[^a-zA-Z0-9]/g,'_')+'_'+new Date().toISOString().slice(0,10);
+}
+
+function exportXL() {
+  const j = job(); if (!j) return;
+  const wb = XLSX.utils.book_new();
+  const d  = j.defaults || {};
+  const defStr = [d.size,d.shape,d.trim,d.cct,d.lm,d.finish,
+    d.construction==='retro'?'Retrofit':'New Construction'].filter(Boolean).join(', ');
+
+  const allFx = j.rooms.flatMap(r => (r.fixtures||[]).map(f => ({...f,_room:r.name})));
+  const grand  = allFx.reduce((s,f)=>s+(f.qty||0),0);
+  const nc     = allFx.filter(f=>f.construction!=='retro').reduce((s,f)=>s+(f.qty||0),0);
+  const retro  = allFx.filter(f=>f.construction==='retro').reduce((s,f)=>s+(f.qty||0),0);
+
+  const bySize={},byCCT={},byTrimXL={},byLmXL={},byFinishXL={};
+  allFx.forEach(f=>{
+    bySize[f.size||'Unspecified']=(bySize[f.size||'Unspecified']||0)+(f.qty||0);
+    byCCT[f.cct||'TBD']=(byCCT[f.cct||'TBD']||0)+(f.qty||0);
+    byTrimXL[f.trim||'Unspecified']=(byTrimXL[f.trim||'Unspecified']||0)+(f.qty||0);
+    byLmXL[f.lm||'TBD']=(byLmXL[f.lm||'TBD']||0)+(f.qty||0);
+    byFinishXL[f.finish||'TBD']=(byFinishXL[f.finish||'TBD']||0)+(f.qty||0);
+  });
+
+  const sumData = [
+    ['DMF LIGHTING COUNT — '+(j.name||'').toUpperCase(),''],[,''],
+    ['Client / Project', j.name||''],['Address', j.address||''],
+    ['Date', new Date().toLocaleDateString()],['Notes', j.notes||''],
+    ['',''],['House Defaults', defStr||'Not set'],['',''],
+    ['TOTALS',''],['Grand Total Fixtures', grand],['New Construction', nc],
+    ['Retrofit / Remodel', retro],['Rooms', j.rooms.length],['Floors', (j.floors||[]).length],
+    ['',''],['BY SIZE',''],...Object.entries(bySize).sort((a,b)=>b[1]-a[1]).map(([k,v])=>[k,v]),
+    ['',''],['BY TRIM TYPE',''],...Object.entries(byTrimXL).sort((a,b)=>b[1]-a[1]).map(([k,v])=>[k,v]),
+    ['',''],['BY LUMEN OUTPUT',''],...Object.entries(byLmXL).map(([k,v])=>[k,v]),
+    ['',''],['BY FINISH',''],...Object.entries(byFinishXL).sort((a,b)=>b[1]-a[1]).map(([k,v])=>[k,v]),
+    ['',''],['BY CCT',''],...Object.entries(byCCT).sort((a,b)=>b[1]-a[1]).map(([k,v])=>[k,v]),
+  ];
+  const ws1 = XLSX.utils.aoa_to_sheet(sumData);
+  ws1['!cols'] = [{wch:28},{wch:42}];
+  XLSX.utils.book_append_sheet(wb, ws1, 'Summary');
+
+  // Fixture Schedule
+  const hdr = ['Floor','Room','Label','Qty','Size','Shape','Trim Type','CCT','Lumen Output','Finish','Construction','Notes'];
+  const rows = j.rooms.flatMap(r => {
+    if (!r.fixtures.length) return [];
+    const flName = getFloorName(r.floorId);
+    return r.fixtures.map(f => [
+      flName, r.name, f.label||'', f.qty||0, f.size||'', f.shape||'', f.trim||'',
+      f.cct||'', f.lm||'', f.finish||'',
+      f.construction==='retro'?'Retrofit':'New Construction', f.notes||''
+    ]);
+  });
+  const ws2 = XLSX.utils.aoa_to_sheet([hdr,...rows]);
+  ws2['!cols'] = [{wch:16},{wch:20},{wch:24},{wch:6},{wch:14},{wch:8},{wch:22},{wch:14},{wch:20},{wch:10},{wch:18},{wch:40}];
+  XLSX.utils.book_append_sheet(wb, ws2, 'Fixture Schedule');
+
+  // Per-room sheets
+  j.rooms.forEach(r => {
+    if (!r.fixtures.length && !(r.existingConditions||[]).length) return;
+    const rHdr = ['Label','Qty','Size','Shape','Trim Type','CCT','Lumen Output','Finish','Construction','Notes'];
+    const rOvr = r.override ? 'Custom override' : 'Using house defaults';
+    const rRows = r.fixtures.map(f=>[
+      f.label||'', f.qty||0, f.size||'', f.shape||'', f.trim||'',
+      f.cct||'', f.lm||'', f.finish||'',
+      f.construction==='retro'?'Retrofit':'New Construction', f.notes||''
+    ]);
+    const rTotal = r.fixtures.reduce((s,f)=>s+(f.qty||0),0);
+    const ecRows = (r.existingConditions||[]).length ? [
+      [''],['EXISTING CONDITIONS',''],
+      ['Description','Qty','Size','Type','Lamp Type','Notes'],
+      ...(r.existingConditions||[]).map(ec=>[ec.label||'',ec.qty||0,ec.size||'',ec.type||'',ec.lamp||'',ec.notes||''])
+    ] : [];
+    const wsR = XLSX.utils.aoa_to_sheet([
+      [r.name,''],['Room defaults', rOvr],['Floor', getFloorName(r.floorId)||'—'],
+      ['Total fixtures', rTotal],[''],rHdr,...rRows,...ecRows
+    ]);
+    wsR['!cols'] = [{wch:24},{wch:6},{wch:14},{wch:8},{wch:22},{wch:14},{wch:20},{wch:10},{wch:18},{wch:40}];
+    const sheetName = r.name.slice(0,31).replace(/[\[\]\*\/\\\?:]/g,'');
+    XLSX.utils.book_append_sheet(wb, wsR, sheetName);
+  });
+
+  XLSX.writeFile(wb, `DMF_${safeFilename(j)}.xlsx`);
+}
+
+function exportCSV() {
+  const j = job(); if (!j) return;
+  const rows = [['Floor','Room','Label','Qty','Size','Shape','Trim Type','CCT','Lumen Output','Finish','Construction','Room Override','Notes']];
+  j.rooms.forEach(r => {
+    const flName = getFloorName(r.floorId);
+    const ovrNote = r.override ? 'Yes' : 'No';
+    if (!r.fixtures.length) {
+      rows.push([flName, r.name, '',0,'','','','','','','',ovrNote,'']);
+    } else {
+      r.fixtures.forEach(f => rows.push([
+        flName, r.name, f.label||'', f.qty||0, f.size||'', f.shape||'', f.trim||'',
+        f.cct||'', f.lm||'', f.finish||'',
+        f.construction==='retro'?'Retrofit':'New Construction', ovrNote, f.notes||''
+      ]));
+    }
+  });
+  const csv = rows.map(r => r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `DMF_${safeFilename(j)}.csv`;
+  a.click(); URL.revokeObjectURL(a.href);
+}
+
+function exportJSON() {
+  const j = job(); if (!j) return;
+  const blob = new Blob([JSON.stringify(j,null,2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `DMF_${safeFilename(j)}.json`;
+  a.click(); URL.revokeObjectURL(a.href);
+}
+
+function buildReportText() {
+  const j = job(); if (!j) return '';
+  const allFx  = j.rooms.flatMap(r => (r.fixtures||[]).map(f => ({...f, _room:r.name})));
+  const grand  = allFx.reduce((s,f) => s+(f.qty||0), 0);
+  const date   = new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  const d      = j.defaults || {};
+  const defStr = [d.size, d.shape, d.trim, d.cct, d.lm, d.finish,
+    d.construction==='retro'?'Retrofit':'New Construction'].filter(Boolean).join(', ');
+
+  let txt = `DMF LIGHTING COUNT — ${(j.name||'Untitled Project').toUpperCase()}\n`;
+  txt += `${j.address || ''}\n`;
+  txt += `Date: ${date}\n`;
+  txt += `Total Fixtures: ${grand}\n`;
+  txt += `House Defaults: ${defStr || 'None set'}\n`;
+  if ((j.floors||[]).length) txt += `Floors: ${j.floors.map(f=>f.name).join(', ')}\n`;
+  txt += `${'─'.repeat(44)}\n\n`;
+
+  j.rooms.forEach(r => {
+    const tot = (r.fixtures||[]).reduce((s,f) => s+(f.qty||0), 0);
+    const flName = getFloorName(r.floorId);
+    txt += `${r.name.toUpperCase()} (${tot} lights)`;
+    if (flName) txt += ` [${flName}]`;
+    if (r.override) txt += ' [Room Override]';
+    txt += '\n';
+    if (!r.fixtures.length) { txt += `  — No fixtures recorded\n`; }
+    else {
+      r.fixtures.forEach(f => {
+        const specLine = [f.size, f.shape, f.trim].filter(Boolean).join(' / ') || 'Unspecified';
+        const label = f.label ? `${f.label} (${specLine})` : specLine;
+        const sub   = [f.cct, f.lm, f.finish, f.construction==='retro'?'Retrofit':'New Construction'].filter(Boolean).join(', ');
+        txt += `  ${f.qty}× ${label}`;
+        if (sub) txt += ` — ${sub}`;
+        if (f.notes) txt += `\n    Note: ${f.notes}`;
+        txt += '\n';
+      });
+    }
+    // Existing conditions
+    if (summaryShowExisting && (r.existingConditions||[]).length) {
+      txt += `  Existing Conditions:\n`;
+      r.existingConditions.forEach(ec => {
+        const ecTitle = ec.label || [ec.size, ec.type].filter(Boolean).join(' ') || 'Existing';
+        const ecSub   = [ec.size, ec.type, ec.lamp].filter(Boolean).join(', ');
+        txt += `    ${ec.qty}× ${ecTitle}`;
+        if (ecSub) txt += ` (${ecSub})`;
+        if (ec.notes) txt += ` — ${ec.notes}`;
+        txt += '\n';
+      });
+    }
+    txt += '\n';
+  });
+
+  txt += `${'─'.repeat(44)}\n`;
+  txt += `Synergy Technology Integration\n`;
+  return txt;
+}
+
+function copyReport() {
+  const txt = buildReportText();
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(txt).then(() => alert('Copied to clipboard'));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = txt; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    alert('Copied');
+  }
+}
+
+function shareReport() {
+  const j = job();
+  if (navigator.share) {
+    navigator.share({ title: `DMF Count — ${j?.name||'Job Walk'}`, text: buildReportText() });
+  } else {
+    copyReport();
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  SMART CHIP ORDERING
+// ═══════════════════════════════════════════════
+
+const CHIP_ORDERS = {
+  size: {
+    new:   [['2"','2″ Artafex / X',true,'orange'],['4"','4″ H / M / Artafex',true,'blue'],['1"','1″ Artafex',false,'purple'],['3"','3″ H Series',false,'teal'],['6"','6″ C Series',false,'amber']],
+    retro: [['4"','4″ H / M / Artafex',true,'blue'],['6"','6″ C Series',true,'amber'],['3"','3″ H Series',false,'teal'],['2"','2″ Artafex / X',false,'orange'],['1"','1″ Artafex',false,'purple']]
+  },
+  shape: {
+    new:   [['Round','⬤ Round',true],['Square','■ Square',true]],
+    retro: [['Round','⬤ Round',true],['Square','■ Square',false]]
+  },
+  trim: {
+    new:   [
+      ['Flangeless / Trimless','Flangeless / Trimless',true,'purple'],
+      ['Micro Flange','Micro Flange',true,'blue'],
+      ['Standard Flange','Standard Flange',false,''],
+      ['Adjustable','Adjustable',false,'teal'],
+      ['Hyperbolic','Hyperbolic (low-glare diffused)',false,'green'],
+      ['Wall Wash','Wall Wash',false,'amber'],
+      ['Pinhole','Pinhole',false,'']
+    ],
+    retro: [
+      ['Standard Flange','Standard Flange',true,''],
+      ['Adjustable','Adjustable',true,'teal'],
+      ['Micro Flange','Micro Flange',false,'blue'],
+      ['Hyperbolic','Hyperbolic (low-glare diffused)',false,'green'],
+      ['Wall Wash','Wall Wash',false,'amber'],
+      ['Pinhole','Pinhole',false,''],
+      ['Flangeless / Trimless','Flangeless / Trimless ⚠ harder in retrofit',false,'purple']
+    ]
+  },
+  cct: {
+    new:   [['3000K','3000K — Soft White',true,'warm'],['2700K','2700K — Warm',true,'warm'],['Warm Dim','Warm Dim',false,'amber'],['Tunable White','Tunable White',false,'purple'],['3500K','3500K — Neutral',false,'green'],['4000K','4000K — Cool White',false,'cool'],['TBD','TBD',false,'']],
+    retro: [['3000K','3000K — Soft White',true,'warm'],['2700K','2700K — Warm',true,'warm'],['Warm Dim','Warm Dim',false,'amber'],['Tunable White','Tunable White',false,'purple'],['3500K','3500K — Neutral',false,'green'],['4000K','4000K — Cool White',false,'cool'],['TBD','TBD',false,'']]
+  },
+  lm: {
+    new:   [['High (~1000–1250 lm)','High (~1000–1250 lm)',true],['Medium (~750 lm)','Medium (~750 lm)',true],['Very High (~1500+ lm)','Very High (~1500+ lm)',false],['Low (~175–500 lm)','Low (~175–500 lm)',false],['TBD','TBD',false]],
+    retro: [['Medium (~750 lm)','Medium (~750 lm)',true],['High (~1000–1250 lm)','High (~1000–1250 lm)',true],['Low (~175–500 lm)','Low (~175–500 lm)',false],['Very High (~1500+ lm)','Very High (~1500+ lm)',false],['TBD','TBD',false]]
+  },
+  finish: {
+    new:   [['White','White',true],['Black','Black',false],['Brass','Brass',false],['Copper','Copper (Artafex 2)',false],['Graphite','Graphite',false],['Bronze','Bronze',false],['TBD','TBD',false]],
+    retro: [['White','White',true],['Black','Black',false],['Bronze','Bronze',false],['Brass','Brass',false],['Copper','Copper (Artafex 2)',false],['Graphite','Graphite',false],['TBD','TBD',false]]
+  }
+};
+
+function renderChips(prefix, field, construction, currentVal) {
+  const container = document.getElementById(prefix + '-chips-' + field);
+  if (!container) return;
+  const order = CHIP_ORDERS[field]?.[construction] || CHIP_ORDERS[field]?.['new'] || [];
+  const fnName = prefix === 'fx' ? 'fxChip' : prefix === 'def' ? 'defChip' : 'roChip';
+  container.innerHTML = order.map(([val, label, ideal, color]) => {
+    const isOn  = val === currentVal;
+    const cls   = ['chip', isOn ? 'on' : '', ideal ? 'ideal' : '', color ? 'chip-'+color : ''].filter(Boolean).join(' ');
+    const safeV = val.replace(/"/g, '&quot;');
+    return `<button class="${cls}" data-val="${safeV}" onclick="${fnName}(this,'${field}')">${label}</button>`;
+  }).join('');
+}
+
+function renderAllChips(prefix, construction, state) {
+  ['size','shape','trim','cct','lm','finish'].forEach(field => {
+    renderChips(prefix, field, construction, state?.[field] || '');
+  });
+}
+
+// ═══════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════
+
+document.addEventListener('DOMContentLoaded', () => { renderHome(); });
+
+window.addEventListener('pagehide', () => { localStorage.setItem(STORE_KEY, JSON.stringify(jobs)); });
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') localStorage.setItem(STORE_KEY, JSON.stringify(jobs));
+});
+window.addEventListener('beforeunload', () => { localStorage.setItem(STORE_KEY, JSON.stringify(jobs)); });
+</script>
+</body>
+</html>
