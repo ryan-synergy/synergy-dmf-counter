@@ -814,6 +814,22 @@ function renderRoom(){
 /* ═══════════════════════════════════════════════════════════════════
    VIEW: GROUP FORM
    ═══════════════════════════════════════════════════════════════════ */
+function renderAccBody(autoAccs){
+  let html='';
+  if(autoAccs.length){
+    html+='<div style="font-size:11px;font-weight:600;color:var(--txt3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Auto-Added</div>';
+    autoAccs.forEach(a=>{
+      html+='<div style="display:flex;gap:9px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--bdr)">';
+      html+='<span class="bom-sku">\u2605 '+U.esc(a.sku)+'</span>';
+      html+='<span class="bom-desc">'+U.esc(a.desc)+'</span>';
+      html+='<span class="flag flag-v">auto</span></div>';
+    });
+  }else{
+    html='<div style="font-size:13px;color:var(--txt3)">No accessories required for this configuration.</div>';
+  }
+  html+='<div style="font-size:11px;color:var(--txt3);margin-top:9px">Router Template and Extension Collar available - add manually if needed.</div>';
+  return html;
+}
 function acc(id,label,body,open,statusHint=''){
   return`<div class="acc">
     <div class="acc-hdr" onclick="GF.sec('${id}')">
@@ -924,16 +940,7 @@ function renderGroupForm(){
   // Accessories (auto-computed)
   const bom=groupBOM(g);
   const autoAccs=bom.filter(l=>l.auto);
-  const accBody=`
-    ${autoAccs.length?`<div style="font-size:11px;font-weight:600;color:var(--txt3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Auto-Added</div>
-    ${autoAccs.length?`<div style="font-size:11px;font-weight:600;color:var(--txt3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Auto-Added</div>
-      ${autoAccs.map(a=>`<div style="display:flex;gap:9px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--bdr)">
-        <span class="bom-sku">★ ${U.esc(a.sku)}</span>
-        <span class="bom-desc">${U.esc(a.desc)}</span>
-        <span class="flag flag-v">auto</span>
-      </div>`).join('')}`:'<div style="font-size:13px;color:var(--txt3)">No accessories required for this configuration.</div>'}
-    <div style="font-size:11px;color:var(--txt3);margin-top:9px">Router Template and Extension Collar available — add manually if needed.</div>
-  `;
+  const accBody=renderAccBody(autoAccs);
 
   // Notes section
   const notesBody=`
