@@ -39,10 +39,19 @@ input,textarea,select{font:inherit;color:inherit;background:none;border:none;out
 a{color:inherit;text-decoration:none}
 
 /* LAYOUT */
+/* LAYOUT */
 #app{
   padding-top:var(--hdr);
   padding-bottom:calc(var(--nav) + var(--sb) + 12px);
   min-height:100dvh;
+  max-width:680px;
+  margin:0 auto;
+}
+/* Desktop: constrain header and nav to match content width */
+@media(min-width:700px){
+  #hdr{left:50%;transform:translateX(-50%);width:680px}
+  #nav{left:50%;transform:translateX(-50%);width:680px}
+  .fab{position:fixed;right:calc(50% - 340px + 18px)}
 }
 
 /* HEADER */
@@ -741,7 +750,8 @@ function getTrimLabel(f){
 }
 
 function getBeamLabel(f){
-  const{product,module,shape,beam}=f;
+  const beam=f.beam||f.beamSpread||null;
+  const{product,module,shape}=f;
   if(!beam)return null;
   const beams=C.products[product]?.modules[module]?.beams[shape]||[];
   const b=beams.find(x=>x.k===beam);
@@ -880,7 +890,7 @@ const DB={
 // ═══════════════════════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════════════════════
-let S={jobs:[],jobId:null,roomId:null,view:'jobs',form:null,formSection:'housing',dirty:false,modal:null};
+let S={jobs:[],jobId:null,roomId:null,view:'jobs',form:null,formSection:'housing',isNew:true,dirty:false,modal:null};
 function getJob(){return S.jobs.find(j=>j.id===S.jobId)||null}
 function getRoom(){return getJob()?.rooms.find(r=>r.id===S.roomId)||null}
 
@@ -912,7 +922,7 @@ function renderHeader(){
   if(v==='jobs')title.innerHTML='<span class="dmf-tag">DMF</span> Spec';
   else if(v==='job'){const j=getJob();title.textContent=j?.name||'Job';}
   else if(v==='room'){const r=getRoom();title.textContent=r?.name||'Room';}
-  else if(v==='fixture')title.textContent=S.form?.id?'Edit Kit':'Add Kit';
+  else if(v==='fixture')title.textContent=S.isNew?'Add Kit':'Edit Kit';
   else if(v==='reports'){const j=getJob();title.textContent=(j?.name||'Job')+' — Report';}
   let act='';
   if(v==='job'){const j=getJob();if(j)act=`<button class="hdr-btn" onclick="App.editJobSettings('${j.id}')">✏️ Edit</button>`;}
@@ -1003,7 +1013,7 @@ function renderRoom(){
           <div class="fc-sub">${U.fixtureSummary(f)}</div>
           <div class="fc-tags">
             <span class="tag ${C.dim[f.dimming]?.cls||''}">${U.dimLabel(f.dimming)}</span>
-            <span class="tag">${f.installation==='new'?'NC':f.installation==='remodel'?'Remo':f.installation==='retrofit'?'Retro':f.installation||''}</span>
+            <span class="tag">${f.installation==='new'?'NC':f.installation==='remodel'?'Remo':f.installation==='retrofit'?'Retro':f.installation||''}</span>${f.beam?`<span class="tag">${getBeamLabel(f)}</span>`:''}
             ${wetWarn?`<span class="tag tag-warn">⚠️ Damp only</span>`:''}
             ${f.wetLocation&&C.products[f.product]?.modules[f.module]?.wet?`<span class="tag" style="color:var(--ok)">💧 Wet</span>`:''}
             ${autoTag}
@@ -1045,11 +1055,11 @@ function acc(id,label,body,open){
     </div>
   </div>`;
 }
-function chipsRow(items,selected,fn,cls=''){
-  return`<div class="chips">${items.map(it=>`<button class="chip${cls?' '+cls:''} ${it.k===selected?'on':''}" onclick="${fn}('${it.k}')">${U.esc(it.l||it.k)}</button>`).join('')}</div>`;
+function chipsRow(items,selected,field,cls=''){
+  return`<div class="chips">${items.map(it=>`<button class="chip${cls?' '+cls:''} ${it.k===selected?'on':''}" onclick="FF.set('${field}','${it.k}')">${U.esc(it.l||it.k)}</button>`).join('')}</div>`;
 }
-function chipsScroll(items,selected,fn){
-  return`<div class="chips-scroll">${items.map(it=>`<button class="chip ${it.k===selected?'on':''}" onclick="${fn}('${it.k}')">${U.esc(it.l||it.k)}</button>`).join('')}</div>`;
+function chipsScroll(items,selected,field){
+  return`<div class="chips-scroll">${items.map(it=>`<button class="chip ${it.k===selected?'on':''}" onclick="FF.set('${field}','${it.k}')">${U.esc(it.l||it.k)}</button>`).join('')}</div>`;
 }
 
 function renderFixtureForm(){
@@ -1086,9 +1096,9 @@ function renderFixtureForm(){
   // Section bodies
   const housingBody=`
     <div class="fsec"><div class="flabel">Installation Type</div>
-      ${chipsScroll(installs,f.installation,'FF.set.bind(FF,"installation")')}
+      ${chipsScroll(installs,f.installation,'installation')}
     </div>
-    ${showHousingStyle&&housingStyles.length>1?`<div class="fsec"><div class="flabel">Housing Style</div>${chipsRow(housingStyles,f.housingStyle,'FF.setStr.bind(FF,"housingStyle")')}</div>`:''}
+    ${showHousingStyle&&housingStyles.length>1?`<div class="fsec"><div class="flabel">Housing Style</div>${chipsRow(housingStyles,f.housingStyle,'housingStyle')}</div>`:''}
   `;
 
   const moduleBody=`
@@ -1107,7 +1117,7 @@ function renderFixtureForm(){
       }).join('')}</div>
     </div>
     <div class="fsec"><div class="flabel">Color Temperature</div>
-      ${chipsScroll(prod.cct.map(k=>({k,l:U.cctLabel(k)})),f.cct,'FF.set.bind(FF,"cct")')}
+      ${chipsScroll(prod.cct.map(k=>({k,l:U.cctLabel(k)})),f.cct,'cct')}
     </div>
     ${twNote}
     <div class="fsec"><div class="flabel">Dimming</div>
@@ -1117,21 +1127,21 @@ function renderFixtureForm(){
       }).join('')}</div>
     </div>
     <div class="fsec"><div class="flabel">Beam Spread <span class="fbadge">optional</span></div>
-      ${chipsScroll([{k:'',l:'Not set'},...validBeams.map(b=>({k:b.k,l:`${b.l} (${b.a})`}))],f.beam||'','FF.set.bind(FF,"beam")')}
+      ${chipsScroll([{k:'',l:'Not set'},...validBeams.map(b=>({k:b.k,l:`${b.l} (${b.a})`}))],f.beam||'','beam')}
     </div>
     <div class="fsec"><div class="flabel">Module Finish</div>
-      <div class="chips">${['white','black'].map(fin=>`<button class="chip ${f.moduleFinish===fin?'on':''}" onclick="FF.setStr('moduleFinish','${fin}')">${fin.charAt(0).toUpperCase()+fin.slice(1)}</button>`).join('')}</div>
+      <div class="chips">${['white','black'].map(fin=>`<button class="chip ${f.moduleFinish===fin?'on':''}" onclick="FF.set('moduleFinish','${fin}')">${fin.charAt(0).toUpperCase()+fin.slice(1)}</button>`).join('')}</div>
     </div>
   `;
 
   const trimBody=`
     <div class="fsec"><div class="flabel">Trim Type</div>
-      ${chipsRow(validTrimTypes.map(k=>({k,l:k.charAt(0).toUpperCase()+k.slice(1)})),f.trimType,'FF.set.bind(FF,"trimType")')}
+      ${chipsRow(validTrimTypes.map(k=>({k,l:k.charAt(0).toUpperCase()+k.slice(1)})),f.trimType,'trimType')}
     </div>
-    ${validTrimStyles.length?`<div class="fsec"><div class="flabel">Trim Style</div>${chipsScroll(validTrimStyles,f.trimStyle,'FF.set.bind(FF,"trimStyle")')}</div>`:''}
+    ${validTrimStyles.length?`<div class="fsec"><div class="flabel">Trim Style</div>${chipsScroll(validTrimStyles,f.trimStyle,'trimStyle')}</div>`:''}
     <div class="fsec"><div class="flabel">Trim Finish</div>
-      <div class="chips">${standardFinishes.map(x=>`<button class="chip ${f.trimFinish===x.k?'on':''}" onclick="FF.setStr('trimFinish','${x.k}')">${x.l}</button>`).join('')}</div>
-      ${premiumFinishes.length?`<div style="font-size:10px;color:var(--txt3);letter-spacing:.5px;margin:8px 0 5px">PREMIUM METALLIC</div><div class="chips">${premiumFinishes.map(x=>`<button class="chip ${f.trimFinish===x.k?'on':''}" style="border-color:var(--gold-b)" onclick="FF.setStr('trimFinish','${x.k}')">${x.l}</button>`).join('')}</div>`:''}
+      <div class="chips">${standardFinishes.map(x=>`<button class="chip ${f.trimFinish===x.k?'on':''}" onclick="FF.set('trimFinish','${x.k}')">${x.l}</button>`).join('')}</div>
+      ${premiumFinishes.length?`<div style="font-size:10px;color:var(--txt3);letter-spacing:.5px;margin:8px 0 5px">PREMIUM METALLIC</div><div class="chips">${premiumFinishes.map(x=>`<button class="chip ${f.trimFinish===x.k?'on':''}" style="border-color:var(--gold-b)" onclick="FF.set('trimFinish','${x.k}')">${x.l}</button>`).join('')}</div>`:''}
     </div>
   `;
 
@@ -1192,7 +1202,7 @@ function renderFixtureForm(){
       <button class="btn btn-sec flex1" onclick="App.back()">Cancel</button>
       <button class="btn btn-gold flex1" onclick="FF.save()">Save Kit</button>
     </div>
-    ${f.id?`<button class="btn btn-danger btn-full" style="margin-top:10px" onclick="FF.deleteThis()">Delete</button>`:''}
+    ${!S.isNew?`<button class="btn btn-danger btn-full" style="margin-top:10px" onclick="FF.deleteThis()">Delete</button>`:''}
     <div style="height:20px"></div>
   </div>`;
 }
@@ -1295,10 +1305,12 @@ const FF={
       f.moduleFinish='white';
     }
     if(field==='shape'){
-      // Shape is master injector — also resets trim that may be invalid
+      // Shape is master injector — drives housing + trim shape
       const validTypes=C.products[f.product]?.modules[f.module]?.trimStyles[val]?.[f.trimType]?.map(x=>x.k)||[];
       if(!validTypes.includes(f.trimStyle))f.trimStyle=validTypes[0]||'std';
       f.beam=null;
+      // Reset housing if it's round-only and we switched to square
+      if(val==='square'&&RULES.roundOnlyInstalls.includes(f.installation))f.installation='new';
     }
     if(field==='module'){
       const vl=C.products[f.product]?.modules[val]?.lumens||[1000];
@@ -1317,7 +1329,7 @@ const FF={
     }
     App.render();
   },
-  setStr(field,val){const f=S.form;if(!f)return;f[field]=val;App.render()},
+  // setStr merged into set
   qty(delta){const f=S.form;if(!f)return;f.qty=Math.max(1,Math.min(99,f.qty+delta));const el=document.querySelector('.qty-val');if(el)el.textContent=f.qty;},
   note(v){if(S.form)S.form.notes=v},
   save(){
@@ -1428,13 +1440,13 @@ const App={
     S.form=DB.newFixture({product:d.product,module:d.module,shape:d.shape,installation:d.installation||'new',housingStyle:d.housingStyle||'standard',
       lumens:d.lumens,cct:d.cct,dimming:roomDim,moduleFinish:d.moduleFinish||'white',
       trimType:d.trimType||'flanged',trimStyle:d.trimStyle||'std',trimFinish:d.trimFinish||'white'});
-    S.formSection='housing';S.view='fixture';App.render();
+    S.formSection='housing';S.isNew=true;S.view='fixture';App.render();
   },
   editFixture(id){
     const r=getRoom();if(!r)return;
     const f=r.fixtures.find(x=>x.id===id);if(!f)return;
     S.form={...f,accessories:[...( f.accessories||[])]};
-    S.formSection='housing';S.view='fixture';App.render();
+    S.formSection='housing';S.isNew=false;S.view='fixture';App.render();
   },
   dupeFixture(id){
     const r=getRoom();if(!r)return;
