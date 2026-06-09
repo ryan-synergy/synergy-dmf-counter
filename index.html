@@ -81,11 +81,7 @@ a{color:inherit;text-decoration:none}
   border-top:1px solid var(--bdr);
   display:flex;align-items:stretch;
 }
-.ni{
-  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:3px;font-size:10px;font-weight:500;color:var(--txt3);
-  cursor:pointer;touch-action:manipulation;transition:color .15s;
-}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10px;font-weight:500;color:var(--txt3);cursor:pointer;touch-action:manipulation;transition:color .15s}
 .ni.on{color:var(--gold)}
 .ni.off{opacity:.3;pointer-events:none}
 .ni-icon{font-size:21px;line-height:1}
@@ -128,18 +124,19 @@ a{color:inherit;text-decoration:none}
 .badge-da{background:var(--da-d);border:1px solid rgba(100,181,246,.25);color:var(--da)}
 .badge-tr{background:rgba(144,164,174,.1);border:1px solid rgba(144,164,174,.2);color:var(--tr)}
 
-/* FIXTURE CARD */
+/* FIXTURE CARD — compact 2-line */
 .fc{display:flex;gap:11px;align-items:flex-start}
 .fc-qty{width:38px;height:38px;border-radius:10px;background:var(--gold-d);border:1px solid var(--gold-b);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--gold);flex-shrink:0}
 .fc-body{flex:1;min-width:0}
-.fc-title{font-size:14px;font-weight:600}
-.fc-sub{font-size:12px;color:var(--txt2);margin-top:3px;line-height:1.45}
+.fc-line1{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fc-line2{font-size:12px;color:var(--txt2);margin-top:2px;line-height:1.45}
 .fc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
 .tag{font-size:11px;font-weight:500;padding:2px 8px;border-radius:6px;background:var(--s2);border:1px solid var(--bdr)}
 .tag-px{background:var(--px-d);border-color:rgba(179,157,219,.3);color:var(--px)}
 .tag-da{background:var(--da-d);border-color:rgba(100,181,246,.25);color:var(--da)}
 .tag-tr{background:rgba(144,164,174,.08);border-color:rgba(144,164,174,.18);color:var(--tr)}
 .tag-warn{background:var(--warn-d);border-color:rgba(255,183,77,.3);color:var(--warn)}
+.tag-auto{background:rgba(200,169,110,.1);border-color:var(--gold-b);color:var(--gold)}
 
 /* SECTION LABEL */
 .slabel{font-size:11px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;color:var(--txt3);margin:18px 0 8px;padding:0 2px}
@@ -160,11 +157,12 @@ a{color:inherit;text-decoration:none}
 .chip:active{opacity:.7}
 .chip.on{background:var(--gold);border-color:var(--gold);color:#0D0D0D;font-weight:600}
 .chip.dim{opacity:.28;pointer-events:none}
-.chip-lg{padding:11px 18px;font-size:14px;border-radius:12px}
+.chip-lg{padding:11px 18px;font-size:14px;border-radius:12px;text-align:center;line-height:1.3}
 .chip-sm{padding:5px 11px;font-size:12px}
+.chip-2{width:calc(50% - 4px);text-align:center}
 
 /* FORM */
-.fsec{margin-bottom:20px}
+.fsec{margin-bottom:18px}
 .flabel{font-size:12px;font-weight:600;color:var(--txt2);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px}
 .fbadge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;background:var(--gold-d);color:var(--gold);text-transform:none;letter-spacing:0}
 .finput{
@@ -187,18 +185,6 @@ a{color:inherit;text-decoration:none}
 .tog.on{background:var(--gold)}
 .tog::after{content:'';position:absolute;width:26px;height:26px;border-radius:50%;background:#fff;top:2px;left:2px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
 .tog.on::after{transform:translateX(20px)}
-
-/* OPTIONAL SECTION */
-.opt-hdr{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:11px 14px;background:var(--s2);border:1px solid var(--bdr);
-  border-radius:12px;margin-bottom:14px;cursor:pointer;
-}
-.opt-hdr-lbl{font-size:14px;font-weight:500;color:var(--txt2)}
-.opt-arr{color:var(--txt3);font-size:14px;transition:transform .2s}
-.opt-arr.open{transform:rotate(180deg)}
-.opt-body{display:none}
-.opt-body.open{display:block}
 
 /* ALERTS */
 .alert{padding:11px 13px;border-radius:10px;font-size:13px;line-height:1.4;margin-bottom:12px;display:flex;gap:9px;align-items:flex-start}
@@ -239,16 +225,9 @@ a{color:inherit;text-decoration:none}
 .xbtn-title{font-size:15px;font-weight:600}
 .xbtn-sub{font-size:12px;color:var(--txt2);margin-top:1px}
 
-/* SKU TABLE */
-.sku-tbl{width:100%;border-collapse:collapse;font-size:12px}
-.sku-tbl th{text-align:left;padding:7px 9px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--txt3);border-bottom:1px solid var(--bdr)}
-.sku-tbl td{padding:9px 9px;border-bottom:1px solid var(--bdr);vertical-align:top;line-height:1.4}
-.sku-tbl tr:last-child td{border-bottom:none}
-.sku-code{font-family:'SF Mono','Courier New',monospace;font-size:11px;color:var(--gold)}
-
 /* MODAL */
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);z-index:150;display:flex;align-items:flex-end}
-.modal{background:var(--s1);border-radius:20px 20px 0 0;border:1px solid var(--bdr);padding:20px 20px calc(20px + var(--sb));width:100%;animation:slideup .22s ease}
+.modal{background:var(--s1);border-radius:20px 20px 0 0;border:1px solid var(--bdr);padding:20px 20px calc(20px + var(--sb));width:100%;animation:slideup .22s ease;max-height:85dvh;overflow-y:auto}
 @keyframes slideup{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .modal-title{font-size:17px;font-weight:700;margin-bottom:14px}
 
@@ -266,6 +245,91 @@ a{color:inherit;text-decoration:none}
 .row{display:flex;align-items:center;gap:8px}
 .flex1{flex:1}
 .ml-auto{margin-left:auto}
+
+/* ══════════════════════════════════════
+   ACCORDION KIT CONFIGURATOR
+══════════════════════════════════════ */
+.kit-shape-bar{
+  display:flex;gap:8px;margin-bottom:14px;padding:14px;
+  background:var(--s1);border:1px solid var(--bdr);border-radius:14px;
+}
+.kit-shape-bar .flabel{margin-bottom:0;align-self:center;flex-shrink:0}
+.kit-shape-chips{display:flex;gap:8px;flex:1}
+.kit-shape-chip{
+  flex:1;text-align:center;padding:10px 12px;border-radius:10px;
+  border:1.5px solid var(--bdr);background:var(--s2);
+  font-size:14px;font-weight:600;color:var(--txt2);
+  transition:all .15s;cursor:pointer;
+}
+.kit-shape-chip.on{background:var(--gold);border-color:var(--gold);color:#0D0D0D}
+.kit-shape-chip:active{opacity:.7}
+
+.acc-section{margin-bottom:8px}
+.acc-hdr{
+  display:flex;align-items:center;gap:11px;
+  padding:13px 14px;
+  background:var(--s1);border:1.5px solid var(--bdr);border-radius:14px;
+  cursor:pointer;transition:border-color .15s,background .12s;
+  user-select:none;
+}
+.acc-hdr.open{border-radius:14px 14px 0 0;border-bottom-color:transparent}
+.acc-hdr.complete{border-color:var(--gold-b)}
+.acc-hdr.locked{opacity:.38;pointer-events:none}
+.acc-hdr:active:not(.locked){background:var(--s2)}
+.acc-num{
+  width:26px;height:26px;border-radius:50%;
+  background:var(--s3);font-size:12px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  color:var(--txt2);transition:background .15s,color .15s;
+}
+.acc-hdr.complete .acc-num{background:var(--gold);color:#0D0D0D}
+.acc-hdr-info{flex:1;min-width:0}
+.acc-title{font-size:14px;font-weight:600}
+.acc-summary{font-size:11px;color:var(--txt3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.acc-arr{margin-left:auto;color:var(--txt3);font-size:13px;transition:transform .2s;flex-shrink:0}
+.acc-arr.open{transform:rotate(180deg)}
+.acc-body{
+  background:var(--s1);
+  border:1.5px solid var(--bdr);border-top:none;
+  border-radius:0 0 14px 14px;padding:16px 14px 14px;
+  display:none;
+}
+.acc-body.open{display:block}
+.acc-section.complete .acc-body{border-color:var(--gold-b)}
+
+/* Accessory rows */
+.acc-item{
+  display:flex;align-items:center;gap:10px;padding:10px 0;
+  border-bottom:1px solid var(--bdr);
+}
+.acc-item:last-child{border-bottom:none}
+.acc-item-sku{font-family:'SF Mono','Courier New',monospace;font-size:11px;color:var(--gold);min-width:88px;flex-shrink:0}
+.acc-item-info{flex:1}
+.acc-item-label{font-size:13px;font-weight:500}
+.acc-item-note{font-size:11px;color:var(--txt3);margin-top:2px}
+.acc-item-star{font-size:10px;font-weight:700;color:var(--warn);margin-right:3px}
+
+/* SKU TABLE */
+.sku-tbl{width:100%;border-collapse:collapse;font-size:12px}
+.sku-tbl th{text-align:left;padding:7px 9px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--txt3);border-bottom:1px solid var(--bdr)}
+.sku-tbl td{padding:9px 9px;border-bottom:1px solid var(--bdr);vertical-align:top;line-height:1.4}
+.sku-tbl tr:last-child td{border-bottom:none}
+.sku-code{font-family:'SF Mono','Courier New',monospace;font-size:11px;color:var(--gold)}
+
+/* BOM */
+.bom-group{background:var(--s1);border:1px solid var(--bdr);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.bom-group-hdr{padding:12px 14px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:10px}
+.bom-group-qty{width:34px;height:34px;border-radius:9px;background:var(--gold-d);border:1px solid var(--gold-b);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:var(--gold);flex-shrink:0}
+.bom-group-title{font-size:13px;font-weight:600}
+.bom-group-sub{font-size:11px;color:var(--txt3);margin-top:2px}
+.bom-row{display:flex;align-items:flex-start;gap:10px;padding:9px 14px;border-bottom:1px solid var(--bdr);font-size:12px}
+.bom-row:last-child{border-bottom:none}
+.bom-row-type{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--txt3);min-width:52px;flex-shrink:0;padding-top:1px}
+.bom-row-sku{font-family:'SF Mono','Courier New',monospace;font-size:11px;color:var(--gold);min-width:90px;flex-shrink:0}
+.bom-row-label{flex:1;color:var(--txt2)}
+.bom-row-note{font-size:11px;color:var(--txt3);font-style:italic}
+.bom-star{color:var(--warn);font-size:10px;font-weight:700;margin-right:3px}
+.bom-total{padding:10px 14px;background:var(--s2);font-size:13px;font-weight:600;text-align:right;color:var(--gold)}
 </style>
 </head>
 <body>
@@ -284,18 +348,17 @@ a{color:inherit;text-decoration:none}
 
 // ═══════════════════════════════════════════════════════════════
 // PRODUCT CONFIG — THE BRAIN
-// All conditional logic flows from this single source of truth
 // ═══════════════════════════════════════════════════════════════
 const C = {
   wattage:{750:9.5,1000:12.5,1250:14.3,1500:14.3},
 
   cct:{
-    '2700K':        {l:'2700K',          dim:['phasex','dali2','triac']},
-    '3000K':        {l:'3000K',          dim:['phasex','dali2','triac']},
-    '3500K':        {l:'3500K',          dim:['phasex','dali2','triac']},
-    '4000K':        {l:'4000K',          dim:['phasex','dali2','triac']},
-    'warm_dim':     {l:'Warm Dim',       dim:['phasex','dali2','triac']},
-    'tunable_white':{l:'Tunable White',  dim:['phasex','dali2']}, // ← NO TRIAC
+    '2700K':        {l:'2700K',          digital:false},
+    '3000K':        {l:'3000K',          digital:false},
+    '3500K':        {l:'3500K',          digital:false},
+    '4000K':        {l:'4000K',          digital:false},
+    'warm_dim':     {l:'Warm Dim',       digital:true},
+    'tunable_white':{l:'Tunable White',  digital:true},
   },
 
   dim:{
@@ -304,326 +367,492 @@ const C = {
     triac: {l:'TRIAC/ELV',min:'1%',   cls:'tag-tr', dot:'dot-tr', badge:'badge-tr', note:'120V only'},
   },
 
+  // Installation types per product
+  installations:{
+    A4:{
+      base:[
+        {k:'new',         l:'New Construction'},
+        {k:'chicago',     l:'Chicago Plenum'},
+        {k:'low_profile', l:'Low Profile'},
+        {k:'spray_foam',  l:'Spray Foam'},
+        {k:'super_shallow',l:'Super Shallow'},
+        {k:'remodel',     l:'Remodel'},
+        {k:'retrofit',    l:'Retrofit 6"→4"'},
+      ],
+      roundOnly:[
+        {k:'concrete', l:'Concrete'},
+        {k:'double',   l:'Double Housing'},
+      ],
+    },
+    A2:{
+      base:[
+        {k:'new',      l:'New Construction'},
+        {k:'chicago',  l:'Chicago Plenum'},
+        {k:'remodel',  l:'Remodel'},
+        {k:'retrofit', l:'Retrofit 6"→2"'},
+      ],
+      roundOnly:[],
+    },
+  },
+
+  // Housing style - shown when installation = new | low_profile | remodel (A4); new (A2)
+  housingStyleInstalls:['new','low_profile','remodel'],
+  housingStyles:{
+    A4:[{k:'standard',l:'Standard'},{k:'fire_rated',l:'Fire Rated'}],
+    A2:[{k:'standard',l:'Standard'}],
+  },
+
+  finishCodes:{white:'WH',black:'BK',bronze:'BZ',clear:'CW',custom:'CC',brass:'BR',copper:'CO',graphite:'GR'},
+  finishLabels:{white:'White',black:'Black',bronze:'Bronze',clear:'Clear Diffuse',custom:'Custom',brass:'Brass ★',copper:'Copper ★',graphite:'Graphite ★'},
+
   products:{
     A2:{
-      l:'Artafex 2', short:'A2',
+      l:'Artafex 2',short:'A2',
       cct:['2700K','3000K','3500K','4000K','warm_dim','tunable_white'],
       finishes:[
-        {k:'white',  l:'White',        code:'WH',p:false},
-        {k:'black',  l:'Black',        code:'BK',p:false},
-        {k:'bronze', l:'Bronze',       code:'BZ',p:false},
-        {k:'clear',  l:'Clear Diffuse',code:'CW',p:false},
-        {k:'custom', l:'Custom Color', code:'CC',p:false},
-        {k:'brass',  l:'Brass ★',      code:'BR',p:true},
-        {k:'copper', l:'Copper ★',     code:'CO',p:true},
-        {k:'graphite',l:'Graphite ★',  code:'GR',p:true},
+        {k:'white',   l:'White',        p:false},
+        {k:'black',   l:'Black',        p:false},
+        {k:'bronze',  l:'Bronze',       p:false},
+        {k:'clear',   l:'Clear Diffuse',p:false},
+        {k:'custom',  l:'Custom Color', p:false},
+        {k:'brass',   l:'Brass ★',      p:true},
+        {k:'copper',  l:'Copper ★',     p:true},
+        {k:'graphite',l:'Graphite ★',   p:true},
       ],
-      housings:{
-        round:{
-          new:           {sku:'X2NCR',  l:'NC Standard'},
-          chicago:       {sku:'X2CPR',  l:'Chicago Plenum'},
-          remodel:       {sku:'X2RMR',  l:'Remodel (TRIAC/ELV)'},
-          remodel_d:     {sku:'X2RDR',  l:'Remodel — Digital (DALI/PhaseX)'},
-          retrofit:      {sku:'X2KRRETRO6', l:'Retrofit Kit 6"→2"'},
-        },
-        square:{
-          new:           {sku:'X2NCS',  l:'NC Standard'},
-          chicago:       {sku:'X2CPS',  l:'Chicago Plenum'},
-          remodel:       {sku:'X2RMS',  l:'Remodel (TRIAC/ELV)'},
-          remodel_d:     {sku:'X2RDS',  l:'Remodel — Digital (DALI/PhaseX)'},
-          retrofit:      {sku:'X2KSRETRO6', l:'Retrofit Kit 6"→2"'},
-        },
-      },
       modules:{
         downlight:{
-          l:'Downlight', wet:true, tilt:null,
+          l:'Downlight',wet:true,tilt:null,
           lumens:[750,1000,1250,1500],
           beams:{
-            round: [{k:'uns',l:'Ultra Narrow Spot',a:'10°'},{k:'ns',l:'Narrow Spot',a:'20°'},{k:'sp',l:'Spot',a:'30°'},{k:'fl',l:'Flood',a:'40°'},{k:'wf',l:'Wide Flood',a:'50°'},{k:'ls',l:'Linear Spread',a:'50°×30°'}],
-            square:[{k:'uns',l:'Ultra Narrow Spot',a:'10°'},{k:'ns',l:'Narrow Spot',a:'20°'},{k:'sp',l:'Spot',a:'30°'},{k:'fl',l:'Flood',a:'40°'},{k:'wf',l:'Wide Flood',a:'50°'},{k:'ls',l:'Linear Spread',a:'50°×30°'}],
+            round: [{k:'uns',l:'Ultra Narrow Spot',a:'10°'},{k:'ns',l:'Narrow Spot',a:'20°'},{k:'sp',l:'Spot',a:'30°'},{k:'fl_b',l:'Flood',a:'40°'},{k:'wf',l:'Wide Flood',a:'50°'},{k:'ls',l:'Linear Spread',a:'50°×30°'}],
+            square:[{k:'uns',l:'Ultra Narrow Spot',a:'10°'},{k:'ns',l:'Narrow Spot',a:'20°'},{k:'sp',l:'Spot',a:'30°'},{k:'fl_b',l:'Flood',a:'40°'},{k:'wf',l:'Wide Flood',a:'50°'},{k:'ls',l:'Linear Spread',a:'50°×30°'}],
           },
-          trims:{
-            round:[
-              {k:'mf',       l:'Micro Flange',             sku:'X2TRDSWHMF'},
-              {k:'fl_less',  l:'Flangeless',               sku:'X2TRDSWHFL'},
-              {k:'ww_mf',    l:'Wall Wash — Micro Flange', sku:'X2TRDWWHMF'},
-              {k:'ww_fl',    l:'Wall Wash — Flangeless',   sku:'X2TRDWWHFL'},
-              {k:'pin',      l:'Pinhole',                  sku:'X2TRDPWH'},
-              {k:'pin_fl',   l:'Pinhole — Flangeless',     sku:'X2TRDPWHFL'},
-              {k:'hyp',      l:'Hyperbolic',               sku:'X2TRDHWH'},
-              {k:'hyp_fl',   l:'Hyperbolic — Flangeless',  sku:'X2TRDHWHFL'},
-              {k:'dec_open', l:'Decorative: Open',         sku:'X2TRDSWHDO'},
-              {k:'dec_hyp',  l:'Decorative: Hyperbolic',   sku:'X2TRDSWHDH'},
-            ],
-            square:[
-              {k:'mf',       l:'Micro Flange',             sku:'X2TSDSWHMF'},
-              {k:'fl_less',  l:'Flangeless',               sku:'X2TSDSWHFL'},
-              {k:'ww_mf',    l:'Wall Wash — Micro Flange', sku:'X2TSDWWHMF'},
-              {k:'ww_fl',    l:'Wall Wash — Flangeless',   sku:'X2TSDWWHFL'},
-              {k:'pin',      l:'Pinhole',                  sku:'X2TSDPWH'},
-              {k:'pin_fl',   l:'Pinhole — Flangeless',     sku:'X2TSDPWHFL'},
-              {k:'dec_open', l:'Decorative: Open',         sku:'X2TSDSWHDO'},
-              {k:'dec_float',l:'Decorative: Float',        sku:'X2TSDSWHDF'},
-            ],
+          trimTypes:['flanged','flangeless'],
+          trimStyles:{
+            round:{
+              flanged:   [{k:'mf',l:'Micro Flange'},{k:'ww',l:'Wall Wash'},{k:'pin',l:'Pinhole'},{k:'hyp',l:'Hyperbolic'},{k:'dec_open',l:'Decorative: Open'},{k:'dec_hyp',l:'Decorative: Hyperbolic'}],
+              flangeless:[{k:'std',l:'Standard'},{k:'ww',l:'Wall Wash'},{k:'pin',l:'Pinhole'},{k:'hyp',l:'Hyperbolic'}],
+              decorative:[{k:'dec_open',l:'Decorative: Open'},{k:'dec_hyp',l:'Decorative: Hyperbolic'}],
+            },
+            square:{
+              flanged:   [{k:'mf',l:'Micro Flange'},{k:'ww',l:'Wall Wash'},{k:'pin',l:'Pinhole'},{k:'dec_open',l:'Decorative: Open'},{k:'dec_float',l:'Decorative: Float'}],
+              flangeless:[{k:'std',l:'Standard'},{k:'ww',l:'Wall Wash'},{k:'pin',l:'Pinhole'}],
+              decorative:[{k:'dec_open',l:'Decorative: Open'},{k:'dec_float',l:'Decorative: Float'}],
+            },
           },
         },
         adjustable:{
-          l:'Adjustable', wet:false, tilt:35, note:'360° rotation, 35° tilt',
+          l:'Adjustable',wet:false,tilt:35,note:'360° rotation, 35° tilt',
           lumens:[750,1000],
           beams:{
-            round: [{k:'ns',l:'Narrow Spot',a:'20°'},{k:'sp',l:'Spot',a:'30°'},{k:'fl',l:'Flood',a:'40°'},{k:'wf',l:'Wide Flood',a:'50°'},{k:'ls',l:'Linear Spread',a:'50°×30°'}],
-            square:[{k:'ns',l:'Narrow Spot',a:'20°'},{k:'sp',l:'Spot',a:'30°'},{k:'fl',l:'Flood',a:'40°'},{k:'wf',l:'Wide Flood',a:'50°'},{k:'ls',l:'Linear Spread',a:'50°×30°'}],
+            round: [{k:'ns',l:'Narrow Spot',a:'20°'},{k:'sp',l:'Spot',a:'30°'},{k:'fl_b',l:'Flood',a:'40°'},{k:'wf',l:'Wide Flood',a:'50°'},{k:'ls',l:'Linear Spread',a:'50°×30°'}],
+            square:[{k:'ns',l:'Narrow Spot',a:'20°'},{k:'sp',l:'Spot',a:'30°'},{k:'fl_b',l:'Flood',a:'40°'},{k:'wf',l:'Wide Flood',a:'50°'},{k:'ls',l:'Linear Spread',a:'50°×30°'}],
           },
-          trims:{
-            round:[
-              {k:'mf',     l:'Micro Flange',             sku:'X2TRASWHMF'},
-              {k:'fl_less',l:'Flangeless',               sku:'X2TRASWHFL'},
-              {k:'ww_mf',  l:'Wall Wash — Micro Flange', sku:'X2TRAWWHMF'},
-              {k:'ww_fl',  l:'Wall Wash — Flangeless',   sku:'X2TRAWWHFL'},
-              {k:'pin',    l:'Pinhole',                  sku:'X2TRAPWH'},
-              {k:'pin_fl', l:'Pinhole — Flangeless',     sku:'X2TRAPWHFL'},
-            ],
-            square:[
-              {k:'mf',     l:'Micro Flange',   sku:'X2TSASWHMF'},
-              {k:'fl_less',l:'Flangeless',     sku:'X2TSASWHFL'},
-              {k:'pin',    l:'Pinhole',        sku:'X2TSAPWH'},
-              {k:'pin_fl', l:'Pinhole — Flangeless',sku:'X2TSAPWHFL'},
-            ],
+          trimTypes:['flanged','flangeless'],
+          trimStyles:{
+            round:{
+              flanged:   [{k:'mf',l:'Micro Flange'},{k:'pin',l:'Pinhole'},{k:'hyp',l:'Hyperbolic'}],
+              flangeless:[{k:'std',l:'Standard'},{k:'ww',l:'Wall Wash'},{k:'pin',l:'Pinhole'},{k:'hyp',l:'Hyperbolic'}],
+              decorative:[],
+            },
+            square:{
+              flanged:   [{k:'mf',l:'Micro Flange'},{k:'pin',l:'Pinhole'}],
+              flangeless:[{k:'std',l:'Standard'},{k:'pin',l:'Pinhole'}],
+              decorative:[],
+            },
           },
         },
       },
     },
 
     A4:{
-      l:'Artafex 4', short:'A4',
+      l:'Artafex 4',short:'A4',
       cct:['2700K','3000K','3500K','4000K','warm_dim','tunable_white'],
       finishes:[
-        {k:'white',  l:'White',        code:'WH',p:false},
-        {k:'black',  l:'Black',        code:'BK',p:false},
-        {k:'bronze', l:'Bronze',       code:'BZ',p:false},
-        {k:'clear',  l:'Clear Diffuse',code:'CW',p:false},
-        {k:'custom', l:'Custom Color', code:'CC',p:false},
+        {k:'white',  l:'White',        p:false},
+        {k:'black',  l:'Black',        p:false},
+        {k:'bronze', l:'Bronze',       p:false},
+        {k:'clear',  l:'Clear Diffuse',p:false},
+        {k:'custom', l:'Custom Color', p:false},
       ],
-      housings:{
-        round:{
-          new:        {sku:'M4NCRS', l:'NC Standard'},
-          new_fr:     {sku:'M4NCRF', l:'NC Fire Rated'},
-          new_sf:     {sku:'M4SFRS', l:'NC Spray Foam'},
-          chicago:    {sku:'M4CPRS', l:'Chicago Plenum'},
-          dbl:        {sku:'M4DHRS', l:'Double Housing'},
-          lp:         {sku:'M4LTRS', l:'Low Profile'},
-          lp_fr:      {sku:'M4LTRF', l:'Low Profile — Fire Rated'},
-          shallow:    {sku:'M4NSRS', l:'Super Shallow'},
-          remodel:    {sku:'M4RMRS', l:'Remodel Standard'},
-          remodel_fr: {sku:'M4RMRF', l:'Remodel — Fire Rated'},
-          concrete:   {sku:'M4CC',   l:'Concrete'},
-          retrofit:   {sku:'M4KRRETRO6', l:'Retrofit Kit 6"→4"'},
-        },
-        square:{
-          new:        {sku:'M4NCSS', l:'NC Standard'},
-          new_fr:     {sku:'M4NCSF', l:'NC Fire Rated'},
-          new_sf:     {sku:'M4SFSS', l:'NC Spray Foam'},
-          chicago:    {sku:'M4CPSS', l:'Chicago Plenum'},
-          lp:         {sku:'M4LTSS', l:'Low Profile'},
-          lp_fr:      {sku:'M4LTSF', l:'Low Profile — Fire Rated'},
-          shallow:    {sku:'M4NSSS', l:'Super Shallow'},
-          remodel:    {sku:'M4RMSS', l:'Remodel Standard'},
-          remodel_fr: {sku:'M4RMSF', l:'Remodel — Fire Rated'},
-          retrofit:   {sku:'M4KSRETRO6', l:'Retrofit Kit 6"→4"'},
-        },
-      },
       modules:{
         downlight:{
-          l:'Downlight', wet:true, tilt:null,
+          l:'Downlight',wet:true,tilt:null,
           lumens:[750,1000,1250,1500],
           beams:{
-            round: [{k:'ns',l:'Narrow Spot',a:'15°'},{k:'sp',l:'Spot',a:'25°'},{k:'fl',l:'Flood',a:'40°'},{k:'wf',l:'Wide Flood',a:'60°'},{k:'ga',l:'General Ambient',a:'90°+'},{k:'ls',l:'Linear Spread',a:'40°×20°'},{k:'sf',l:'Soft Focus',a:'—'}],
-            square:[{k:'ns',l:'Narrow Spot',a:'15°'},{k:'sp',l:'Spot',a:'25°'},{k:'fl',l:'Flood',a:'40°'},{k:'wf',l:'Wide Flood',a:'60°'},{k:'ga',l:'General Ambient',a:'90°+'},{k:'ls',l:'Linear Spread',a:'40°×20°'},{k:'sf',l:'Soft Focus',a:'—'}],
+            round: [{k:'ns',l:'Narrow Spot',a:'15°'},{k:'sp',l:'Spot',a:'25°'},{k:'fl_b',l:'Flood',a:'40°'},{k:'wf',l:'Wide Flood',a:'60°'},{k:'ga',l:'General Ambient',a:'90°+'},{k:'ls',l:'Linear Spread',a:'40°×20°'},{k:'sf',l:'Soft Focus',a:'—'}],
+            square:[{k:'ns',l:'Narrow Spot',a:'15°'},{k:'sp',l:'Spot',a:'25°'},{k:'fl_b',l:'Flood',a:'40°'},{k:'wf',l:'Wide Flood',a:'60°'},{k:'ga',l:'General Ambient',a:'90°+'},{k:'ls',l:'Linear Spread',a:'40°×20°'},{k:'sf',l:'Soft Focus',a:'—'}],
           },
-          trims:{
-            round:[
-              {k:'std',     l:'Standard',                          sku:'M4TRSWH'},
-              {k:'fl_less', l:'Flangeless',                        sku:'M4TRSWHFL'},
-              {k:'ww',      l:'Wall Wash / Sloped',                sku:'M4TRLWH'},
-              {k:'ww_fl',   l:'Wall Wash — Flangeless',            sku:'M4TRLWHFL'},
-              {k:'pin',     l:'Pinhole',                           sku:'M4TRPWH'},
-              {k:'pin_fl',  l:'Pinhole — Flangeless',              sku:'M4TRPWHFL'},
-              {k:'hyp',     l:'Hyperbolic',                        sku:'M4TRHWH'},
-              {k:'hyp_fl',  l:'Hyperbolic — Flangeless',           sku:'M4TRHWHFL'},
-              {k:'dec_of',  l:'Decorative: Open Frosted',          sku:'M4TRSWHDOF'},
-              {k:'dec_cf',  l:'Decorative: Closed Frosted',        sku:'M4TRSWHDCF'},
-              {k:'dec_ccfs',l:'Decorative: Closed Clear Frosted',  sku:'M4TRSWHDCC'},
-              {k:'dec_ccfi',l:'Decorative: Closed Clear Inside',   sku:'M4TRSWHDCCF'},
-            ],
-            square:[
-              {k:'std',     l:'Standard',                          sku:'M4TSSWH'},
-              {k:'fl_less', l:'Flangeless',                        sku:'M4TSSWHFL'},
-              {k:'ww',      l:'Wall Wash / Sloped',                sku:'M4TSLWH'},
-              {k:'ww_fl',   l:'Wall Wash — Flangeless',            sku:'M4TSLWHFL'},
-              {k:'pin',     l:'Pinhole',                           sku:'M4TSPWH'},
-              {k:'pin_fl',  l:'Pinhole — Flangeless',              sku:'M4TSPWHFL'},
-              {k:'ros',     l:'Round on Square',                   sku:'M4TSQWH'},
-              {k:'ros_fl',  l:'Round on Square — Flangeless',      sku:'M4TSQWHFL'},
-              {k:'dec_cf',  l:'Decorative: Closed Frosted',        sku:'M4TSSWHDCF'},
-              {k:'dec_ccfi',l:'Decorative: Closed Clear Inside',   sku:'M4TSSWHDCCF'},
-            ],
+          trimTypes:['flanged','flangeless','decorative'],
+          trimStyles:{
+            round:{
+              flanged:   [{k:'std',l:'Standard'},{k:'ww',l:'Wall Wash/Sloped'},{k:'pin',l:'Pinhole'},{k:'hyp',l:'Hyperbolic'},{k:'dec_of',l:'Decorative: Open Frosted'},{k:'dec_cf',l:'Decorative: Closed Frosted'},{k:'dec_ccfs',l:'Decorative: Closed Clear Side'},{k:'dec_ccfi',l:'Decorative: Closed Clear Inside'}],
+              flangeless:[{k:'std',l:'Standard'},{k:'ww',l:'Wall Wash/Sloped'},{k:'pin',l:'Pinhole'},{k:'hyp',l:'Hyperbolic'}],
+              decorative:[{k:'dec_of',l:'Open Frosted'},{k:'dec_cf',l:'Closed Frosted'},{k:'dec_ccfs',l:'Closed Clear Side'},{k:'dec_ccfi',l:'Closed Clear Inside'}],
+            },
+            square:{
+              flanged:   [{k:'std',l:'Standard'},{k:'ww',l:'Wall Wash/Sloped'},{k:'pin',l:'Pinhole'},{k:'ros',l:'Round on Square'},{k:'dec_cf',l:'Decorative: Closed Frosted'},{k:'dec_ccfi',l:'Decorative: Closed Clear Inside'}],
+              flangeless:[{k:'std',l:'Standard'},{k:'ww',l:'Wall Wash/Sloped'},{k:'pin',l:'Pinhole'},{k:'ros',l:'Round on Square'}],
+              decorative:[{k:'dec_cf',l:'Closed Frosted'},{k:'dec_ccfi',l:'Closed Clear Inside'}],
+            },
           },
         },
         adjustable:{
-          l:'Adjustable', wet:false, tilt:45, note:'360° directional aim, 45° tilt',
+          l:'Adjustable',wet:false,tilt:45,note:'360° directional aim, 45° tilt',
           lumens:[750,1000],
           beams:{
-            round: [{k:'ns',l:'Narrow Spot',a:'15°'},{k:'sp',l:'Spot',a:'25°'},{k:'fl',l:'Flood',a:'40°'},{k:'ls',l:'Linear Spread',a:'60°×30°'},{k:'sf',l:'Soft Focus',a:'—'}],
-            square:[{k:'ns',l:'Narrow Spot',a:'15°'},{k:'sp',l:'Spot',a:'25°'},{k:'fl',l:'Flood',a:'40°'},{k:'ls',l:'Linear Spread',a:'60°×30°'},{k:'sf',l:'Soft Focus',a:'—'}],
+            round: [{k:'ns',l:'Narrow Spot',a:'15°'},{k:'sp',l:'Spot',a:'25°'},{k:'fl_b',l:'Flood',a:'40°'},{k:'ls',l:'Linear Spread',a:'60°×30°'},{k:'sf',l:'Soft Focus',a:'—'}],
+            square:[{k:'ns',l:'Narrow Spot',a:'15°'},{k:'sp',l:'Spot',a:'25°'},{k:'fl_b',l:'Flood',a:'40°'},{k:'ls',l:'Linear Spread',a:'60°×30°'},{k:'sf',l:'Soft Focus',a:'—'}],
           },
-          trims:{
-            round:[
-              {k:'std',    l:'Standard',                  sku:'M4TRSWH'},
-              {k:'fl_less',l:'Flangeless',                sku:'M4TRSWHFL'},
-              {k:'pin',    l:'Pinhole',                   sku:'M4TRPWH'},
-              {k:'pin_fl', l:'Pinhole — Flangeless',      sku:'M4TRPWHFL'},
-              {k:'hyp',    l:'Hyperbolic',                sku:'M4TRHWH'},
-              {k:'hyp_fl', l:'Hyperbolic — Flangeless',   sku:'M4TRHWHFL'},
-            ],
-            square:[
-              {k:'ros',    l:'Round on Square',                sku:'M4TSQWH'},
-              {k:'ros_fl', l:'Round on Square — Flangeless',   sku:'M4TSQWHFL'},
-              {k:'pin',    l:'Pinhole',                        sku:'M4TSPWH'},
-              {k:'pin_fl', l:'Pinhole — Flangeless',           sku:'M4TSPWHFL'},
-            ],
+          trimTypes:['flanged','flangeless'],
+          trimStyles:{
+            round:{
+              flanged:   [{k:'std',l:'Standard'},{k:'pin',l:'Pinhole'},{k:'hyp',l:'Hyperbolic'}],
+              flangeless:[{k:'std',l:'Standard'},{k:'pin',l:'Pinhole'},{k:'hyp',l:'Hyperbolic'}],
+              decorative:[],
+            },
+            square:{
+              flanged:   [{k:'ros',l:'Round on Square'},{k:'pin',l:'Pinhole'}],
+              flangeless:[{k:'ros',l:'Round on Square'},{k:'pin',l:'Pinhole'}],
+              decorative:[],
+            },
           },
         },
       },
     },
   },
-
-  // NC type options per product (used when construction='new')
-  ncTypes:{
-    A2:[
-      {k:'standard',  l:'Standard'},
-      {k:'chicago',   l:'Chicago Plenum'},
-    ],
-    A4:[
-      {k:'standard',  l:'Standard'},
-      {k:'fire_rated',l:'Fire Rated'},
-      {k:'spray_foam',l:'Spray Foam'},
-      {k:'low_profile',l:'Low Profile'},
-      {k:'super_shallow',l:'Super Shallow'},
-      {k:'double',    l:'Double Housing'},
-      {k:'concrete',  l:'Concrete'},
-    ],
-  },
-
-  // Maps ncType + shape → housing key in product.housings
-  ncTypeToHousingKey:{
-    standard:'new', fire_rated:'new_fr', spray_foam:'new_sf',
-    chicago:'chicago', low_profile:'lp', super_shallow:'shallow',
-    double:'dbl', concrete:'concrete',
-  },
 };
 
 // ═══════════════════════════════════════════════════════════════
+// DECLARATIVE RULES ENGINE
+// ═══════════════════════════════════════════════════════════════
+const RULES = {
+  // Rule 1: Flangeless trim → auto-add mud plate
+  flangelessMudPlate:{
+    trigger:(f)=>f.trimType==='flangeless',
+    autoAdd:(f)=>({
+      sku:   f.shape==='round'?'M4XRMUD':'M4XSMUD',
+      label: f.shape==='round'?'Flangeless Mud Plate (Round)':'Flangeless Mud Plate (Square)',
+      price: 37, autoAdded:true,
+      note:'Required: Flangeless trim on drywall ceiling',
+    }),
+  },
+
+  // Rule 2: Flangeless → recommend router template (optional)
+  routerTemplate:{
+    trigger:(f)=>f.trimType==='flangeless',
+    optional:(f)=>({
+      sku:   f.shape==='round'?'M4KRTEMPLATE':'M4KSTEMPLATE',
+      label: f.shape==='round'?'Router Template (Round)':'Router Template (Square)',
+      price: 0, autoAdded:false,
+      note:'Recommended for wood ceilings',
+    }),
+  },
+
+  // Rule 3: A2 + micro flange → auto-add precision lock collar
+  a2PrecisionCollar:{
+    trigger:(f)=>f.product==='A2'&&f.trimStyle==='mf',
+    autoAdd:()=>({
+      sku:'X2CRPRECISION',
+      label:'Precision Lock Collar',
+      price:0, autoAdded:true,
+      note:'Included with A2 Micro Flange trim',
+    }),
+  },
+
+  // Rule 4: Extension collar always optional
+  extensionCollar:{
+    trigger:()=>true,
+    optional:(f)=>({
+      sku:   f.shape==='round'?'M4CREXT':'M4CSEXT',
+      label: f.shape==='round'?'Extension Collar (Round)':'Extension Collar (Square)',
+      price:0, autoAdded:false,
+      note:'Optional: for deeper ceiling cavities',
+    }),
+  },
+
+  // Rule 5: Digital-only CCTs gate TRIAC
+  digitalOnlyCCT:{
+    ccts:['warm_dim','tunable_white'],
+    note:'Warm Dim / Tunable White requires PhaseX or DALI-2',
+  },
+
+  // Rule 6: Adjustable module limitations
+  adjustableGates:{
+    maxLumens:1000,
+    note:'Adjustable module: max 1000lm',
+  },
+
+  // Rule 7: Round-only housings
+  roundOnlyInstalls:['concrete','double'],
+
+  // Rule 8: Premium finishes A2 only
+  premiumFinishes:{
+    products:['A2'],
+    finishes:['brass','copper','graphite'],
+  },
+
+  // Rule 9: Remodel incompatible trim styles for A2
+  a2RemodelBlockedTrims:['fl_less','dec_open','dec_float','dec_hyp'],
+};
+
+// ═══════════════════════════════════════════════════════════════
+// AUTO-ACCESSORY EVALUATOR
+// ═══════════════════════════════════════════════════════════════
+function evalAccessories(f){
+  const auto=[];
+  const optional=[];
+
+  // Mud plate for flangeless
+  if(RULES.flangelessMudPlate.trigger(f)){
+    const item=RULES.flangelessMudPlate.autoAdd(f);
+    if(!auto.find(a=>a.sku===item.sku))auto.push(item);
+  }
+
+  // Router template (optional) for flangeless
+  if(RULES.routerTemplate.trigger(f)){
+    const item=RULES.routerTemplate.optional(f);
+    if(!optional.find(a=>a.sku===item.sku))optional.push(item);
+  }
+
+  // A2 precision lock collar
+  if(RULES.a2PrecisionCollar.trigger(f)){
+    const item=RULES.a2PrecisionCollar.autoAdd();
+    if(!auto.find(a=>a.sku===item.sku))auto.push(item);
+  }
+
+  // Extension collar always optional
+  if(RULES.extensionCollar.trigger(f)){
+    const item=RULES.extensionCollar.optional(f);
+    if(!optional.find(a=>a.sku===item.sku))optional.push(item);
+  }
+
+  return{auto,optional};
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SKU GENERATORS
+// ═══════════════════════════════════════════════════════════════
+function getHousingSKU(f){
+  const{product,shape,installation,housingStyle,dimming}=f;
+  const sh=shape==='round'?'R':'S';
+  const hs=housingStyle||'standard';
+
+  if(product==='A4'){
+    if(installation==='retrofit')return shape==='round'?'M4KRRETRO6':'M4KSRETRO6';
+    if(installation==='concrete')return 'M4CC';
+    if(installation==='double')return 'M4DHRS';
+    if(installation==='chicago')return`M4CP${sh}S`;
+    if(installation==='spray_foam')return`M4SF${sh}S`;
+    if(installation==='super_shallow')return`M4NS${sh}S`;
+    if(installation==='low_profile')return hs==='fire_rated'?`M4LT${sh}F`:`M4LT${sh}S`;
+    if(installation==='remodel')return hs==='fire_rated'?`M4RM${sh}F`:`M4RM${sh}S`;
+    // new construction
+    if(hs==='fire_rated')return`M4NC${sh}F`;
+    return`M4NC${sh}S`;
+  }
+
+  if(product==='A2'){
+    if(installation==='retrofit')return shape==='round'?'X2KRRETRO6':'X2KSRETRO6';
+    if(installation==='chicago')return`X2CP${sh}`;
+    if(installation==='remodel'){
+      const dig=dimming==='dali2'||dimming==='phasex';
+      return shape==='round'?(dig?'X2RDR':'X2RMR'):(dig?'X2RDS':'X2RMS');
+    }
+    return`X2NC${sh}`;
+  }
+
+  return'';
+}
+
+function getHousingLabel(f){
+  const{product,shape,installation,housingStyle,dimming}=f;
+  const hs=housingStyle||'standard';
+  if(product==='A4'){
+    if(installation==='retrofit')return'Retrofit Kit 6"→4"';
+    if(installation==='concrete')return'Concrete';
+    if(installation==='double')return'Double Housing';
+    if(installation==='chicago')return'Chicago Plenum';
+    if(installation==='spray_foam')return'NC Spray Foam';
+    if(installation==='super_shallow')return'Super Shallow';
+    if(installation==='low_profile')return hs==='fire_rated'?'Low Profile Fire Rated':'Low Profile';
+    if(installation==='remodel')return hs==='fire_rated'?'Remodel Fire Rated':'Remodel Standard';
+    return hs==='fire_rated'?'NC Fire Rated':'NC Standard';
+  }
+  if(product==='A2'){
+    if(installation==='retrofit')return'Retrofit Kit 6"→2"';
+    if(installation==='chicago')return'Chicago Plenum';
+    if(installation==='remodel'){const dig=dimming==='dali2'||dimming==='phasex';return dig?'Remodel Digital':'Remodel Analog';}
+    return'NC Standard';
+  }
+  return installation||'';
+}
+
+function getTrimSKU(f){
+  const{product,module,shape,trimType,trimStyle,trimFinish}=f;
+  if(!trimStyle||!trimType)return'';
+  const sh=shape==='round'?'R':'S';
+  const isFL=trimType==='flangeless';
+  const isDec=trimType==='decorative'||trimStyle.startsWith('dec_');
+  const FC=C.finishCodes[trimFinish||'white']||'WH';
+  const FL=isFL?'FL':'';
+
+  if(product==='A4'){
+    if(isDec){
+      // Decorative trims have fixed SKUs (no finish variant)
+      const decMap={
+        dec_of:'M4TRSWHDOF',
+        dec_cf:shape==='round'?'M4TRSWHDCF':'M4TSSWHDCF',
+        dec_ccfs:'M4TRSWHDCC',
+        dec_ccfi:shape==='round'?'M4TRSWHDCCF':'M4TSSWHDCCF',
+      };
+      return decMap[trimStyle]||'';
+    }
+    const styleCode={std:'S',ww:'L',pin:'P',hyp:'H',ros:'Q'}[trimStyle]||'S';
+    return`M4T${sh}${styleCode}${FC}${FL}`;
+  }
+
+  if(product==='A2'){
+    const mod=module==='downlight'?'D':'A';
+    if(isDec){
+      const decMap={
+        dec_open:shape==='round'?'X2TRDSWHDO':'X2TSDSWHDO',
+        dec_hyp: 'X2TRDSWHDH',
+        dec_float:'X2TSDSWHDF',
+      };
+      return decMap[trimStyle]||'';
+    }
+    if(trimStyle==='mf')return`X2T${sh}${mod}S${FC}MF`;
+    const styleCode={std:'S',ww:'WW',pin:'P',hyp:'H'}[trimStyle]||'S';
+    return`X2T${sh}${mod}${styleCode}${FC}${FL}`;
+  }
+
+  return'';
+}
+
+function getTrimLabel(f){
+  const{product,module,shape,trimType,trimStyle}=f;
+  if(!trimType||!trimStyle)return'';
+  const mod=C.products[product]?.modules[module];
+  if(!mod)return trimStyle;
+  const list=mod.trimStyles?.[shape]?.[trimType]||[];
+  const found=list.find(t=>t.k===trimStyle);
+  return found?found.l:trimStyle;
+}
+
+function getBeamLabel(f){
+  const{product,module,shape,beam}=f;
+  if(!beam)return null;
+  const beams=C.products[product]?.modules[module]?.beams[shape]||[];
+  const b=beams.find(x=>x.k===beam);
+  return b?`${b.l} (${b.a})`:beam;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// LEGACY FIXTURE MIGRATION (old schema → new kit schema)
+// ═══════════════════════════════════════════════════════════════
+function migrateFixture(f){
+  // Detect old schema: has 'trim' field but not 'trimType'
+  if(f.trimType!==undefined)return f; // already new schema
+
+  const trimMap={
+    'std':    {trimType:'flanged',    trimStyle:'std'},
+    'fl_less':{trimType:'flangeless', trimStyle:'std'},
+    'mf':     {trimType:'flanged',    trimStyle:'mf'},
+    'ww':     {trimType:'flanged',    trimStyle:'ww'},
+    'ww_mf':  {trimType:'flanged',    trimStyle:'ww'},
+    'ww_fl':  {trimType:'flangeless', trimStyle:'ww'},
+    'pin':    {trimType:'flanged',    trimStyle:'pin'},
+    'pin_fl': {trimType:'flangeless', trimStyle:'pin'},
+    'hyp':    {trimType:'flanged',    trimStyle:'hyp'},
+    'hyp_fl': {trimType:'flangeless', trimStyle:'hyp'},
+    'ros':    {trimType:'flanged',    trimStyle:'ros'},
+    'ros_fl': {trimType:'flangeless', trimStyle:'ros'},
+    'dec_of': {trimType:'decorative', trimStyle:'dec_of'},
+    'dec_cf': {trimType:'decorative', trimStyle:'dec_cf'},
+    'dec_ccfs':{trimType:'decorative',trimStyle:'dec_ccfs'},
+    'dec_ccfi':{trimType:'decorative',trimStyle:'dec_ccfi'},
+    'dec_open':{trimType:'decorative',trimStyle:'dec_open'},
+    'dec_hyp': {trimType:'decorative',trimStyle:'dec_hyp'},
+    'dec_float':{trimType:'decorative',trimStyle:'dec_float'},
+  };
+
+  const t=f.trim?trimMap[f.trim]:{trimType:'flanged',trimStyle:'std'};
+
+  // Map old construction + ncType → installation + housingStyle
+  let installation='new';
+  let housingStyle='standard';
+
+  if(f.construction==='remodel')installation='remodel';
+  else if(f.construction==='retrofit')installation='retrofit';
+  else if(f.construction==='new'){
+    const nc=f.ncType||'standard';
+    if(nc==='chicago')installation='chicago';
+    else if(nc==='fire_rated'){installation='new';housingStyle='fire_rated';}
+    else if(nc==='spray_foam')installation='spray_foam';
+    else if(nc==='low_profile')installation='low_profile';
+    else if(nc==='super_shallow')installation='super_shallow';
+    else if(nc==='double')installation='double';
+    else if(nc==='concrete')installation='concrete';
+    else installation='new';
+  }
+
+  return{
+    id:f.id,
+    qty:f.qty,
+    product:f.product||'A4',
+    shape:f.shape||'round',
+    installation,
+    housingStyle,
+    module:f.module||'downlight',
+    dimming:f.dimming||'dali2',
+    lumens:f.lumens||1000,
+    cct:f.cct||'3000K',
+    beam:f.beamSpread||null,
+    moduleFinish:f.moduleFinish||'white',
+    trimType:t?t.trimType:'flanged',
+    trimStyle:t?t.trimStyle:'std',
+    trimFinish:f.finish||'white',
+    accessories:[],
+    wetLocation:!!f.wetLocation,
+    notes:f.notes||'',
+  };
+}
+
+function migrateJobFixtures(job){
+  if(!job||!job.rooms)return job;
+  job.rooms.forEach(r=>{
+    r.fixtures=r.fixtures.map(f=>migrateFixture(f));
+  });
+  return job;
+}
+
+// ═══════════════════════════════
+// ═══════════════════════════════════════════════════════════════
 // UTILS
 // ═══════════════════════════════════════════════════════════════
-const U = {
-  uuid(){
-    return crypto.randomUUID ? crypto.randomUUID()
-      : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{
-          const r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16);
-        });
-  },
+const U={
+  uuid(){return crypto.randomUUID?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16)})},
   today(){return new Date().toISOString().split('T')[0]},
   watts(lm){return C.wattage[lm]||0},
-  roomWatts(room){return room.fixtures.reduce((s,f)=>s+(f.qty*U.watts(f.lumens)),0)},
-  jobWatts(job){return job.rooms.reduce((s,r)=>s+U.roomWatts(r),0)},
-  jobFixtureCount(job){return job.rooms.reduce((s,r)=>s+r.fixtures.reduce((ss,f)=>ss+f.qty,0),0)},
-  roomFixtureCount(room){return room.fixtures.reduce((s,f)=>s+f.qty,0)},
+  roomWatts(r){return r.fixtures.reduce((s,f)=>s+(f.qty*U.watts(f.lumens)),0)},
+  jobWatts(j){return j.rooms.reduce((s,r)=>s+U.roomWatts(r),0)},
+  jobFxCount(j){return j.rooms.reduce((s,r)=>s+r.fixtures.reduce((ss,f)=>ss+f.qty,0),0)},
+  roomFxCount(r){return r.fixtures.reduce((s,f)=>s+f.qty,0)},
+  esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')},
   cctLabel(k){return C.cct[k]?.l||k},
   dimLabel(k){return C.dim[k]?.l||k},
-  productLabel(p){return C.products[p]?.l||p},
-  moduleLabel(p,m){return C.products[p]?.modules[m]?.l||m},
-  trimLabel(p,mod,shape,tk){
-    const t=C.products[p]?.modules[mod]?.trims[shape]?.find(x=>x.k===tk);
-    return t?.l||tk;
-  },
-  trimSKU(p,mod,shape,tk){
-    const t=C.products[p]?.modules[mod]?.trims[shape]?.find(x=>x.k===tk);
-    return t?.sku||'';
-  },
-  finishLabel(p,fk){
-    const f=C.products[p]?.finishes.find(x=>x.k===fk);
-    return f?.l||fk;
-  },
-  beamLabel(p,mod,shape,bk){
-    const b=C.products[p]?.modules[mod]?.beams[shape]?.find(x=>x.k===bk);
-    return b?`${b.l} (${b.a})`:(bk||'');
-  },
-  getHousingSKU(f){
-    const prod=C.products[f.product];
-    if(!prod)return'';
-    const h=prod.housings[f.shape];
-    if(!h)return'';
-    if(f.construction==='remodel'){
-      return f.dimming==='triac' ? (h.remodel?.sku||'') : (h.remodel_d?.sku||h.remodel?.sku||'');
-    }
-    if(f.construction==='retrofit'){return h.retrofit?.sku||''}
-    // NC
-    const ncKey=C.ncTypeToHousingKey[f.ncType||'standard']||'new';
-    // A2 chicago is handled via ncType
-    if(f.product==='A2'&&f.ncType==='chicago')return h.chicago?.sku||'';
-    return h[ncKey]?.sku||h.new?.sku||'';
-  },
-  getHousingLabel(f){
-    const prod=C.products[f.product];
-    if(!prod)return'';
-    const h=prod.housings[f.shape];
-    if(!h)return'';
-    if(f.construction==='remodel'){
-      return f.dimming==='triac' ? (h.remodel?.l||'') : (h.remodel_d?.l||h.remodel?.l||'');
-    }
-    if(f.construction==='retrofit'){return h.retrofit?.l||''}
-    const ncKey=C.ncTypeToHousingKey[f.ncType||'standard']||'new';
-    if(f.product==='A2'&&f.ncType==='chicago')return h.chicago?.l||'';
-    return h[ncKey]?.l||h.new?.l||'';
-  },
-  fixtureTitle(f){
-    return `${C.products[f.product]?.short||f.product} ${C.products[f.product]?.modules[f.module]?.l||f.module}`;
-  },
+  resolveJobDimming(j){return j.phasex?.enabled?'phasex':(j.defaults?.dimming||'dali2')},
+  resolveRoomDimming(j,r){return r.dimmingOverride||U.resolveJobDimming(j)},
+  pxGateways(n){return Math.max(1,Math.ceil(n/64))},
+  countPX(j){let n=0;j.rooms.forEach(r=>r.fixtures.forEach(f=>{if(f.dimming==='phasex')n+=f.qty}));return n},
+  countByProduct(j,p){let n=0;j.rooms.forEach(r=>r.fixtures.forEach(f=>{if(f.product===p)n+=f.qty}));return n},
+  fixtureTitle(f){const p=C.products[f.product];const m=p?.modules[f.module];return`${p?.short||f.product} ${m?.l||f.module}`;},
   fixtureSummary(f){
-    const parts=[
-      f.shape.charAt(0).toUpperCase()+f.shape.slice(1),
-      f.lumens+'lm',
-      U.cctLabel(f.cct),
-    ];
-    if(f.trim)parts.push(U.trimLabel(f.product,f.module,f.shape,f.trim));
+    const parts=[f.shape.charAt(0).toUpperCase()+f.shape.slice(1),f.lumens+'lm',U.cctLabel(f.cct)];
+    if(f.trimType&&f.trimStyle)parts.push(getTrimLabel(f));
     return parts.join(' · ');
   },
-  resolveJobDimming(job){
-    return job.phasex.enabled ? 'phasex' : (job.defaults.dimming||'dali2');
-  },
-  resolveRoomDimming(job,room){
-    if(room.dimmingOverride)return room.dimmingOverride;
-    return U.resolveJobDimming(job);
-  },
-  clampLumens(product,module,current){
-    const valid=C.products[product]?.modules[module]?.lumens||[1000];
-    if(valid.includes(current))return current;
-    return valid.reduce((prev,cur)=>Math.abs(cur-current)<Math.abs(prev-current)?cur:prev);
-  },
-  validBeams(product,module,shape){
-    return C.products[product]?.modules[module]?.beams[shape]||[];
-  },
-  validTrims(product,module,shape){
-    return C.products[product]?.modules[module]?.trims[shape]||[];
-  },
-  validFinishes(product){
-    return C.products[product]?.finishes||[];
-  },
-  validDimming(cct){
-    return C.cct[cct]?.dim||['phasex','dali2','triac'];
-  },
-  pxGateways(n){return Math.max(1,Math.ceil(n/64))},
-  esc(str){return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')},
 };
 
 // ═══════════════════════════════════════════════════════════════
@@ -631,101 +860,48 @@ const U = {
 // ═══════════════════════════════════════════════════════════════
 const KEY='dmf_spec_v1';
 const DB={
-  load(){
-    try{const d=localStorage.getItem(KEY);return d?JSON.parse(d):null}catch{return null}
-  },
-  save(state){
-    try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){console.error('save',e)}
-  },
+  load(){try{const d=localStorage.getItem(KEY);return d?JSON.parse(d):null}catch{return null}},
+  save(state){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){console.error(e)}},
   newJob(name,address='',date=''){
-    return{
-      id:U.uuid(),name,address,date:date||U.today(),
-      createdAt:new Date().toISOString(),updatedAt:new Date().toISOString(),
+    return{id:U.uuid(),name,address,date:date||U.today(),createdAt:new Date().toISOString(),updatedAt:new Date().toISOString(),
       phasex:{enabled:false,roomOverrides:{}},
-      defaults:{product:'A4',module:'downlight',shape:'round',construction:'new',ncType:'standard',lumens:1000,cct:'3000K',dimming:'dali2',finish:'white'},
-      rooms:[],
-    };
+      defaults:{product:'A4',module:'downlight',shape:'round',installation:'new',housingStyle:'standard',lumens:1000,cct:'3000K',dimming:'dali2',moduleFinish:'white',trimType:'flanged',trimStyle:'std',trimFinish:'white'},
+      rooms:[]};
   },
   newRoom(name){return{id:U.uuid(),name,dimmingOverride:null,fixtures:[]}},
   newFixture(overrides={}){
-    return{
-      id:U.uuid(),qty:1,
-      product:'A4',module:'downlight',shape:'round',
-      construction:'new',ncType:'standard',
-      lumens:1000,cct:'3000K',dimming:'dali2',
-      beamSpread:null,trim:null,finish:'white',
-      wetLocation:false,notes:'',
-      ...overrides,
-    };
+    return{id:U.uuid(),qty:1,product:'A4',shape:'round',installation:'new',housingStyle:'standard',
+      module:'downlight',dimming:'dali2',lumens:1000,cct:'3000K',beam:null,moduleFinish:'white',
+      trimType:'flanged',trimStyle:'std',trimFinish:'white',
+      accessories:[],wetLocation:false,notes:'',...overrides};
   },
 };
 
 // ═══════════════════════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════════════════════
-let S={
-  jobs:[],
-  jobId:null,   // active job
-  roomId:null,  // active room
-  view:'jobs',  // jobs|job|room|fixture|reports
-  form:null,    // fixture form state
-  optOpen:false,// optional section open
-  modal:null,   // {type,data}
-  dirty:false,
-};
-
+let S={jobs:[],jobId:null,roomId:null,view:'jobs',form:null,formSection:'housing',dirty:false,modal:null};
 function getJob(){return S.jobs.find(j=>j.id===S.jobId)||null}
-function getRoom(){const j=getJob();return j?.rooms.find(r=>r.id===S.roomId)||null}
+function getRoom(){return getJob()?.rooms.find(r=>r.id===S.roomId)||null}
 
 // ═══════════════════════════════════════════════════════════════
-// SAVE / PERSIST
+// SAVE
 // ═══════════════════════════════════════════════════════════════
-function save(){
-  DB.save({v:1,jobs:S.jobs});
-  S.dirty=false;
-  document.getElementById('hdr-action').innerHTML=renderHdrAction();
-}
+function save(){DB.save({v:1,jobs:S.jobs});S.dirty=false}
 function markDirty(){S.dirty=true}
 document.addEventListener('visibilitychange',save);
 window.addEventListener('pagehide',save);
 window.addEventListener('beforeunload',save);
 
-// ═══════════════════════════════════════════════════════════════
-// TOAST
-// ═══════════════════════════════════════════════════════════════
-function toast(msg){
-  const el=document.createElement('div');
-  el.className='toast';el.textContent=msg;
+function toast(msg,dur=2800){
+  const el=document.createElement('div');el.className='toast';el.textContent=msg;
   document.getElementById('toasts').appendChild(el);
-  setTimeout(()=>el.remove(),2800);
+  setTimeout(()=>el.remove(),dur);
 }
 
 // ═══════════════════════════════════════════════════════════════
-// RENDER HELPERS
+// HEADER / NAV RENDER
 // ═══════════════════════════════════════════════════════════════
-function chips(items,selected,onclick,cls=''){
-  return items.map(it=>`<button class="chip${cls?` ${cls}`:''} ${it.k===selected?'on':''}" onclick="${onclick}('${it.k}')">${U.esc(it.l||it.k)}</button>`).join('');
-}
-function chipsScroll(items,selected,onclick){
-  return`<div class="chips-scroll">${items.map(it=>`<button class="chip ${it.k===selected?'on':''}" onclick="${onclick}('${it.k}')">${U.esc(it.l||it.k)}</button>`).join('')}</div>`;
-}
-
-// ═══════════════════════════════════════════════════════════════
-// RENDER HEADER
-// ═══════════════════════════════════════════════════════════════
-function renderHdrAction(){
-  const v=S.view;
-  if(v==='jobs')return`<button class="hdr-btn" onclick="App.importJSON()">📥 Import</button>`;
-  if(v==='job'){
-    const j=getJob();if(!j)return'';
-    return`<button class="hdr-btn" onclick="App.editJobSettings('${j.id}')">✏️ Edit</button>`;
-  }
-  if(v==='room'){
-    return`<button class="hdr-btn" onclick="App.goReports()">📊</button>`;
-  }
-  return'';
-}
-
 function renderHeader(){
   const v=S.view;
   const back=document.getElementById('hdr-back');
@@ -733,30 +909,23 @@ function renderHeader(){
   const action=document.getElementById('hdr-action');
   const showBack=v!=='jobs';
   back.style.display=showBack?'flex':'none';
-  if(v==='jobs') title.innerHTML=`<span class="dmf-tag">DMF</span> Spec`;
+  if(v==='jobs')title.innerHTML='<span class="dmf-tag">DMF</span> Spec';
   else if(v==='job'){const j=getJob();title.textContent=j?.name||'Job';}
   else if(v==='room'){const r=getRoom();title.textContent=r?.name||'Room';}
-  else if(v==='fixture') title.textContent=S.form?.id?'Edit Fixture':'Add Fixture';
-  else if(v==='reports'){const j=getJob();title.textContent=j?`${j.name} — Report`:'Report';}
-  action.innerHTML=renderHdrAction();
+  else if(v==='fixture')title.textContent=S.form?.id?'Edit Kit':'Add Kit';
+  else if(v==='reports'){const j=getJob();title.textContent=(j?.name||'Job')+' — Report';}
+  let act='';
+  if(v==='job'){const j=getJob();if(j)act=`<button class="hdr-btn" onclick="App.editJobSettings('${j.id}')">✏️ Edit</button>`;}
+  if(v==='jobs')act=`<button class="hdr-btn" onclick="App.importJSON()">📥 Import</button>`;
+  action.innerHTML=act;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// RENDER NAV
-// ═══════════════════════════════════════════════════════════════
 function renderNav(){
-  const v=S.view;
-  const hasJob=!!S.jobId;
+  const v=S.view;const hasJob=!!S.jobId;
   document.getElementById('nav').innerHTML=`
-    <div class="ni ${v==='jobs'?'on':''}" onclick="App.goJobs()">
-      <div class="ni-icon">🏠</div><div>Jobs</div>
-    </div>
-    <div class="ni ${v==='job'||v==='room'?'on':''} ${hasJob?'':'off'}" onclick="App.goJob()">
-      <div class="ni-icon">📋</div><div>Job</div>
-    </div>
-    <div class="ni ${v==='reports'?'on':''} ${hasJob?'':'off'}" onclick="App.goReports()">
-      <div class="ni-icon">📊</div><div>Reports</div>
-    </div>
+    <div class="ni ${v==='jobs'?'on':''}" onclick="App.goJobs()"><div class="ni-icon">🏠</div><div>Jobs</div></div>
+    <div class="ni ${v==='job'||v==='room'?'on':''} ${hasJob?'':'off'}" onclick="App.goJob()"><div class="ni-icon">📋</div><div>Job</div></div>
+    <div class="ni ${v==='reports'?'on':''} ${hasJob?'':'off'}" onclick="App.goReports()"><div class="ni-icon">📊</div><div>Reports</div></div>
   `;
 }
 
@@ -764,28 +933,15 @@ function renderNav(){
 // VIEW: JOBS
 // ═══════════════════════════════════════════════════════════════
 function renderJobs(){
-  if(!S.jobs.length){
-    return`<div class="view">
-      <div class="empty">
-        <div class="empty-icon">💡</div>
-        <div class="empty-title">No jobs yet</div>
-        <div class="empty-sub">Tap + to start a new job</div>
-      </div>
-      <button class="fab" onclick="App.addJob()">+</button>
-    </div>`;
-  }
+  if(!S.jobs.length)return`<div class="view"><div class="empty"><div class="empty-icon">💡</div><div class="empty-title">No jobs yet</div><div class="empty-sub">Tap + to start</div></div><button class="fab" onclick="App.addJob()">+</button></div>`;
   const cards=S.jobs.map(j=>{
-    const fc=U.jobFixtureCount(j);
-    const w=U.jobWatts(j).toFixed(1);
-    const pxFx=countPhasexFixtures(j);
+    const fc=U.jobFxCount(j),w=U.jobWatts(j).toFixed(1),pxFx=U.countPX(j);
     const meta=[j.address||'',j.date||''].filter(Boolean).join(' · ');
     return`<div class="card" style="padding:0;overflow:hidden;display:flex;align-items:stretch">
       <div class="card-tap" style="display:flex;align-items:center;gap:13px;padding:15px;flex:1" onclick="App.openJob('${j.id}')">
         <div class="jc-icon">🏗️</div>
-        <div class="jc-info">
-          <div class="jc-name">${U.esc(j.name)}</div>
-          <div class="jc-meta">${meta?U.esc(meta)+'<br>':''}<b>${fc}</b> fixtures · <b>${w}W</b>${pxFx?` · <span style="color:var(--px)">${pxFx} PhaseX</span>`:''}</div>
-        </div>
+        <div class="jc-info"><div class="jc-name">${U.esc(j.name)}</div>
+        <div class="jc-meta">${meta?U.esc(meta)+'<br>':''}<b>${fc}</b> fixtures · <b>${w}W</b>${pxFx?` · <span style="color:var(--px)">${pxFx} PhaseX</span>`:''}</div></div>
       </div>
       <button style="padding:0 16px;border-left:1px solid var(--bdr);color:var(--txt3);font-size:16px;flex-shrink:0" onclick="App.editJobSettings('${j.id}')">✏️</button>
     </div>`;
@@ -797,72 +953,28 @@ function renderJobs(){
 // VIEW: JOB DETAIL
 // ═══════════════════════════════════════════════════════════════
 function renderJob(){
-  const j=getJob();
-  if(!j)return`<div class="view"><div class="empty"><div class="empty-title">Job not found</div></div></div>`;
-
-  // PhaseX summary
+  const j=getJob();if(!j)return`<div class="view"><div class="empty"><div class="empty-title">Not found</div></div></div>`;
   const pxOn=j.phasex.enabled;
-  const overrides=Object.entries(j.phasex.roomOverrides||{});
-  const overrideSummary=overrides.map(([rid,cfg])=>{
-    const r=j.rooms.find(x=>x.id===rid);
-    if(!r)return'';
-    const d=C.dim[cfg.dimming||'dali2'];
-    return`<span style="font-size:12px;color:var(--txt2)">${U.esc(r.name)}: <span class="${d?.cls||''}">${d?.l||''}</span></span>`;
-  }).filter(Boolean).join(' &nbsp;·&nbsp; ');
-
   const phasexCard=`<div class="card">
     <div class="toggle-row" style="padding:0;border:none;background:none">
-      <div class="toggle-info">
-        <div class="toggle-lbl">⚡ PhaseX — House Wide</div>
-        <div class="toggle-sub">${pxOn?'All rooms default to PhaseX':'Off — using per-fixture dimming'}</div>
-      </div>
+      <div><div class="toggle-lbl">⚡ PhaseX — House Wide</div><div class="toggle-sub">${pxOn?'All rooms use PhaseX':'Off'}</div></div>
       <button class="tog ${pxOn?'on':''}" onclick="App.togglePhasex()"></button>
     </div>
-    ${overrides.length?`<div class="div"></div><div style="font-size:12px;color:var(--txt3);margin-bottom:4px">ROOM OVERRIDES</div><div style="display:flex;flex-direction:column;gap:6px">${overrideSummary}</div>`:''}
-    ${pxOn?`<div style="margin-top:10px"><button class="btn btn-sec" style="font-size:12px;padding:8px 14px" onclick="App.editPhasexOverrides()">Manage room overrides</button></div>`:''}
+    ${pxOn?`<div style="margin-top:10px"><button class="btn btn-sec" style="font-size:12px;padding:8px 14px" onclick="App.editPhasexOverrides()">Room overrides</button></div>`:''}
   </div>`;
-
-  // Defaults card
-  const d=j.defaults;
-  const defCard=`<div class="card" onclick="App.editDefaults()">
-    <div class="row" style="margin-bottom:6px">
-      <div style="font-size:13px;font-weight:600">House Defaults</div>
-      <div class="ml-auto" style="font-size:12px;color:var(--txt3)">tap to edit ›</div>
-    </div>
-    <div style="font-size:12px;color:var(--txt2);line-height:1.7">
-      ${U.productLabel(d.product)} ${U.moduleLabel(d.product,d.module)} · ${d.shape} · ${d.construction}<br>
-      ${d.lumens}lm · ${U.cctLabel(d.cct)} · <span class="${C.dim[d.dimming||'dali2']?.cls||''}">${U.dimLabel(d.dimming||'dali2')}</span> · ${U.finishLabel(d.product,d.finish)}
-    </div>
-  </div>`;
-
-  // Rooms
-  let roomsHtml='';
-  if(!j.rooms.length){
-    roomsHtml=`<div class="empty" style="padding:32px 20px"><div class="empty-icon">🚪</div><div class="empty-title">No rooms yet</div><div class="empty-sub">Tap + to add your first room</div></div>`;
-  }else{
-    roomsHtml=j.rooms.map(r=>{
-      const fc=U.roomFixtureCount(r);
-      const w=U.roomWatts(r).toFixed(1);
-      const dim=r.dimmingOverride;
-      const dimBadge=dim?`<span class="badge ${C.dim[dim]?.badge||''}">${U.dimLabel(dim)}</span>`:'';
-      return`<div class="card card-tap rc" onclick="App.openRoom('${r.id}')">
-        <div class="rc-info">
-          <div class="rc-name">${U.esc(r.name)}</div>
-          <div class="rc-meta">${fc} fixture${fc!==1?'s':''} · ${w}W</div>
-        </div>
-        ${dimBadge}
-        <div class="jc-arr">›</div>
-      </div>`;
-    }).join('');
-  }
-
+  const rooms=j.rooms.length?j.rooms.map(r=>{
+    const fc=U.roomFxCount(r),w=U.roomWatts(r).toFixed(1);
+    const dim=r.dimmingOverride;
+    const badge=dim?`<span class="badge ${C.dim[dim]?.badge||''}">${U.dimLabel(dim)}</span>`:'';
+    return`<div class="card card-tap rc" onclick="App.openRoom('${r.id}')">
+      <div class="rc-info"><div class="rc-name">${U.esc(r.name)}</div><div class="rc-meta">${fc} fixtures · ${w}W</div></div>
+      ${badge}<div class="jc-arr">›</div>
+    </div>`;
+  }).join(''):`<div class="empty" style="padding:32px 20px"><div class="empty-icon">🚪</div><div class="empty-title">No rooms</div><div class="empty-sub">Tap + to add a room</div></div>`;
   return`<div class="view">
-    <div class="slabel">House Settings</div>
-    ${phasexCard}
-    ${defCard}
-    <div class="slabel">Rooms <span style="font-size:11px;font-weight:400;color:var(--txt3)">${j.rooms.length} total</span></div>
-    ${roomsHtml}
-    <button class="fab" onclick="App.addRoom()">+</button>
+    <div class="slabel">House Settings</div>${phasexCard}
+    <div class="slabel">Rooms <span style="font-size:11px;color:var(--txt3)">${j.rooms.length}</span></div>
+    ${rooms}<button class="fab" onclick="App.addRoom()">+</button>
   </div>`;
 }
 
@@ -870,106 +982,188 @@ function renderJob(){
 // VIEW: ROOM DETAIL
 // ═══════════════════════════════════════════════════════════════
 function renderRoom(){
-  const j=getJob();const r=getRoom();
-  if(!j||!r)return`<div class="view"><div class="empty"><div class="empty-title">Room not found</div></div></div>`;
-
-  // Room dimming override
-  const curDim=r.dimmingOverride;
-  const jobDim=U.resolveJobDimming(j);
+  const j=getJob(),r=getRoom();if(!j||!r)return`<div class="view"><div class="empty"><div class="empty-title">Not found</div></div></div>`;
+  const curDim=r.dimmingOverride,jobDim=U.resolveJobDimming(j);
   const dimRow=`<div class="card">
-    <div style="font-size:12px;font-weight:600;color:var(--txt3);margin-bottom:8px">ROOM DIMMING OVERRIDE</div>
+    <div class="slabel" style="margin:0 0 8px">Room Dimming Override</div>
     <div class="chips">
       <button class="chip chip-sm ${!curDim?'on':''}" onclick="App.setRoomDimming(null)">Inherit (${U.dimLabel(jobDim)})</button>
       ${['phasex','dali2','triac'].map(d=>`<button class="chip chip-sm ${curDim===d?'on':''}" onclick="App.setRoomDimming('${d}')">${U.dimLabel(d)}</button>`).join('')}
     </div>
   </div>`;
-
-  // Fixtures
-  let fxHtml='';
-  if(!r.fixtures.length){
-    fxHtml=`<div class="empty" style="padding:32px 20px"><div class="empty-icon">💡</div><div class="empty-title">No fixtures yet</div><div class="empty-sub">Tap + to add fixtures</div></div>`;
-  }else{
-    fxHtml=r.fixtures.map(f=>{
-      const wetWarn=f.wetLocation&&!C.products[f.product]?.modules[f.module]?.wet;
-      const tags=[
-        `<span class="tag ${C.dim[f.dimming]?.cls||''}">${U.dimLabel(f.dimming)}</span>`,
-        `<span class="tag">${f.lumens}lm · ${f.construction==='new'?'NC':f.construction==='remodel'?'Remo':'Retro'}</span>`,
-        f.trim?`<span class="tag">${U.trimLabel(f.product,f.module,f.shape,f.trim)}</span>`:'',
-        wetWarn?`<span class="tag tag-warn">⚠️ Damp only</span>`:'',
-        f.wetLocation&&C.products[f.product]?.modules[f.module]?.wet?`<span class="tag" style="color:var(--ok)">💧 Wet rated</span>`:'',
-      ].filter(Boolean).join('');
-      return`<div class="card card-tap" onclick="App.editFixture('${f.id}')">
-        <div class="fc">
-          <div class="fc-qty">${f.qty}</div>
-          <div class="fc-body">
-            <div class="fc-title">${U.fixtureTitle(f)} · ${f.shape.charAt(0).toUpperCase()+f.shape.slice(1)}</div>
-            <div class="fc-sub">${U.fixtureSummary(f)}</div>
-            <div class="fc-tags">${tags}</div>
-            ${f.notes?`<div style="font-size:11px;color:var(--txt3);margin-top:6px;font-style:italic">${U.esc(f.notes)}</div>`:''}
+  const fxHtml=r.fixtures.length?r.fixtures.map(f=>{
+    const wetWarn=f.wetLocation&&!C.products[f.product]?.modules[f.module]?.wet;
+    const autoAccs=f.accessories?.filter(a=>a.autoAdded)||[];
+    const autoTag=autoAccs.length?`<span class="tag" style="color:var(--ok)">★ ${autoAccs.map(a=>a.label.split(' ')[0]).join(', ')}</span>`:'';
+    return`<div class="card card-tap" onclick="App.editFixture('${f.id}')">
+      <div class="fc">
+        <div class="fc-qty">${f.qty}</div>
+        <div class="fc-body">
+          <div class="fc-title">${U.fixtureTitle(f)} · ${f.shape.charAt(0).toUpperCase()+f.shape.slice(1)}</div>
+          <div class="fc-sub">${U.fixtureSummary(f)}</div>
+          <div class="fc-tags">
+            <span class="tag ${C.dim[f.dimming]?.cls||''}">${U.dimLabel(f.dimming)}</span>
+            <span class="tag">${f.installation==='new'?'NC':f.installation==='remodel'?'Remo':f.installation==='retrofit'?'Retro':f.installation||''}</span>
+            ${wetWarn?`<span class="tag tag-warn">⚠️ Damp only</span>`:''}
+            ${f.wetLocation&&C.products[f.product]?.modules[f.module]?.wet?`<span class="tag" style="color:var(--ok)">💧 Wet</span>`:''}
+            ${autoTag}
           </div>
+          ${f.notes?`<div style="font-size:11px;color:var(--txt3);margin-top:5px;font-style:italic">${U.esc(f.notes)}</div>`:''}
         </div>
-        <div style="text-align:right;margin-top:8px;display:flex;justify-content:flex-end;gap:8px">
-          <button class="btn btn-sec" style="padding:5px 12px;font-size:12px" onclick="event.stopPropagation();App.dupeFixture('${f.id}')">Duplicate</button>
-          <button class="btn btn-danger" style="padding:5px 12px;font-size:12px" onclick="event.stopPropagation();App.deleteFixture('${f.id}')">Delete</button>
-        </div>
-      </div>`;
-    }).join('');
-  }
-
-  const w=U.roomWatts(r).toFixed(1);
-  const fc=U.roomFixtureCount(r);
-  const statBar=`<div class="stats" style="grid-template-columns:repeat(2,1fr)">
-    <div class="stat"><div class="stat-val">${fc}</div><div class="stat-lbl">Fixtures</div></div>
-    <div class="stat"><div class="stat-val">${w}W</div><div class="stat-lbl">Total Load</div></div>
-  </div>`;
-
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:8px">
+        <button class="btn btn-sec" style="padding:5px 12px;font-size:12px" onclick="event.stopPropagation();App.dupeFixture('${f.id}')">Duplicate</button>
+        <button class="btn btn-danger" style="padding:5px 12px;font-size:12px" onclick="event.stopPropagation();App.deleteFixture('${f.id}')">Delete</button>
+      </div>
+    </div>`;
+  }).join(''):`<div class="empty" style="padding:32px 20px"><div class="empty-icon">💡</div><div class="empty-title">No fixtures</div><div class="empty-sub">Tap + to add</div></div>`;
+  const w=U.roomWatts(r).toFixed(1),fc=U.roomFxCount(r);
   return`<div class="view">
-    ${statBar}
+    <div class="stats" style="grid-template-columns:repeat(2,1fr)">
+      <div class="stat"><div class="stat-val">${fc}</div><div class="stat-lbl">Fixtures</div></div>
+      <div class="stat"><div class="stat-val">${w}W</div><div class="stat-lbl">Load</div></div>
+    </div>
     ${dimRow}
-    <div class="slabel">Fixtures</div>
-    ${fxHtml}
-    <div style="height:6px"></div>
-    <button class="btn btn-danger btn-full" style="margin-top:4px" onclick="App.deleteRoom()">Delete Room</button>
+    <div class="slabel">Fixtures</div>${fxHtml}
+    <button class="btn btn-danger btn-full" style="margin-top:8px" onclick="App.deleteRoom()">Delete Room</button>
     <button class="fab" onclick="App.addFixture()">+</button>
   </div>`;
 }
 
 // ═══════════════════════════════════════════════════════════════
-// VIEW: FIXTURE FORM
+// VIEW: FIXTURE FORM (ACCORDION KIT CONFIGURATOR)
 // ═══════════════════════════════════════════════════════════════
+function acc(id,label,body,open){
+  const icon=open?'−':'+';
+  return`<div class="card" style="padding:0;overflow:hidden;margin-bottom:10px">
+    <button class="acc-hdr ${open?'open':''}" onclick="FF.section('${id}')">
+      <span class="acc-label">${label}</span>
+      <span class="acc-icon">${icon}</span>
+    </button>
+    <div class="acc-body ${open?'open':''}">
+      <div style="padding:14px">${body}</div>
+    </div>
+  </div>`;
+}
+function chipsRow(items,selected,fn,cls=''){
+  return`<div class="chips">${items.map(it=>`<button class="chip${cls?' '+cls:''} ${it.k===selected?'on':''}" onclick="${fn}('${it.k}')">${U.esc(it.l||it.k)}</button>`).join('')}</div>`;
+}
+function chipsScroll(items,selected,fn){
+  return`<div class="chips-scroll">${items.map(it=>`<button class="chip ${it.k===selected?'on':''}" onclick="${fn}('${it.k}')">${U.esc(it.l||it.k)}</button>`).join('')}</div>`;
+}
+
 function renderFixtureForm(){
-  const f=S.form;
-  if(!f)return'';
+  const f=S.form;if(!f)return'';
   const prod=C.products[f.product];
   const mod=prod?.modules[f.module];
-  const validLumens=C.products[f.product]?.modules[f.module]?.lumens||[750,1000];
-  const validDim=U.validDimming(f.cct);
-  const validBeams=U.validBeams(f.product,f.module,f.shape);
-  const validTrims=U.validTrims(f.product,f.module,f.shape);
-  const validFinishes=U.validFinishes(f.product);
+  const sec=S.formSection||'housing';
+
+  // Auto-evaluate accessories
+  const{auto:autoAccs,optional:optAccs}=evalAccessories(f);
+  f.accessories=autoAccs;
+
+  // Filtered options
+  const validLumens=mod?.lumens||[1000];
+  const validDimming=C.cct[f.cct]?.digital?['phasex','dali2']:['phasex','dali2','triac'];
+  const validBeams=mod?.beams[f.shape]||[];
+  const validTrimTypes=(mod?.trimTypes||['flanged','flangeless']).filter(tt=>
+    (mod?.trimStyles[f.shape]?.[tt]||[]).length>0
+  );
+  const validTrimStyles=mod?.trimStyles?.[f.shape]?.[f.trimType]||[];
+  const validFinishes=prod?.finishes||[];
   const standardFinishes=validFinishes.filter(x=>!x.p);
   const premiumFinishes=validFinishes.filter(x=>x.p);
-  const ncTypes=C.ncTypes[f.product]||[];
+  const installs=[...(C.installations[f.product]?.base||[]),...(f.shape==='round'?C.installations[f.product]?.roundOnly||[]:[] )];
+  const showHousingStyle=C.housingStyleInstalls.includes(f.installation);
+  const housingStyles=C.housingStyles[f.product]||[];
 
-  // Wet location warning
-  const wetWarn=(f.wetLocation&&mod&&!mod.wet)?
-    `<div class="alert alert-warn"><span class="alert-icon">⚠️</span><div><b>Damp location only.</b> The ${f.product} Adjustable module is rated for damp locations, not full wet. Do not install in direct spray zones (showers). Use Downlight module for wet-rated installations.</div></div>`:'';
+  // Wet/damp warning
+  const wetWarn=f.wetLocation&&mod&&!mod.wet?
+    `<div class="alert alert-warn"><span class="alert-icon">⚠️</span><div><b>Damp location only.</b> ${f.product} Adjustable is damp rated, not full wet. Use Downlight for shower installations.</div></div>`:'';
+  const twNote=C.cct[f.cct]?.digital?
+    `<div class="alert alert-info"><span class="alert-icon">ℹ️</span><div>${U.cctLabel(f.cct)} requires <b>DALI-2 or PhaseX</b> — TRIAC removed.</div></div>`:'';
 
-  // Tunable white note
-  const twNote=f.cct==='tunable_white'?
-    `<div class="alert alert-info"><span class="alert-icon">ℹ️</span><div>Tunable White requires <b>DALI-2 or PhaseX</b> — TRIAC/ELV is not compatible and has been removed from selection.</div></div>`:'';
+  // Section bodies
+  const housingBody=`
+    <div class="fsec"><div class="flabel">Installation Type</div>
+      ${chipsScroll(installs,f.installation,'FF.set.bind(FF,"installation")')}
+    </div>
+    ${showHousingStyle&&housingStyles.length>1?`<div class="fsec"><div class="flabel">Housing Style</div>${chipsRow(housingStyles,f.housingStyle,'FF.setStr.bind(FF,"housingStyle")')}</div>`:''}
+  `;
 
-  // Module labels with location badge
-  const moduleChips=['downlight','adjustable'].map(mk=>{
-    const m=prod?.modules[mk];
-    if(!m)return'';
-    const loc=m.wet?'💧 Wet':'◐ Damp';
-    return`<button class="chip chip-lg ${f.module===mk?'on':''}" onclick="FF.set('module','${mk}')">${m.l}<br><span style="font-size:10px;font-weight:500;opacity:.75">${loc}</span></button>`;
-  }).join('');
+  const moduleBody=`
+    <div class="fsec"><div class="flabel">Module Type</div>
+      <div class="chips">
+        ${['downlight','adjustable'].map(mk=>{
+          const m=prod?.modules[mk];if(!m)return'';
+          return`<button class="chip chip-lg ${f.module===mk?'on':''}" onclick="FF.set('module','${mk}')">${m.l}<br><span style="font-size:10px;opacity:.75">${m.wet?'💧 Wet':'◐ Damp'}</span></button>`;
+        }).join('')}
+      </div>
+    </div>
+    <div class="fsec"><div class="flabel">Lumens</div>
+      <div class="chips">${[750,1000,1250,1500].map(lm=>{
+        const valid=validLumens.includes(lm);
+        return`<button class="chip chip-lg ${f.lumens===lm?'on':''} ${valid?'':'dim'}" onclick="FF.set('lumens',${lm})">${lm}<br><span style="font-size:10px;opacity:.7">${C.wattage[lm]}W</span></button>`;
+      }).join('')}</div>
+    </div>
+    <div class="fsec"><div class="flabel">Color Temperature</div>
+      ${chipsScroll(prod.cct.map(k=>({k,l:U.cctLabel(k)})),f.cct,'FF.set.bind(FF,"cct")')}
+    </div>
+    ${twNote}
+    <div class="fsec"><div class="flabel">Dimming</div>
+      <div class="chips">${['phasex','dali2','triac'].map(d=>{
+        const valid=validDimming.includes(d);
+        return`<button class="chip ${f.dimming===d?'on':''} ${valid?'':'dim'}" onclick="FF.set('dimming','${d}')">${C.dim[d].l}<br><span style="font-size:10px;opacity:.7">${C.dim[d].min}</span></button>`;
+      }).join('')}</div>
+    </div>
+    <div class="fsec"><div class="flabel">Beam Spread <span class="fbadge">optional</span></div>
+      ${chipsScroll([{k:'',l:'Not set'},...validBeams.map(b=>({k:b.k,l:`${b.l} (${b.a})`}))],f.beam||'','FF.set.bind(FF,"beam")')}
+    </div>
+    <div class="fsec"><div class="flabel">Module Finish</div>
+      <div class="chips">${['white','black'].map(fin=>`<button class="chip ${f.moduleFinish===fin?'on':''}" onclick="FF.setStr('moduleFinish','${fin}')">${fin.charAt(0).toUpperCase()+fin.slice(1)}</button>`).join('')}</div>
+    </div>
+  `;
 
-  const html=`<div class="view" id="fixture-form-view">
-    ${wetWarn}${twNote}
+  const trimBody=`
+    <div class="fsec"><div class="flabel">Trim Type</div>
+      ${chipsRow(validTrimTypes.map(k=>({k,l:k.charAt(0).toUpperCase()+k.slice(1)})),f.trimType,'FF.set.bind(FF,"trimType")')}
+    </div>
+    ${validTrimStyles.length?`<div class="fsec"><div class="flabel">Trim Style</div>${chipsScroll(validTrimStyles,f.trimStyle,'FF.set.bind(FF,"trimStyle")')}</div>`:''}
+    <div class="fsec"><div class="flabel">Trim Finish</div>
+      <div class="chips">${standardFinishes.map(x=>`<button class="chip ${f.trimFinish===x.k?'on':''}" onclick="FF.setStr('trimFinish','${x.k}')">${x.l}</button>`).join('')}</div>
+      ${premiumFinishes.length?`<div style="font-size:10px;color:var(--txt3);letter-spacing:.5px;margin:8px 0 5px">PREMIUM METALLIC</div><div class="chips">${premiumFinishes.map(x=>`<button class="chip ${f.trimFinish===x.k?'on':''}" style="border-color:var(--gold-b)" onclick="FF.setStr('trimFinish','${x.k}')">${x.l}</button>`).join('')}</div>`:''}
+    </div>
+  `;
 
+  const accBody=`
+    ${autoAccs.length?`<div class="slabel" style="margin:0 0 8px">Auto-Added</div>${autoAccs.map(a=>`<div class="card" style="padding:11px 13px;margin-bottom:8px;border-color:rgba(105,240,174,.2)">
+      <div class="row"><span class="sku-code">★ ${U.esc(a.sku)}</span><span class="ml-auto" style="font-size:12px;color:var(--ok)">${a.price?'$'+a.price:''}</span></div>
+      <div style="font-size:13px;margin-top:3px">${U.esc(a.label)}</div>
+      <div style="font-size:11px;color:var(--txt3);margin-top:2px">${U.esc(a.note||'')}</div>
+    </div>`).join('')}`:''}
+    ${optAccs.length?`<div class="slabel" style="margin:10px 0 8px">Optional</div>${optAccs.map(a=>`<div class="card" style="padding:11px 13px;margin-bottom:8px">
+      <div class="row"><span class="sku-code">${U.esc(a.sku)}</span></div>
+      <div style="font-size:13px;margin-top:3px">${U.esc(a.label)}</div>
+      <div style="font-size:11px;color:var(--txt3);margin-top:2px">${U.esc(a.note||'')}</div>
+    </div>`).join('')}`:''}
+    ${!autoAccs.length&&!optAccs.length?`<div style="font-size:13px;color:var(--txt3)">No accessories required for this configuration.</div>`:''}
+  `;
+
+  const notesBody=`
+    ${wetWarn}
+    <div class="fsec"><div class="flabel">Wet Location</div>
+      <div class="toggle-row">
+        <div><div class="toggle-lbl">Wet Location Required</div><div class="toggle-sub">${mod?.wet?'✅ Wet rated':'⚠️ Damp location only'}</div></div>
+        <button class="tog ${f.wetLocation?'on':''}" onclick="FF.set('wetLocation',${!f.wetLocation})"></button>
+      </div>
+    </div>
+    <div class="fsec"><div class="flabel">Notes <span class="fbadge">optional</span></div>
+      <textarea class="finput" rows="3" placeholder="e.g. art lights, high ceiling, shower zone…" oninput="FF.note(this.value)" style="resize:none;line-height:1.5">${U.esc(f.notes)}</textarea>
+    </div>
+  `;
+
+  return`<div class="view">
+    ${twNote&&sec!=='module'?twNote:''}
     <div class="fsec">
       <div class="flabel">Quantity</div>
       <div class="qty-wrap">
@@ -978,309 +1172,164 @@ function renderFixtureForm(){
         <button class="qty-btn" onclick="FF.qty(1)">+</button>
       </div>
     </div>
-
     <div class="fsec">
       <div class="flabel">Product</div>
-      <div class="chips">
-        ${['A2','A4'].map(p=>`<button class="chip chip-lg ${f.product===p?'on':''}" onclick="FF.set('product','${p}')">${C.products[p].l}</button>`).join('')}
-      </div>
+      <div class="chips">${['A2','A4'].map(p=>`<button class="chip chip-lg ${f.product===p?'on':''}" onclick="FF.set('product','${p}')">${C.products[p].l}</button>`).join('')}</div>
     </div>
-
     <div class="fsec">
-      <div class="flabel">Module</div>
-      <div class="chips">${moduleChips}</div>
-      ${mod?.note?`<div style="font-size:11px;color:var(--txt3);margin-top:4px">📐 ${mod.note}</div>`:''}
-    </div>
-
-    <div class="fsec">
-      <div class="flabel">Shape</div>
+      <div class="flabel">Shape <span class="fbadge">drives housing + trim</span></div>
       <div class="chips">
         ${['round','square'].map(s=>`<button class="chip chip-lg ${f.shape===s?'on':''}" onclick="FF.set('shape','${s}')">${s.charAt(0).toUpperCase()+s.slice(1)}</button>`).join('')}
       </div>
     </div>
-
-    <div class="fsec">
-      <div class="flabel">Construction</div>
-      <div class="chips">
-        ${[{k:'new',l:'New Construction'},{k:'remodel',l:'Remodel'},{k:'retrofit',l:'Retrofit'}].map(x=>`<button class="chip ${f.construction===x.k?'on':''}" onclick="FF.set('construction','${x.k}')">${x.l}</button>`).join('')}
-      </div>
-      ${f.construction==='new'&&ncTypes.length>1?`
-        <div style="margin-top:8px">
-          <div class="flabel" style="font-size:10px;margin-bottom:6px">NC Housing Type</div>
-          <div class="chips-scroll">${ncTypes.map(x=>`<button class="chip chip-sm ${f.ncType===x.k?'on':''}" onclick="FF.set('ncType','${x.k}')">${x.l}</button>`).join('')}</div>
-        </div>`:''}
-    </div>
-
-    <div class="fsec">
-      <div class="flabel">Lumens</div>
-      <div class="chips">
-        ${[750,1000,1250,1500].map(lm=>{
-          const valid=validLumens.includes(lm);
-          return`<button class="chip chip-lg ${f.lumens===lm?'on':''} ${valid?'':'dim'}" onclick="FF.set('lumens',${lm})">${lm}<br><span style="font-size:10px;opacity:.7">${C.wattage[lm]}W</span></button>`;
-        }).join('')}
-      </div>
-    </div>
-
-    <div class="fsec">
-      <div class="flabel">Color Temperature</div>
-      ${chipsScroll(prod.cct.map(k=>({k,l:U.cctLabel(k)})),f.cct,'FF.set.bind(null,"cct")')}
-    </div>
-
-    <div class="fsec">
-      <div class="flabel">Dimming <span class="fbadge">from house/room</span></div>
-      <div class="chips">
-        ${['phasex','dali2','triac'].map(d=>{
-          const valid=validDim.includes(d);
-          const dim=C.dim[d];
-          return`<button class="chip ${f.dimming===d?'on':''} ${valid?'':'dim'}" onclick="FF.set('dimming','${d}')">${dim.l}<br><span style="font-size:10px;opacity:.7">${dim.min}</span></button>`;
-        }).join('')}
-      </div>
-      ${f.dimming==='triac'?`<div style="font-size:11px;color:var(--txt3);margin-top:4px">⚡ TRIAC/ELV is 120V only</div>`:''}
-    </div>
-
-    <!-- OPTIONAL SECTION -->
-    <div class="opt-hdr" onclick="FF.toggleOpt()">
-      <span class="opt-hdr-lbl">More Details <span style="color:var(--txt3);font-size:11px">(beam, trim, finish, notes)</span></span>
-      <span class="opt-arr ${S.optOpen?'open':''}">▾</span>
-    </div>
-    <div class="opt-body ${S.optOpen?'open':''}">
-
-      <div class="fsec">
-        <div class="flabel">Beam Spread <span class="fbadge">optional</span></div>
-        ${chipsScroll([{k:'',l:'Not set'},...validBeams.map(b=>({k:b.k,l:`${b.l} (${b.a})`}))],f.beamSpread||'','FF.set.bind(null,"beamSpread")')}
-      </div>
-
-      <div class="fsec">
-        <div class="flabel">Trim Style <span class="fbadge">optional</span></div>
-        ${chipsScroll([{k:'',l:'Not set'},...validTrims.map(t=>({k:t.k,l:t.l}))],f.trim||'','FF.set.bind(null,"trim")')}
-      </div>
-
-      <div class="fsec">
-        <div class="flabel">Finish</div>
-        <div class="chips">${standardFinishes.map(x=>`<button class="chip ${f.finish===x.k?'on':''}" onclick="FF.set('finish','${x.k}')">${x.l}</button>`).join('')}</div>
-        ${premiumFinishes.length?`
-          <div style="font-size:10px;font-weight:600;color:var(--txt3);letter-spacing:.5px;margin:8px 0 6px">PREMIUM METALLIC</div>
-          <div class="chips">${premiumFinishes.map(x=>`<button class="chip ${f.finish===x.k?'on':''}" style="background:${f.finish===x.k?'var(--gold)':'rgba(200,169,110,.06)'};border-color:var(--gold-b)" onclick="FF.set('finish','${x.k}')">${x.l}</button>`).join('')}</div>`:''}
-      </div>
-
-      <div class="fsec">
-        <div class="flabel">Wet Location</div>
-        <div class="toggle-row">
-          <div class="toggle-info">
-            <div class="toggle-lbl">Wet Location Required</div>
-            <div class="toggle-sub">${mod?.wet?'✅ This module is wet location rated':'⚠️ Adjustable is damp location only'}</div>
-          </div>
-          <button class="tog ${f.wetLocation?'on':''}" onclick="FF.set('wetLocation',${!f.wetLocation})"></button>
-        </div>
-      </div>
-
-      <div class="fsec">
-        <div class="flabel">Notes <span class="fbadge">optional</span></div>
-        <textarea class="finput" rows="3" placeholder="e.g. art lights, shower zone, high ceiling…" oninput="FF.note(this.value)" style="resize:none;line-height:1.5">${U.esc(f.notes)}</textarea>
-      </div>
-
-    </div><!-- /opt-body -->
-
-    <div style="height:12px"></div>
+    ${acc('housing','Housings & Conversion Kits',housingBody,sec==='housing')}
+    ${acc('module','Module',moduleBody,sec==='module')}
+    ${acc('trim','Trim',trimBody,sec==='trim')}
+    ${acc('accessories','Accessories',accBody,sec==='accessories')}
+    ${acc('notes','Notes',notesBody,sec==='notes')}
+    <div style="height:10px"></div>
     <div class="btn-row">
       <button class="btn btn-sec flex1" onclick="App.back()">Cancel</button>
-      <button class="btn btn-gold flex1" onclick="FF.save()">Save Fixture</button>
+      <button class="btn btn-gold flex1" onclick="FF.save()">Save Kit</button>
     </div>
-    ${f.id?`<button class="btn btn-danger btn-full" style="margin-top:10px" onclick="FF.deleteThis()">Delete Fixture</button>`:''}
+    ${f.id?`<button class="btn btn-danger btn-full" style="margin-top:10px" onclick="FF.deleteThis()">Delete</button>`:''}
     <div style="height:20px"></div>
   </div>`;
-  return html;
 }
 
 // ═══════════════════════════════════════════════════════════════
 // VIEW: REPORTS
 // ═══════════════════════════════════════════════════════════════
 function renderReports(){
-  const j=getJob();
-  if(!j)return`<div class="view"><div class="empty"><div class="empty-title">No active job</div></div></div>`;
+  const j=getJob();if(!j)return`<div class="view"><div class="empty"><div class="empty-title">No active job</div></div></div>`;
+  const totalFx=U.jobFxCount(j),totalW=U.jobWatts(j),pxFx=U.countPX(j),gateways=pxFx?U.pxGateways(pxFx):0;
+  const a2=U.countByProduct(j,'A2'),a4=U.countByProduct(j,'A4');
 
-  const totalFx=U.jobFixtureCount(j);
-  const totalW=U.jobWatts(j);
-  const pxFx=countPhasexFixtures(j);
-  const gateways=pxFx?U.pxGateways(pxFx):0;
-  const a2=countByProduct(j,'A2');
-  const a4=countByProduct(j,'B4')||countByProduct(j,'A4');
-
-  const stats=`<div class="stats">
-    <div class="stat"><div class="stat-val">${totalFx}</div><div class="stat-lbl">Fixtures</div></div>
-    <div class="stat"><div class="stat-val">${totalW.toFixed(0)}W</div><div class="stat-lbl">Total Load</div></div>
-    <div class="stat"><div class="stat-val">${j.rooms.length}</div><div class="stat-lbl">Rooms</div></div>
-  </div>
-  <div class="stats">
-    <div class="stat"><div class="stat-val">${a2}</div><div class="stat-lbl">Artafex 2</div></div>
+  const stats=`<div class="stats"><div class="stat"><div class="stat-val">${totalFx}</div><div class="stat-lbl">Fixtures</div></div>
+    <div class="stat"><div class="stat-val">${totalW.toFixed(0)}W</div><div class="stat-lbl">Load</div></div>
+    <div class="stat"><div class="stat-val">${j.rooms.length}</div><div class="stat-lbl">Rooms</div></div></div>
+    <div class="stats"><div class="stat"><div class="stat-val">${a2}</div><div class="stat-lbl">Artafex 2</div></div>
     <div class="stat"><div class="stat-val">${a4}</div><div class="stat-lbl">Artafex 4</div></div>
-    <div class="stat"><div class="stat-val">${gateways||'—'}</div><div class="stat-lbl">${gateways?'Gateways':'No PhaseX'}</div></div>
-  </div>`;
+    <div class="stat"><div class="stat-val">${gateways||'—'}</div><div class="stat-lbl">${gateways?'Gateways':'PhaseX'}</div></div></div>`;
 
-  // Per room
-  const roomRows=j.rooms.map(r=>{
-    const fc=U.roomFixtureCount(r);
-    const w=U.roomWatts(r).toFixed(1);
-    return`<div class="card" style="padding:12px 14px">
-      <div class="row">
-        <div style="font-size:14px;font-weight:600">${U.esc(r.name)}</div>
-        <div class="ml-auto" style="font-size:12px;color:var(--txt2)">${fc} fx · ${w}W</div>
-      </div>
-      ${r.fixtures.map(f=>`<div style="font-size:12px;color:var(--txt2);margin-top:5px">
-        <span class="dot ${C.dim[f.dimming]?.dot||''}"></span>${f.qty}× ${U.fixtureTitle(f)} — ${U.fixtureSummary(f)}
-      </div>`).join('')}
-    </div>`;
-  }).join('');
+  const roomRows=j.rooms.map(r=>`<div class="card" style="padding:12px 14px">
+    <div class="row"><div style="font-size:14px;font-weight:600">${U.esc(r.name)}</div>
+    <div class="ml-auto" style="font-size:12px;color:var(--txt2)">${U.roomFxCount(r)} fx · ${U.roomWatts(r).toFixed(1)}W</div></div>
+    ${r.fixtures.map(f=>`<div style="font-size:12px;color:var(--txt2);margin-top:5px">
+      <span class="dot ${C.dim[f.dimming]?.dot||''}"></span>${f.qty}× ${U.fixtureTitle(f)} — ${U.fixtureSummary(f)}
+      ${f.accessories?.filter(a=>a.autoAdded).length?`<span style="color:var(--ok);font-size:11px"> ★ ${f.accessories.filter(a=>a.autoAdded).map(a=>a.label.split(' ')[0]).join(', ')}</span>`:''}
+    </div>`).join('')}
+  </div>`).join('');
 
-  // SKU summary
-  const skuMap=buildSKUMap(j);
-  const skuRows=Object.values(skuMap).map(g=>`<tr>
-    <td><span class="sku-code">${U.esc(g.moduleSKU)}</span><br><span style="color:var(--txt3)">${U.esc(g.desc)}</span></td>
-    <td style="text-align:center;font-weight:600">${g.qty}</td>
-    <td><span class="sku-code">${U.esc(g.housingSKU)}</span></td>
-    <td><span class="sku-code">${U.esc(g.trimSKU)}</span></td>
-  </tr>`).join('');
-
-  const skuTable=skuRows?`<div class="card" style="overflow-x:auto;padding:0">
-    <table class="sku-tbl">
-      <thead><tr>
-        <th>Module</th><th style="text-align:center">Qty</th><th>Housing</th><th>Trim</th>
-      </tr></thead>
-      <tbody>${skuRows}</tbody>
+  const bom=buildBOM(j);
+  const bomRows=bom.map(g=>`<div class="card" style="padding:12px 14px;margin-bottom:8px">
+    <div style="font-size:13px;font-weight:600;margin-bottom:8px">${g.qty}× ${U.esc(g.desc)}</div>
+    <table class="sku-tbl" style="font-size:11px">
+      ${g.components.map(c=>`<tr>
+        <td style="color:${c.auto?'var(--ok)':'inherit'};width:16px">${c.auto?'★':''}</td>
+        <td class="sku-code">${U.esc(c.sku)}</td>
+        <td style="color:var(--txt2)">${U.esc(c.label)}</td>
+        ${c.price?`<td style="text-align:right;color:var(--gold)">$${c.price}</td>`:'<td></td>'}
+      </tr>`).join('')}
     </table>
-  </div>`:
-  `<div class="card"><div style="color:var(--txt3);font-size:13px;text-align:center;padding:12px">No fixtures to show</div></div>`;
+    ${g.notes.length?`<div style="font-size:11px;color:var(--txt3);margin-top:6px">${g.notes.map(n=>`• ${U.esc(n)}`).join('<br>')}</div>`:''}
+  </div>`).join('');
 
-  // Exports
   const exports=`
-    <button class="xbtn" onclick="X.json()">
-      <div class="xbtn-icon" style="background:var(--s2)">📦</div>
-      <div class="xbtn-info"><div class="xbtn-title">Export JSON</div><div class="xbtn-sub">Full data backup · importable</div></div>
-      <div style="color:var(--txt3)">›</div>
-    </button>
-    <button class="xbtn" onclick="X.excel()">
-      <div class="xbtn-icon" style="background:rgba(105,240,174,.1)">📊</div>
-      <div class="xbtn-info"><div class="xbtn-title">Export Excel</div><div class="xbtn-sub">Per-room tabs + SKU list + overview</div></div>
-      <div style="color:var(--txt3)">›</div>
-    </button>
-    <button class="xbtn" onclick="X.pdf()">
-      <div class="xbtn-icon" style="background:rgba(255,82,82,.1)">📄</div>
-      <div class="xbtn-info"><div class="xbtn-title">Export PDF</div><div class="xbtn-sub">Proposal-ready summary</div></div>
-      <div style="color:var(--txt3)">›</div>
-    </button>
-  `;
+    <button class="xbtn" onclick="X.json()"><div class="xbtn-icon" style="background:var(--s2)">📦</div><div class="xbtn-info"><div class="xbtn-title">Export JSON</div><div class="xbtn-sub">Full backup · importable</div></div><div style="color:var(--txt3)">›</div></button>
+    <button class="xbtn" onclick="X.excel()"><div class="xbtn-icon" style="background:rgba(105,240,174,.1)">📊</div><div class="xbtn-info"><div class="xbtn-title">Export Excel</div><div class="xbtn-sub">Per-room tabs + BOM + overview</div></div><div style="color:var(--txt3)">›</div></button>
+    <button class="xbtn" onclick="X.pdf()"><div class="xbtn-icon" style="background:rgba(255,82,82,.1)">📄</div><div class="xbtn-info"><div class="xbtn-title">Export PDF</div><div class="xbtn-sub">Proposal-ready summary</div></div><div style="color:var(--txt3)">›</div></button>`;
 
-  return`<div class="view">
-    ${stats}
-    <div class="slabel">By Room</div>
-    ${roomRows||`<div class="card"><div style="color:var(--txt3);font-size:13px;text-align:center;padding:12px">No rooms</div></div>`}
-    <div class="slabel">SKU Summary</div>
-    ${skuTable}
-    <div class="slabel">Export</div>
-    ${exports}
+  return`<div class="view">${stats}
+    <div class="slabel">By Room</div>${roomRows||'<div class="card"><div style="color:var(--txt3);font-size:13px;text-align:center;padding:12px">No rooms</div></div>'}
+    <div class="slabel">Bill of Materials</div>${bomRows||'<div class="card"><div style="color:var(--txt3);font-size:13px;text-align:center;padding:12px">No fixtures</div></div>'}
+    <div class="slabel">Export</div>${exports}
   </div>`;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// HELPERS FOR REPORTS
-// ═══════════════════════════════════════════════════════════════
-function countPhasexFixtures(j){
-  let n=0;
-  j.rooms.forEach(r=>r.fixtures.forEach(f=>{if(f.dimming==='phasex')n+=f.qty}));
-  return n;
-}
-function countByProduct(j,p){
-  let n=0;
-  j.rooms.forEach(r=>r.fixtures.forEach(f=>{if(f.product===p)n+=f.qty}));
-  return n;
-}
-function buildSKUMap(j){
-  const map={};
+function buildBOM(j){
+  const groups={};
   j.rooms.forEach(r=>r.fixtures.forEach(f=>{
-    const hSKU=U.getHousingSKU(f);
-    const tSKU=f.trim?U.trimSKU(f.product,f.module,f.shape,f.trim):'';
-    const key=`${f.product}|${f.module}|${f.shape}|${f.lumens}|${f.cct}|${f.dimming}|${f.trim||''}|${f.finish}`;
-    if(!map[key]){
-      map[key]={
-        qty:0,
-        moduleSKU:`${f.product}${f.module==='downlight'?'D':'A'}-${f.lumens}lm-${U.cctLabel(f.cct)}`,
-        desc:`${U.fixtureTitle(f)} ${f.shape} ${U.cctLabel(f.cct)} ${U.dimLabel(f.dimming)}${f.trim?' '+U.trimLabel(f.product,f.module,f.shape,f.trim):''}`,
-        housingSKU:hSKU,
-        trimSKU:tSKU,
-      };
+    const hSKU=getHousingSKU(f),tSKU=getTrimSKU(f);
+    const key=`${f.product}|${f.module}|${f.shape}|${f.lumens}|${f.cct}|${f.dimming}|${f.trimType}|${f.trimStyle}|${f.trimFinish}`;
+    if(!groups[key]){
+      const accs=f.accessories||[];
+      const notes=[];
+      if(f.trimType==='flangeless')notes.push('Flangeless trim — Mud Plate auto-added');
+      if(f.product==='A2'&&f.trimStyle==='mf')notes.push('Precision Lock Collar included');
+      if(f.dimming==='triac')notes.push('TRIAC/ELV: 120V only');
+      if(f.wetLocation&&C.products[f.product]?.modules[f.module]?.wet)notes.push('Wet Location rated');
+
+      const components=[
+        hSKU?{sku:hSKU,label:getHousingLabel(f),auto:false,price:0}:null,
+        {sku:`${f.product}-${f.module==='downlight'?'DL':'ADJ'} ${f.lumens}lm ${U.cctLabel(f.cct)} ${U.dimLabel(f.dimming)}`,label:'Module',auto:false,price:0},
+        tSKU?{sku:tSKU,label:getTrimLabel(f)||'Trim',auto:false,price:0}:null,
+        ...accs.map(a=>({sku:a.sku,label:a.label,auto:a.autoAdded,price:a.price||0})),
+      ].filter(Boolean);
+
+      groups[key]={qty:0,desc:`${U.fixtureTitle(f)} ${f.shape.charAt(0).toUpperCase()+f.shape.slice(1)} ${U.cctLabel(f.cct)} ${U.dimLabel(f.dimming)}`,components,notes};
     }
-    map[key].qty+=f.qty;
+    groups[key].qty+=f.qty;
   }));
-  return map;
+  return Object.values(groups);
 }
 
 // ═══════════════════════════════════════════════════════════════
-// FIXTURE FORM CONTROLLER (FF)
+// FIXTURE FORM CONTROLLER
 // ═══════════════════════════════════════════════════════════════
 const FF={
+  section(id){S.formSection=S.formSection===id?null:id;App.render()},
   set(field,val){
-    const f=S.form;
-    if(!f)return;
-
-    // Special: empty string → null for optional fields
-    if((field==='beamSpread'||field==='trim')&&val==='')val=null;
-
+    const f=S.form;if(!f)return;
+    if(field==='beam'&&val==='')val=null;
     f[field]=val;
-
-    // Auto-reset cascades
+    // Cascades
     if(field==='product'){
-      // Reset to defaults for new product
-      const newProd=C.products[val];
-      f.module='downlight'; // always has downlight
-      f.lumens=U.clampLumens(val,'downlight',f.lumens);
-      f.beamSpread=null;f.trim=null;
-      // Reset finish if not valid
-      const validF=U.validFinishes(val).map(x=>x.k);
-      if(!validF.includes(f.finish))f.finish='white';
-      // Reset ncType if not available
-      const ncTs=C.ncTypes[val]?.map(x=>x.k)||[];
-      if(!ncTs.includes(f.ncType))f.ncType='standard';
-    }
-    if(field==='module'){
-      f.lumens=U.clampLumens(f.product,val,f.lumens);
-      f.beamSpread=null;f.trim=null;
+      const np=C.products[val];
+      f.module='downlight';
+      const vl=np?.modules.downlight.lumens||[1000];
+      if(!vl.includes(f.lumens))f.lumens=vl[vl.length-1];
+      f.beam=null;f.trimType='flanged';f.trimStyle='std';
+      const vf=np?.finishes.map(x=>x.k)||[];
+      if(!vf.includes(f.trimFinish))f.trimFinish='white';
+      f.moduleFinish='white';
     }
     if(field==='shape'){
-      const vb=U.validBeams(f.product,f.module,val).map(x=>x.k);
-      if(f.beamSpread&&!vb.includes(f.beamSpread))f.beamSpread=null;
-      const vt=U.validTrims(f.product,f.module,val).map(x=>x.k);
-      if(f.trim&&!vt.includes(f.trim))f.trim=null;
+      // Shape is master injector — also resets trim that may be invalid
+      const validTypes=C.products[f.product]?.modules[f.module]?.trimStyles[val]?.[f.trimType]?.map(x=>x.k)||[];
+      if(!validTypes.includes(f.trimStyle))f.trimStyle=validTypes[0]||'std';
+      f.beam=null;
+    }
+    if(field==='module'){
+      const vl=C.products[f.product]?.modules[val]?.lumens||[1000];
+      if(!vl.includes(f.lumens))f.lumens=vl[vl.length-1];
+      f.beam=null;
+      const vt=C.products[f.product]?.modules[val]?.trimStyles[f.shape]?.[f.trimType]?.map(x=>x.k)||[];
+      if(!vt.includes(f.trimStyle))f.trimStyle=vt[0]||'std';
+    }
+    if(field==='trimType'){
+      const vts=C.products[f.product]?.modules[f.module]?.trimStyles[f.shape]?.[val]?.map(x=>x.k)||[];
+      f.trimStyle=vts[0]||'std';
     }
     if(field==='cct'){
-      const vd=U.validDimming(val);
-      if(!vd.includes(f.dimming))f.dimming=vd[0]||'dali2';
+      const digital=C.cct[val]?.digital;
+      if(digital&&f.dimming==='triac')f.dimming='dali2';
     }
-
     App.render();
   },
-  qty(delta){
-    const f=S.form;if(!f)return;
-    f.qty=Math.max(1,Math.min(99,f.qty+delta));
-    // Just update the display without full re-render for speed
-    const el=document.querySelector('.qty-val');
-    if(el)el.textContent=f.qty;
-  },
+  setStr(field,val){const f=S.form;if(!f)return;f[field]=val;App.render()},
+  qty(delta){const f=S.form;if(!f)return;f.qty=Math.max(1,Math.min(99,f.qty+delta));const el=document.querySelector('.qty-val');if(el)el.textContent=f.qty;},
   note(v){if(S.form)S.form.notes=v},
-  toggleOpt(){S.optOpen=!S.optOpen;App.render()},
   save(){
     const f=S.form;if(!f)return;
-    const j=getJob();const r=getRoom();
-    if(!j||!r)return;
-    const existingIdx=r.fixtures.findIndex(x=>x.id===f.id);
-    if(existingIdx>=0){
-      r.fixtures[existingIdx]={...f};
-    }else{
-      if(!f.id)f.id=U.uuid();
-      r.fixtures.push({...f});
-    }
+    const j=getJob(),r=getRoom();if(!j||!r)return;
+    // Re-evaluate accessories before save
+    const{auto}=evalAccessories(f);f.accessories=auto;
+    const idx=r.fixtures.findIndex(x=>x.id===f.id);
+    if(idx>=0)r.fixtures[idx]={...f};
+    else{if(!f.id)f.id=U.uuid();r.fixtures.push({...f});}
     j.updatedAt=new Date().toISOString();
-    markDirty();save();
-    toast('Fixture saved ✓');
+    markDirty();save();toast('Kit saved ✓');
     S.view='room';S.form=null;App.render();
   },
   deleteThis(){
@@ -1288,7 +1337,7 @@ const FF={
     if(!confirm('Delete this fixture?'))return;
     const r=getRoom();if(!r)return;
     r.fixtures=r.fixtures.filter(x=>x.id!==f.id);
-    markDirty();save();toast('Fixture deleted');
+    markDirty();save();toast('Deleted');
     S.view='room';S.form=null;App.render();
   },
 };
@@ -1299,14 +1348,13 @@ const FF={
 const App={
   render(){
     const el=document.getElementById('app');
-    if(S.view==='jobs') el.innerHTML=renderJobs();
-    else if(S.view==='job') el.innerHTML=renderJob();
-    else if(S.view==='room') el.innerHTML=renderRoom();
-    else if(S.view==='fixture') el.innerHTML=renderFixtureForm();
-    else if(S.view==='reports') el.innerHTML=renderReports();
+    if(S.view==='jobs')el.innerHTML=renderJobs();
+    else if(S.view==='job')el.innerHTML=renderJob();
+    else if(S.view==='room')el.innerHTML=renderRoom();
+    else if(S.view==='fixture')el.innerHTML=renderFixtureForm();
+    else if(S.view==='reports')el.innerHTML=renderReports();
     renderHeader();renderNav();
   },
-
   back(){
     if(S.view==='fixture'){S.view='room';S.form=null;}
     else if(S.view==='room')S.view='job';
@@ -1314,44 +1362,25 @@ const App={
     else if(S.view==='reports')S.view='job';
     App.render();
   },
-
   goJobs(){S.view='jobs';S.jobId=null;S.roomId=null;App.render()},
   goJob(){if(S.jobId){S.view='job';App.render()}},
   goReports(){if(S.jobId){S.view='reports';App.render()}},
-
   openJob(id){S.jobId=id;S.view='job';App.render()},
   openRoom(id){S.roomId=id;S.view='room';App.render()},
-
   addJob(){
-    const name=prompt('Job / Client Name:','');
-    if(!name?.trim())return;
-    const address=prompt('Address (optional):','')||'';
-    const j=DB.newJob(name.trim(),address.trim());
-    S.jobs.unshift(j);S.jobId=j.id;
-    markDirty();save();S.view='job';App.render();
+    const name=prompt('Client / Job Name:','');if(!name?.trim())return;
+    const addr=prompt('Address (optional):','')||'';
+    const j=DB.newJob(name.trim(),addr.trim());
+    S.jobs.unshift(j);S.jobId=j.id;markDirty();save();S.view='job';App.render();
   },
-
   editJobSettings(jobId){
-    const j=jobId?S.jobs.find(x=>x.id===jobId):getJob();
-    if(!j)return;
-    const modalHtml=`<div class="modal">
+    const j=S.jobs.find(x=>x.id===jobId)||getJob();if(!j)return;
+    const html=`<div class="modal">
       <div class="modal-title">Edit Job Details</div>
-      <div class="fsec">
-        <div class="flabel">Client / Job Name</div>
-        <input class="finput" id="ej-name" type="text" value="${U.esc(j.name)}" placeholder="Client name" autocomplete="off">
-      </div>
-      <div class="fsec">
-        <div class="flabel">Address</div>
-        <input class="finput" id="ej-addr" type="text" value="${U.esc(j.address||'')}" placeholder="Property address" autocomplete="off">
-      </div>
-      <div class="fsec">
-        <div class="flabel">Date</div>
-        <input class="finput" id="ej-date" type="date" value="${U.esc(j.date||'')}">
-      </div>
-      <div class="fsec">
-        <div class="flabel">Notes <span class="fbadge">optional</span></div>
-        <textarea class="finput" id="ej-notes" rows="2" placeholder="Job notes, scope context…" style="resize:none">${U.esc(j.notes||'')}</textarea>
-      </div>
+      <div class="fsec"><div class="flabel">Client / Job Name</div><input class="finput" id="ej-name" type="text" value="${U.esc(j.name)}" placeholder="Client name" autocomplete="off"></div>
+      <div class="fsec"><div class="flabel">Address</div><input class="finput" id="ej-addr" type="text" value="${U.esc(j.address||'')}" placeholder="Property address" autocomplete="off"></div>
+      <div class="fsec"><div class="flabel">Date</div><input class="finput" id="ej-date" type="date" value="${U.esc(j.date||'')}"></div>
+      <div class="fsec"><div class="flabel">Notes <span class="fbadge">optional</span></div><textarea class="finput" id="ej-notes" rows="2" style="resize:none">${U.esc(j.notes||'')}</textarea></div>
       <div class="btn-row" style="margin-top:4px">
         <button class="btn btn-sec flex1" onclick="App.closeModal()">Cancel</button>
         <button class="btn btn-gold flex1" onclick="App.saveJobDetails('${j.id}')">Save</button>
@@ -1359,121 +1388,81 @@ const App={
       <div class="div"></div>
       <button class="btn btn-danger btn-full" onclick="App.confirmDeleteJob('${j.id}')">Delete Job</button>
     </div>`;
-    document.body.insertAdjacentHTML('beforeend',`<div class="modal-bg" id="modal-bg" onclick="if(event.target.id==='modal-bg')App.closeModal()">${modalHtml}</div>`);
+    document.body.insertAdjacentHTML('beforeend',`<div class="modal-bg" id="modal-bg" onclick="if(event.target.id==='modal-bg')App.closeModal()">${html}</div>`);
     setTimeout(()=>document.getElementById('ej-name')?.focus(),120);
   },
-
   saveJobDetails(jobId){
     const j=S.jobs.find(x=>x.id===jobId);if(!j)return;
     const name=document.getElementById('ej-name')?.value?.trim();
     const addr=document.getElementById('ej-addr')?.value?.trim();
     const date=document.getElementById('ej-date')?.value?.trim();
     const notes=document.getElementById('ej-notes')?.value?.trim();
-    if(name)j.name=name;
-    j.address=addr||'';
-    j.date=date||'';
-    j.notes=notes||'';
-    j.updatedAt=new Date().toISOString();
-    markDirty();save();App.closeModal();App.render();
-    toast('Saved ✓');
+    if(name)j.name=name;j.address=addr||'';j.date=date||'';j.notes=notes||'';
+    j.updatedAt=new Date().toISOString();markDirty();save();App.closeModal();App.render();toast('Saved ✓');
   },
-
   confirmDeleteJob(id){
     App.closeModal();
     setTimeout(()=>{
-      if(!confirm('Delete this job and all its data? This cannot be undone.'))return;
+      if(!confirm('Delete this job? This cannot be undone.'))return;
       S.jobs=S.jobs.filter(j=>j.id!==id);
       if(S.jobId===id){S.jobId=null;S.roomId=null;S.view='jobs';}
       markDirty();save();App.render();
     },250);
   },
-
-  deleteJob(id){
-    if(!confirm('Delete this job and all its data?'))return;
-    S.jobs=S.jobs.filter(j=>j.id!==id);
-    if(S.jobId===id){S.jobId=null;S.roomId=null;S.view='jobs';}
-    markDirty();save();App.render();
-  },
-
+  closeModal(){document.getElementById('modal-bg')?.remove()},
   addRoom(){
     const j=getJob();if(!j)return;
-    const name=prompt('Room name:','');
-    if(!name?.trim())return;
-    const r=DB.newRoom(name.trim());
-    j.rooms.push(r);S.roomId=r.id;
+    const name=prompt('Room name:','');if(!name?.trim())return;
+    const r=DB.newRoom(name.trim());j.rooms.push(r);S.roomId=r.id;
     markDirty();save();S.view='room';App.render();
   },
-
   deleteRoom(){
-    const j=getJob();const r=getRoom();if(!j||!r)return;
-    if(!confirm(`Delete "${r.name}" and all its fixtures?`))return;
-    j.rooms=j.rooms.filter(x=>x.id!==r.id);
-    S.roomId=null;S.view='job';
-    markDirty();save();App.render();
+    const j=getJob(),r=getRoom();if(!j||!r)return;
+    if(!confirm(`Delete "${r.name}"?`))return;
+    j.rooms=j.rooms.filter(x=>x.id!==r.id);S.roomId=null;S.view='job';markDirty();save();App.render();
   },
-
-  setRoomDimming(dim){
-    const r=getRoom();if(!r)return;
-    r.dimmingOverride=dim;
-    markDirty();save();App.render();
-  },
-
+  setRoomDimming(dim){const r=getRoom();if(!r)return;r.dimmingOverride=dim;markDirty();save();App.render()},
   addFixture(){
-    const j=getJob();const r=getRoom();if(!j||!r)return;
-    const d=j.defaults;
-    const roomDim=U.resolveRoomDimming(j,r);
-    S.form=DB.newFixture({
-      product:d.product,module:d.module,shape:d.shape,
-      construction:d.construction,ncType:d.ncType||'standard',
-      lumens:d.lumens,cct:d.cct,
-      dimming:roomDim,
-      finish:d.finish,
-    });
-    S.optOpen=false;S.view='fixture';App.render();
+    const j=getJob(),r=getRoom();if(!j||!r)return;
+    const d=j.defaults;const roomDim=U.resolveRoomDimming(j,r);
+    S.form=DB.newFixture({product:d.product,module:d.module,shape:d.shape,installation:d.installation||'new',housingStyle:d.housingStyle||'standard',
+      lumens:d.lumens,cct:d.cct,dimming:roomDim,moduleFinish:d.moduleFinish||'white',
+      trimType:d.trimType||'flanged',trimStyle:d.trimStyle||'std',trimFinish:d.trimFinish||'white'});
+    S.formSection='housing';S.view='fixture';App.render();
   },
-
   editFixture(id){
     const r=getRoom();if(!r)return;
     const f=r.fixtures.find(x=>x.id===id);if(!f)return;
-    S.form={...f};S.optOpen=!!(f.beamSpread||f.trim||f.notes||f.wetLocation);
-    S.view='fixture';App.render();
+    S.form={...f,accessories:[...( f.accessories||[])]};
+    S.formSection='housing';S.view='fixture';App.render();
   },
-
   dupeFixture(id){
     const r=getRoom();if(!r)return;
     const f=r.fixtures.find(x=>x.id===id);if(!f)return;
-    const dupe={...f,id:U.uuid()};
-    r.fixtures.push(dupe);
-    markDirty();save();toast('Fixture duplicated ✓');App.render();
+    r.fixtures.push({...f,id:U.uuid()});markDirty();save();toast('Duplicated ✓');App.render();
   },
-
   deleteFixture(id){
-    if(!confirm('Delete this fixture?'))return;
+    if(!confirm('Delete?'))return;
     const r=getRoom();if(!r)return;
-    r.fixtures=r.fixtures.filter(x=>x.id!==id);
-    markDirty();save();App.render();
+    r.fixtures=r.fixtures.filter(x=>x.id!==id);markDirty();save();App.render();
   },
-
   togglePhasex(){
     const j=getJob();if(!j)return;
     j.phasex.enabled=!j.phasex.enabled;
-    // Update default dimming
     j.defaults.dimming=j.phasex.enabled?'phasex':'dali2';
     markDirty();save();App.render();
   },
-
   editPhasexOverrides(){
     const j=getJob();if(!j)return;
-    // Show modal: list rooms, let user set per-room override
-    const modalHtml=`<div class="modal">
+    const html=`<div class="modal">
       <div class="modal-title">Room PhaseX Overrides</div>
-      <div style="font-size:13px;color:var(--txt2);margin-bottom:14px">Set a different dimming protocol for specific rooms. All other rooms will use PhaseX.</div>
+      <div style="font-size:13px;color:var(--txt2);margin-bottom:14px">Override dimming for specific rooms.</div>
       ${j.rooms.map(r=>{
         const cur=j.phasex.roomOverrides?.[r.id]?.dimming||'';
         return`<div style="margin-bottom:12px">
           <div style="font-size:14px;font-weight:600;margin-bottom:6px">${U.esc(r.name)}</div>
           <div class="chips">
-            <button class="chip chip-sm ${!cur?'on':''}" onclick="App.setRoomPX('${r.id}',null)">PhaseX (default)</button>
+            <button class="chip chip-sm ${!cur?'on':''}" onclick="App.setRoomPX('${r.id}',null)">PhaseX</button>
             <button class="chip chip-sm ${cur==='dali2'?'on':''}" onclick="App.setRoomPX('${r.id}','dali2')">DALI-2</button>
             <button class="chip chip-sm ${cur==='triac'?'on':''}" onclick="App.setRoomPX('${r.id}','triac')">TRIAC</button>
           </div>
@@ -1481,145 +1470,17 @@ const App={
       }).join('')}
       <button class="btn btn-gold btn-full" style="margin-top:8px" onclick="App.closeModal()">Done</button>
     </div>`;
-    document.body.insertAdjacentHTML('beforeend',`<div class="modal-bg" id="modal-bg" onclick="if(event.target.id==='modal-bg')App.closeModal()">${modalHtml}</div>`);
+    document.body.insertAdjacentHTML('beforeend',`<div class="modal-bg" id="modal-bg" onclick="if(event.target.id==='modal-bg')App.closeModal()">${html}</div>`);
   },
-
   setRoomPX(roomId,dim){
     const j=getJob();if(!j)return;
     if(!j.phasex.roomOverrides)j.phasex.roomOverrides={};
-    if(!dim){delete j.phasex.roomOverrides[roomId];}
-    else{j.phasex.roomOverrides[roomId]={dimming:dim};}
-    markDirty();save();
-    App.closeModal();App.render();
+    if(!dim)delete j.phasex.roomOverrides[roomId];
+    else j.phasex.roomOverrides[roomId]={dimming:dim};
+    markDirty();save();App.closeModal();App.render();
   },
-
-  closeModal(){document.getElementById('modal-bg')?.remove()},
-
-  editDefaults(){
-    const j=getJob();if(!j)return;
-    const d=j.defaults;
-    // Simple approach: open the form to edit defaults
-    // For now, prompt-based
-    alert('Edit defaults coming soon.\n\nFor now, set defaults by saving a fixture with your preferred settings — defaults are applied to new fixtures automatically.\n\nCurrent: '+U.productLabel(d.product)+' '+U.moduleLabel(d.product,d.module)+' '+d.lumens+'lm '+U.cctLabel(d.cct)+' '+U.dimLabel(d.dimming));
-  },
-
-  importJSON(){
-    document.getElementById('file-import').click();
-  },
-
-  init(){
-    let data=DB.load();
-    if(data?.jobs){S.jobs=data.jobs;}
-    // Seed Taghavi if not already present
-    if(!S.jobs.find(j=>j.id===TAGHAVI_SEED.jobs[0].id)){
-      S.jobs.push(...TAGHAVI_SEED.jobs);
-      DB.save({v:1,jobs:S.jobs});
-    }
-    document.getElementById('file-import').addEventListener('change',e=>{
-      const file=e.target.files[0];if(!file)return;
-      const reader=new FileReader();
-      reader.onload=ev=>{
-        try{
-          const d=JSON.parse(ev.target.result);
-          if(d.jobs&&Array.isArray(d.jobs)){
-            if(confirm(`Import ${d.jobs.length} job(s)? This will ADD to your existing jobs.`)){
-              // Merge, avoid duplicate IDs
-              const existing=new Set(S.jobs.map(j=>j.id));
-              d.jobs.forEach(j=>{if(!existing.has(j.id))S.jobs.push(j)});
-              markDirty();save();toast('Imported ✓');App.render();
-            }
-          } else {
-            // Try legacy format migration
-            const migrated=tryMigrateLegacy(d);
-            if(migrated){
-              if(confirm(`Migrate legacy job "${migrated.name}" (${U.jobFixtureCount(migrated)} fixtures)?`)){
-                S.jobs.unshift(migrated);markDirty();save();toast('Migrated ✓');App.render();
-              }
-            } else {
-              alert('Unrecognized file format.');
-            }
-          }
-        }catch{alert('Invalid JSON file.');}
-      };
-      reader.readAsText(file);
-      e.target.value='';
-    });
-    App.render();
-  },
+  importJSON(){document.getElementById('file-import').click()},
 };
-
-// ═══════════════════════════════════════════════════════════════
-// LEGACY MIGRATION (dmf_jobs_v2 → dmf_spec_v1)
-// ═══════════════════════════════════════════════════════════════
-function tryMigrateLegacy(d){
-  // Old format: array of jobs with rooms and fixtures using old field names
-  if(!d||typeof d!=='object')return null;
-  const jobs=Array.isArray(d)?d:[d];
-  if(!jobs[0]?.rooms)return null;
-  try{
-    const j=jobs[0];
-    const newJob=DB.newJob(j.name||j.clientName||'Imported Job',j.address||'',j.date||'');
-    (j.rooms||[]).forEach(r=>{
-      const nr=DB.newRoom(r.name||'Room');
-      (r.fixtures||[]).forEach(f=>{
-        // Map old size → product
-        let product='A4',module='downlight';
-        const sz=parseInt(f.size||f.aperture||4);
-        if(sz<=2){product='A2';}
-        else{product='A4';}
-        if(f.module==='adjustable'||f.type==='adjustable')module='adjustable';
-
-        // Map old CCT
-        let cct='3000K';
-        const oc=String(f.cct||f.colorTemp||'3000K').toLowerCase();
-        if(oc.includes('2700'))cct='2700K';
-        else if(oc.includes('3500'))cct='3500K';
-        else if(oc.includes('4000'))cct='4000K';
-        else if(oc.includes('warm'))cct='warm_dim';
-        else if(oc.includes('tunable')||oc.includes('tw'))cct='tunable_white';
-
-        // Map old trim
-        let trim=null;
-        const ot=String(f.trim||f.trimType||'').toLowerCase();
-        if(ot.includes('flange')||ot.includes('micro'))trim='mf';
-        else if(ot.includes('flangeless'))trim='fl_less';
-        else if(ot.includes('wall'))trim='ww_mf';
-        else if(ot.includes('pinhole'))trim='pin';
-        else if(ot.includes('hyp'))trim='hyp';
-
-        // Map construction
-        let construction='new';
-        const oc2=String(f.construction||f.installType||'new').toLowerCase();
-        if(oc2.includes('remodel')||oc2.includes('remo'))construction='remodel';
-        else if(oc2.includes('retrofit'))construction='retrofit';
-
-        // Map finish
-        let finish='white';
-        const of=String(f.finish||'white').toLowerCase();
-        if(of.includes('black'))finish='black';
-        else if(of.includes('bronze'))finish='bronze';
-        else if(of.includes('brass'))finish='brass';
-
-        // Map lumens
-        const validL=C.products[product].modules[module].lumens;
-        let lumens=parseInt(f.lumens||f.lm||1000);
-        if(!validL.includes(lumens))lumens=U.clampLumens(product,module,lumens);
-
-        const shape=String(f.shape||'round').toLowerCase().includes('square')?'square':'round';
-
-        nr.fixtures.push(DB.newFixture({
-          id:f.id||U.uuid(),qty:parseInt(f.qty||f.quantity||1),
-          product,module,shape,construction,lumens,cct,
-          dimming:'dali2',trim,finish,
-          wetLocation:!!(f.wetLocation||f.wet),
-          notes:f.notes||'',
-        }));
-      });
-      newJob.rooms.push(nr);
-    });
-    return newJob;
-  }catch(e){console.error('migration',e);return null;}
-}
 
 // ═══════════════════════════════════════════════════════════════
 // EXPORTS
@@ -1628,186 +1489,103 @@ const X={
   json(){
     const j=getJob();if(!j){toast('No active job');return;}
     const blob=new Blob([JSON.stringify({v:1,jobs:S.jobs},null,2)],{type:'application/json'});
-    const a=document.createElement('a');
-    a.href=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);
     a.download=`dmf-spec-${(j.name||'job').replace(/\s+/g,'_')}-${U.today()}.json`;
-    a.click();URL.revokeObjectURL(a.href);
-    toast('JSON exported ✓');
+    a.click();URL.revokeObjectURL(a.href);toast('JSON exported ✓');
   },
-
   excel(){
     if(typeof XLSX==='undefined'){toast('Excel library loading…');return;}
     const j=getJob();if(!j){toast('No active job');return;}
     const wb=XLSX.utils.book_new();
-
-    // OVERVIEW sheet
-    const ovRows=[
-      ['DMF Spec Tool — Export'],[''],
-      ['Job',j.name],
-      ['Address',j.address||''],
-      ['Date',j.date||''],
-      ['Generated',new Date().toLocaleDateString()],
-      [''],
-      ['SUMMARY','','',''],
-      ['Total Fixtures',U.jobFixtureCount(j)],
-      ['Total Load (W)',U.jobWatts(j).toFixed(1)],
-      ['Artafex 2',countByProduct(j,'A2')],
-      ['Artafex 4',countByProduct(j,'A4')],
-      ['PhaseX Fixtures',countPhasexFixtures(j)],
-      ['PhaseX Gateways',countPhasexFixtures(j)?U.pxGateways(countPhasexFixtures(j)):0],
-      [''],
-      ['ROOM SUMMARY','Fixtures','Wattage'],
-      ...j.rooms.map(r=>[r.name,U.roomFixtureCount(r),U.roomWatts(r).toFixed(1)]),
-    ];
+    const ovRows=[['DMF Spec Tool — Export'],[''],['Job',j.name],['Address',j.address||''],['Date',j.date||''],['Generated',new Date().toLocaleDateString()],
+      [''],['SUMMARY'],['Total Fixtures',U.jobFxCount(j)],['Total Load (W)',U.jobWatts(j).toFixed(1)],['Artafex 2',U.countByProduct(j,'A2')],['Artafex 4',U.countByProduct(j,'A4')],
+      ['PhaseX Fixtures',U.countPX(j)],['PhaseX Gateways',U.countPX(j)?U.pxGateways(U.countPX(j)):0],[''],['ROOM SUMMARY','Fixtures','Wattage'],
+      ...j.rooms.map(r=>[r.name,U.roomFxCount(r),U.roomWatts(r).toFixed(1)])];
     XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(ovRows),'Overview');
-
-    // SKU LIST sheet
-    const skuMap=buildSKUMap(j);
-    const skuRows=[
-      ['Module SKU','Description','Qty','Housing SKU','Trim SKU'],
-      ...Object.values(skuMap).map(g=>[g.moduleSKU,g.desc,g.qty,g.housingSKU,g.trimSKU]),
-    ];
-    XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(skuRows),'SKU List');
-
-    // Per room sheets
+    const bom=buildBOM(j);
+    const bomRows=[['Qty','Description','Housing SKU','Trim SKU','Notes'],...bom.map(g=>[g.qty,g.desc,g.components.find(c=>c.label!=='Module')?.sku||'',g.components.find(c=>c.sku?.startsWith('M4T')||c.sku?.startsWith('X2T'))?.sku||'',g.notes.join('; ')])];
+    XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(bomRows),'BOM');
     j.rooms.forEach(r=>{
-      const hdr=['Qty','Product','Module','Shape','Construction','NC Type','Lumens','Watts','CCT','Dimming','Beam','Trim SKU','Trim','Finish','Wet Location','Housing SKU','Notes'];
-      const rows=[hdr,...r.fixtures.map(f=>[
-        f.qty,
-        C.products[f.product]?.l||f.product,
-        C.products[f.product]?.modules[f.module]?.l||f.module,
-        f.shape,
-        f.construction,
-        f.construction==='new'?(f.ncType||'standard'):'',
-        f.lumens,
-        (C.wattage[f.lumens]||0)*f.qty,
-        U.cctLabel(f.cct),
-        U.dimLabel(f.dimming),
-        f.beamSpread?U.beamLabel(f.product,f.module,f.shape,f.beamSpread):'',
-        f.trim?U.trimSKU(f.product,f.module,f.shape,f.trim):'',
-        f.trim?U.trimLabel(f.product,f.module,f.shape,f.trim):'',
-        U.finishLabel(f.product,f.finish),
-        f.wetLocation?'Yes':'',
-        U.getHousingSKU(f),
-        f.notes||'',
-      ])];
-      const sheetName=r.name.slice(0,31).replace(/[\\/?*\[\]:]/g,'');
-      XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(rows),sheetName||'Room');
+      const hdr=['Qty','Product','Module','Shape','Installation','Lumens','W','CCT','Dimming','Beam','Trim Type','Trim Style','Trim Finish','Module Finish','Wet','Housing SKU','Trim SKU','Auto Accessories','Notes'];
+      const rows=[hdr,...r.fixtures.map(f=>[f.qty,C.products[f.product]?.l||f.product,C.products[f.product]?.modules[f.module]?.l||f.module,f.shape,f.installation,f.lumens,(C.wattage[f.lumens]||0)*f.qty,U.cctLabel(f.cct),U.dimLabel(f.dimming),f.beam?getBeamLabel(f):'',f.trimType,getTrimLabel(f),f.trimFinish,f.moduleFinish,f.wetLocation?'Yes':'',getHousingSKU(f),getTrimSKU(f),(f.accessories||[]).filter(a=>a.autoAdded).map(a=>a.sku).join(', '),f.notes||''])];
+      XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(rows),(r.name||'Room').slice(0,31).replace(/[\\/?*[\]:]/g,''));
     });
-
     XLSX.writeFile(wb,`DMF-Spec-${(j.name||'job').replace(/\s+/g,'_')}-${U.today()}.xlsx`);
     toast('Excel exported ✓');
   },
-
   pdf(){
-    if(typeof jspdf==='undefined'&&typeof window.jspdf==='undefined'){toast('PDF library loading…');return;}
+    if(typeof window.jspdf==='undefined'){toast('PDF library loading…');return;}
     const j=getJob();if(!j){toast('No active job');return;}
-    const {jsPDF}=window.jspdf||jspdf;
+    const{jsPDF}=window.jspdf;
     const doc=new jsPDF({unit:'mm',format:'a4'});
-    const gold=[200,169,110];
-    const dark=[30,30,30];
-    const grey=[120,120,120];
+    const gold=[200,169,110],dark=[30,30,30];
     let y=20;
-
-    // Header
     doc.setFillColor(...dark);doc.rect(0,0,210,30,'F');
-    doc.setTextColor(...gold);doc.setFontSize(18);doc.setFont(undefined,'bold');
-    doc.text('DMF Spec Tool',15,y);
+    doc.setTextColor(...gold);doc.setFontSize(18);doc.setFont(undefined,'bold');doc.text('DMF Spec Tool',15,y);
     doc.setTextColor(255,255,255);doc.setFontSize(10);doc.setFont(undefined,'normal');
-    doc.text(`${j.name}${j.address?' — '+j.address:''}`,15,y+7);
-    doc.text(`Generated ${new Date().toLocaleDateString()}`,15,y+13);
-    y=42;
-
-    // Summary stats
-    doc.setTextColor(...dark);doc.setFontSize(11);doc.setFont(undefined,'bold');
-    doc.text('Summary',15,y);y+=6;
-    doc.setFont(undefined,'normal');doc.setFontSize(10);doc.setTextColor(...grey);
-    const totalFx=U.jobFixtureCount(j);
-    const totalW=U.jobWatts(j);
-    const pxFx=countPhasexFixtures(j);
-    const a2=countByProduct(j,'A2');const a4=countByProduct(j,'A4');
-    const summaryLines=[
-      `Total Fixtures: ${totalFx}   |   Total Load: ${totalW.toFixed(1)}W   |   Rooms: ${j.rooms.length}`,
-      `Artafex 2: ${a2}   |   Artafex 4: ${a4}`,
-      pxFx?`PhaseX: ${pxFx} fixtures — ${U.pxGateways(pxFx)} gateway(s) required`:'',
-    ].filter(Boolean);
-    summaryLines.forEach(l=>{doc.text(l,15,y);y+=5;});
-    y+=4;
-
-    // Per room tables
+    doc.text(`${j.name}${j.address?' — '+j.address:''}`,15,y+7);doc.text(`Generated ${new Date().toLocaleDateString()}`,15,y+13);y=42;
+    doc.setTextColor(...dark);doc.setFontSize(11);doc.setFont(undefined,'bold');doc.text('Summary',15,y);y+=6;
+    doc.setFont(undefined,'normal');doc.setFontSize(10);doc.setTextColor(120,120,120);
+    [`Total: ${U.jobFxCount(j)} fixtures | ${U.jobWatts(j).toFixed(1)}W | ${j.rooms.length} rooms`,`A2: ${U.countByProduct(j,'A2')} | A4: ${U.countByProduct(j,'A4')}${U.countPX(j)?` | PhaseX: ${U.countPX(j)} fx / ${U.pxGateways(U.countPX(j))} gateway(s)`:''}`].forEach(l=>{doc.text(l,15,y);y+=5;});y+=4;
     j.rooms.forEach(r=>{
-      if(y>260){doc.addPage();y=20;}
-      doc.setTextColor(...gold);doc.setFontSize(11);doc.setFont(undefined,'bold');
-      doc.text(r.name,15,y);y+=2;
-      const tableRows=r.fixtures.map(f=>[
-        String(f.qty),
-        U.fixtureTitle(f),
-        f.shape,
-        f.lumens+'lm',
-        U.cctLabel(f.cct),
-        U.dimLabel(f.dimming),
-        f.trim?U.trimLabel(f.product,f.module,f.shape,f.trim):'—',
-        U.finishLabel(f.product,f.finish),
-        U.getHousingSKU(f)||'—',
-        f.notes?f.notes.slice(0,30):'',
-      ]);
-      doc.autoTable({
-        startY:y,
-        head:[['Qty','Product','Shape','Lumens','CCT','Dimming','Trim','Finish','Housing','Notes']],
-        body:tableRows,
-        theme:'grid',
-        headStyles:{fillColor:dark,textColor:gold,fontSize:8,fontStyle:'bold'},
-        bodyStyles:{fontSize:8,textColor:dark},
-        alternateRowStyles:{fillColor:[245,245,245]},
-        columnStyles:{0:{cellWidth:10},8:{cellWidth:22}},
-        margin:{left:15,right:15},
-      });
+      if(y>255){doc.addPage();y=20;}
+      doc.setTextColor(...gold);doc.setFontSize(11);doc.setFont(undefined,'bold');doc.text(r.name,15,y);y+=2;
+      doc.autoTable({startY:y,head:[['Qty','Product','Shape','Lumens','CCT','Dimming','Trim','Housing SKU','Notes']],
+        body:r.fixtures.map(f=>[f.qty,`${U.fixtureTitle(f)}`,f.shape,f.lumens+'lm',U.cctLabel(f.cct),U.dimLabel(f.dimming),getTrimLabel(f)||'—',getHousingSKU(f)||'—',(f.accessories||[]).filter(a=>a.autoAdded).map(a=>'★'+a.sku).join(' ')||(f.notes?.slice(0,20)||'')]),
+        theme:'grid',headStyles:{fillColor:dark,textColor:gold,fontSize:8,fontStyle:'bold'},bodyStyles:{fontSize:8,textColor:dark},margin:{left:15,right:15}});
       y=doc.lastAutoTable.finalY+8;
     });
-
-    // SKU Summary
     if(y>240){doc.addPage();y=20;}
-    doc.setTextColor(...gold);doc.setFontSize(11);doc.setFont(undefined,'bold');
-    doc.text('SKU Summary',15,y);y+=2;
-    const skuMap=buildSKUMap(j);
-    const skuRows=Object.values(skuMap).map(g=>[g.qty,g.moduleSKU,g.housingSKU,g.trimSKU||'—',g.desc]);
-    doc.autoTable({
-      startY:y,
-      head:[['Qty','Module SKU','Housing SKU','Trim SKU','Description']],
-      body:skuRows,
-      theme:'grid',
-      headStyles:{fillColor:dark,textColor:gold,fontSize:8,fontStyle:'bold'},
-      bodyStyles:{fontSize:8,textColor:dark},
-      margin:{left:15,right:15},
-    });
-
+    doc.setTextColor(...gold);doc.setFontSize(11);doc.setFont(undefined,'bold');doc.text('Bill of Materials',15,y);y+=2;
+    const bom=buildBOM(j);
+    doc.autoTable({startY:y,head:[['Qty','Description','Housing','Trim SKU','Auto-Added']],
+      body:bom.map(g=>[g.qty,g.desc,g.components[0]?.sku||'—',g.components.find(c=>c.sku?.startsWith('M4T')||c.sku?.startsWith('X2T'))?.sku||'—',g.components.filter(c=>c.auto).map(c=>c.sku).join(', ')||'']),
+      theme:'grid',headStyles:{fillColor:dark,textColor:gold,fontSize:8,fontStyle:'bold'},bodyStyles:{fontSize:8,textColor:dark},margin:{left:15,right:15}});
     doc.save(`DMF-Spec-${(j.name||'job').replace(/\s+/g,'_')}-${U.today()}.pdf`);
     toast('PDF exported ✓');
   },
 };
 
 // ═══════════════════════════════════════════════════════════════
-// CHIP HELPER — handle dynamic onclick binding for chips-scroll
+// TAGHAVI SEED
 // ═══════════════════════════════════════════════════════════════
-// The chipsScroll function uses a bound function reference string.
-// We fix it to use proper onclick strings instead.
-// Override chipsScroll to use correct onclick format:
-function chipsScroll(items,selected,fnStr){
-  // fnStr is like 'FF.set.bind(null,"cct")' — we simplify to direct call
-  const field=fnStr.match(/"([^"]+)"/)?.[1]||'unknown';
-  return`<div class="chips-scroll">${items.map(it=>`<button class="chip ${it.k===selected?'on':''}" onclick="FF.set('${field}','${it.k}')">${U.esc(it.l||it.k)}</button>`).join('')}</div>`;
-}
+const TAGHAVI_SEED = {"v": 1, "jobs": [{"id": "mpo6addl9c9l", "name": "Taghavi", "address": "6 Via Corelle", "date": "2026-06-09", "createdAt": "2026-06-09T09:02:38.018601", "updatedAt": "2026-06-09T09:02:38.018601", "phasex": {"enabled": false, "roomOverrides": {}}, "defaults": {"product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "finish": "white"}, "rooms": [{"id": "mpo6c1uncf0z", "name": "Family Room", "dimmingOverride": null, "fixtures": [{"id": "mpo6ff39qboq", "qty": 9, "product": "A4", "shape": "round", "installation": "new", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "General down lights \u2014 General area over main seating currently 6 \""}, {"id": "mpo6ldh0hgkd", "qty": 3, "product": "A4", "shape": "round", "installation": "new", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Bar Counter top \u2014 Currently 2\"  fixed"}]}, {"id": "mpo6tpfchpv8", "name": "Kitchen", "dimmingOverride": null, "fixtures": [{"id": "mpo6vz29l024", "qty": 10, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "General Down Lights \u2014 Currently 6\" down lights"}, {"id": "mpo6xbo0hmtw", "qty": 2, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Cook Top Lights \u2014 Currently 4\" down lights"}]}, {"id": "mpo73nxg28p5", "name": "Master Bedroom", "dimmingOverride": null, "fixtures": [{"id": "mpo7uhbh2ocz", "qty": 6, "product": "A4", "shape": "round", "installation": "new", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "General Downlight \u2014 Currently 4\""}, {"id": "mpo7wfojg8ak", "qty": 1, "product": "A4", "shape": "round", "installation": "new", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Master Bed Center light \u2014 Single light, center room 4\" Currently"}, {"id": "mpo7x4kihma5", "qty": 2, "product": "A4", "shape": "round", "installation": "new", "housingStyle": "standard", "module": "adjustable", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Side Wall Art Lights \u2014 4\" Currently"}, {"id": "mpo7xnu986ts", "qty": 2, "product": "A4", "shape": "round", "installation": "new", "housingStyle": "standard", "module": "adjustable", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Window Art Lights \u2014 Window Lights 4\" Currently"}]}, {"id": "mpo89809xemo", "name": "Lower Guest Hall", "dimmingOverride": null, "fixtures": [{"id": "mpo8c4s5b6kg", "qty": 2, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "General Pathway by Guest Bath and Bed \u2014 Currently 6\""}, {"id": "mpo8d6dt5c8v", "qty": 1, "product": "A4", "shape": "round", "installation": "new", "housingStyle": "standard", "module": "adjustable", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Cigar Art light \u2014 Single light adjustable for a cigar cabinet currently 4\""}]}, {"id": "mpo8ejzs69bi", "name": "Foyer", "dimmingOverride": null, "fixtures": [{"id": "mpo8fo184imu", "qty": 6, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "General downlights \u2014 General downlights currently 6\""}, {"id": "mpo8gyjyoxe1", "qty": 4, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "adjustable", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Art lights \u2014 Artafex lights 4\" currently."}]}, {"id": "mpo90e7ztn8g", "name": "Master Bathroom", "dimmingOverride": null, "fixtures": [{"id": "mpo943w91qsf", "qty": 3, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "General Down Lights @ Pathway \u2014 Lights in center of room, 4\" currently"}, {"id": "mpo94zjdex9n", "qty": 2, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Small Counter Lights \u2014 Over Small Sink 4\" Currently"}, {"id": "mpo967hjx5zj", "qty": 2, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "adjustable", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Art Lights by Shower \u2014 4\" currently, art lights"}, {"id": "mpo978t9mnnr", "qty": 3, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": true, "notes": "Inside of Shower (Wet Location) \u2014 Inside of shower 4\" currently (wet location)"}, {"id": "mpo987vzfo16", "qty": 4, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Large counter lights \u2014 Over the large counter top 4\" currently"}, {"id": "mpo996wvdfrl", "qty": 2, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "adjustable", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Tub area art lights \u2014 Art lights by tub, 4\" currently"}, {"id": "mpo9al9c3zqf", "qty": 1, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "adjustable", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Bath Entry Art \u2014 Single light for art at hallway between master bed and master bath  currently, 4\""}, {"id": "mpo9buktza6v", "qty": 2, "product": "A2", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "mf", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Bath entry counter \u2014 Looks like 2\"small lights for countertop between master bath and master bed."}]}, {"id": "mpo9jwko1ilk", "name": "Master Closet", "dimmingOverride": null, "fixtures": [{"id": "mpo9l67ih9ki", "qty": 7, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "General Down lights \u2014 General Downlights currently 6\""}]}, {"id": "mq5ftyou9236", "name": "Piano Room", "dimmingOverride": null, "fixtures": [{"id": "mq5fv8hhuy3x", "qty": 3, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "General Down Lights \u2014 Currently 4\" Downlights"}, {"id": "mq5fwhdtdvts", "qty": 3, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "adjustable", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Art Lights \"Candy Wall\""}, {"id": "mq5fxt31rpqo", "qty": 2, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Entry Area \u2014 Currently 4\" Downlights"}]}, {"id": "mq5fz2vfojfm", "name": "Laundry Room", "dimmingOverride": null, "fixtures": [{"id": "mq5g0gxtesqm", "qty": 4, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "General Down Lights \u2014 Currently 6\" down lights"}]}, {"id": "mq5g126rpx9z", "name": "Garage", "dimmingOverride": null, "fixtures": [{"id": "mq5g42oemrx7", "qty": 8, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "General Down Lights \u2014 Currently 6\" Down lights"}, {"id": "mq5g576l51o9", "qty": 4, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "adjustable", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Art Lights \u2014 Currently 4\" Art Lights"}]}, {"id": "mq5g657801dw", "name": "Living Room", "dimmingOverride": null, "fixtures": [{"id": "mq5g7b9k67d4", "qty": 8, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "adjustable", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Art Lights \u2014 Currently 4\" Art Lights"}, {"id": "mq5g965zada3", "qty": 8, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "General Down Lights \u2014 General Downlights"}]}, {"id": "mq5gh4yep7aq", "name": "Nimas Office", "dimmingOverride": null, "fixtures": [{"id": "mq5glfr0a5wr", "qty": 6, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "General Down Lights"}, {"id": "mq5gm8ckqh02", "qty": 5, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "adjustable", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Art Lights"}]}, {"id": "mq5godjmq6xk", "name": "Gym", "dimmingOverride": null, "fixtures": [{"id": "mq5ilvcw08vi", "qty": 6, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "General Downlight"}, {"id": "mq5imeoipubh", "qty": 2, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "adjustable", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Art Lights"}, {"id": "mq5inokpkclu", "qty": 2, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Bathroom \u2014 Current 6\" downlight"}]}, {"id": "mq5j672wvu3r", "name": "Master / Office Hallway", "dimmingOverride": null, "fixtures": [{"id": "mq5j7ulp9ly6", "qty": 2, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "General Down lights"}, {"id": "mq5j87xpx4dr", "qty": 4, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "adjustable", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Art Lights"}]}, {"id": "mq5jb7lyi1tv", "name": "Top Of Stairs Hallway", "dimmingOverride": null, "fixtures": [{"id": "mq5jbxuf5v88", "qty": 6, "product": "A2", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "2\" Downlights"}, {"id": "mq5jcugi1klq", "qty": 4, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "adjustable", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Bed Hall Art Lights"}, {"id": "mq5jdlr8yu04", "qty": 3, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "General Down Lights"}]}, {"id": "mq5jgwawv5mp", "name": "Guest Bed & Babies Room", "dimmingOverride": null, "fixtures": [{"id": "mq5jhy7gpkhw", "qty": 6, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Babies Room \u2014 Current 6\" Down lights"}, {"id": "mq5jiifaqr8v", "qty": 6, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Upper Guest Bed \u2014 Current 6\" Down Lights"}]}, {"id": "mq5jn74qphjg", "name": "Playroom", "dimmingOverride": null, "fixtures": [{"id": "mq5jnuups1m0", "qty": 4, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "General Down lights"}, {"id": "mq5jo5h92hcn", "qty": 1, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "adjustable", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Art Lights"}, {"id": "mq5jue31cq1u", "qty": 3, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Playroom Hallway \u2014 Currently 6: Down lights"}, {"id": "mq5juz66wzj7", "qty": 3, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Bathroom \u2014 Currently 4\""}]}, {"id": "mq5jontf466m", "name": "Game Room", "dimmingOverride": null, "fixtures": [{"id": "mq5jpdiuv8pm", "qty": 3, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "General Down Lights \u2014 Currently 6\""}, {"id": "mq5jpymyruin", "qty": 3, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "adjustable", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Art Lights"}]}, {"id": "mq5jqa11lpdx", "name": "Her Office", "dimmingOverride": null, "fixtures": [{"id": "mq5jqylanrth", "qty": 5, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "downlight", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "General Down Lights \u2014 Currently 6\" downlights"}, {"id": "mq5jri1rmua8", "qty": 2, "product": "A4", "shape": "round", "installation": "retrofit", "housingStyle": "standard", "module": "adjustable", "dimming": "dali2", "lumens": 1000, "cct": "2700K", "beam": null, "moduleFinish": "white", "trimType": "flanged", "trimStyle": "std", "trimFinish": "white", "accessories": [], "wetLocation": false, "notes": "Art Lights"}]}]}]};
 
-
-// ═══════════════════════════════════════════════════════════════
-// TAGHAVI SEED — migrated from dmf_jobs_v2 on 2026-06-09
-// ═══════════════════════════════════════════════════════════════
-const TAGHAVI_SEED = {"v": 1, "jobs": [{"id": "mpo6addl9c9l", "name": "Taghavi", "address": "6 Via Corelle", "date": "2026-06-09", "createdAt": "2026-06-09T09:02:38.018601", "updatedAt": "2026-06-09T09:02:38.018601", "phasex": {"enabled": false, "roomOverrides": {}}, "defaults": {"product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "finish": "white"}, "rooms": [{"id": "mpo6c1uncf0z", "name": "Family Room", "dimmingOverride": null, "fixtures": [{"id": "mpo6ff39qboq", "qty": 9, "product": "A4", "module": "downlight", "shape": "round", "construction": "new", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "General down lights \u2014 General area over main seating currently 6 \""}, {"id": "mpo6ldh0hgkd", "qty": 3, "product": "A4", "module": "downlight", "shape": "round", "construction": "new", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "Bar Counter top \u2014 Currently 2\"  fixed"}]}, {"id": "mpo6tpfchpv8", "name": "Kitchen", "dimmingOverride": null, "fixtures": [{"id": "mpo6vz29l024", "qty": 10, "product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "General Down Lights \u2014 Currently 6\" down lights"}, {"id": "mpo6xbo0hmtw", "qty": 2, "product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "Cook Top Lights \u2014 Currently 4\" down lights"}]}, {"id": "mpo73nxg28p5", "name": "Master Bedroom", "dimmingOverride": null, "fixtures": [{"id": "mpo7uhbh2ocz", "qty": 6, "product": "A4", "module": "downlight", "shape": "round", "construction": "new", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "General Downlight \u2014 Currently 4\""}, {"id": "mpo7wfojg8ak", "qty": 1, "product": "A4", "module": "downlight", "shape": "round", "construction": "new", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "Master Bed Center light \u2014 Single light, center room 4\" Currently"}, {"id": "mpo7x4kihma5", "qty": 2, "product": "A4", "module": "adjustable", "shape": "round", "construction": "new", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": null, "finish": "white", "wetLocation": false, "notes": "Side Wall Art Lights \u2014 4\" Currently"}, {"id": "mpo7xnu986ts", "qty": 2, "product": "A4", "module": "adjustable", "shape": "round", "construction": "new", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": null, "finish": "white", "wetLocation": false, "notes": "Window Art Lights \u2014 Window Lights 4\" Currently"}]}, {"id": "mpo89809xemo", "name": "Lower Guest Hall", "dimmingOverride": null, "fixtures": [{"id": "mpo8c4s5b6kg", "qty": 2, "product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "General Pathway by Guest Bath and Bed \u2014 Currently 6\""}, {"id": "mpo8d6dt5c8v", "qty": 1, "product": "A4", "module": "adjustable", "shape": "round", "construction": "new", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": null, "finish": "white", "wetLocation": false, "notes": "Cigar Art light \u2014 Single light adjustable for a cigar cabinet currently 4\""}]}, {"id": "mpo8ejzs69bi", "name": "Foyer", "dimmingOverride": null, "fixtures": [{"id": "mpo8fo184imu", "qty": 6, "product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "General downlights \u2014 General downlights currently 6\""}, {"id": "mpo8gyjyoxe1", "qty": 4, "product": "A4", "module": "adjustable", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": null, "finish": "white", "wetLocation": false, "notes": "Art lights \u2014 Artafex lights 4\" currently."}]}, {"id": "mpo90e7ztn8g", "name": "Master Bathroom", "dimmingOverride": null, "fixtures": [{"id": "mpo943w91qsf", "qty": 3, "product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "General Down Lights @ Pathway \u2014 Lights in center of room, 4\" currently"}, {"id": "mpo94zjdex9n", "qty": 2, "product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "Small Counter Lights \u2014 Over Small Sink 4\" Currently"}, {"id": "mpo967hjx5zj", "qty": 2, "product": "A4", "module": "adjustable", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": null, "finish": "white", "wetLocation": false, "notes": "Art Lights by Shower \u2014 4\" currently, art lights"}, {"id": "mpo978t9mnnr", "qty": 3, "product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": true, "notes": "Inside of Shower (Wet Location) \u2014 Inside of shower 4\" currently (wet location)"}, {"id": "mpo987vzfo16", "qty": 4, "product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "Large counter lights \u2014 Over the large counter top 4\" currently"}, {"id": "mpo996wvdfrl", "qty": 2, "product": "A4", "module": "adjustable", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": null, "finish": "white", "wetLocation": false, "notes": "Tub area art lights \u2014 Art lights by tub, 4\" currently"}, {"id": "mpo9al9c3zqf", "qty": 1, "product": "A4", "module": "adjustable", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": null, "finish": "white", "wetLocation": false, "notes": "Bath Entry Art \u2014 Single light for art at hallway between master bed and master bath  currently, 4\""}, {"id": "mpo9buktza6v", "qty": 2, "product": "A2", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "mf", "finish": "white", "wetLocation": false, "notes": "Bath entry counter \u2014 Looks like 2\"small lights for countertop between master bath and master bed."}]}, {"id": "mpo9jwko1ilk", "name": "Master Closet", "dimmingOverride": null, "fixtures": [{"id": "mpo9l67ih9ki", "qty": 7, "product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "General Down lights \u2014 General Downlights currently 6\""}]}, {"id": "mq5ftyou9236", "name": "Piano Room", "dimmingOverride": null, "fixtures": [{"id": "mq5fv8hhuy3x", "qty": 3, "product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "General Down Lights \u2014 Currently 4\" Downlights"}, {"id": "mq5fwhdtdvts", "qty": 3, "product": "A4", "module": "adjustable", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": null, "finish": "white", "wetLocation": false, "notes": "Art Lights \"Candy Wall\""}, {"id": "mq5fxt31rpqo", "qty": 2, "product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "Entry Area \u2014 Currently 4\" Downlights"}]}, {"id": "mq5fz2vfojfm", "name": "Laundry Room", "dimmingOverride": null, "fixtures": [{"id": "mq5g0gxtesqm", "qty": 4, "product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "General Down Lights \u2014 Currently 6\" down lights"}]}, {"id": "mq5g126rpx9z", "name": "Garage", "dimmingOverride": null, "fixtures": [{"id": "mq5g42oemrx7", "qty": 8, "product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "General Down Lights \u2014 Currently 6\" Down lights"}, {"id": "mq5g576l51o9", "qty": 4, "product": "A4", "module": "adjustable", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": null, "finish": "white", "wetLocation": false, "notes": "Art Lights \u2014 Currently 4\" Art Lights"}]}, {"id": "mq5g657801dw", "name": "Living Room", "dimmingOverride": null, "fixtures": [{"id": "mq5g7b9k67d4", "qty": 8, "product": "A4", "module": "adjustable", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": null, "finish": "white", "wetLocation": false, "notes": "Art Lights \u2014 Currently 4\" Art Lights"}, {"id": "mq5g965zada3", "qty": 8, "product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "General Down Lights \u2014 General Downlights"}]}, {"id": "mq5gh4yep7aq", "name": "Nimas Office", "dimmingOverride": null, "fixtures": [{"id": "mq5glfr0a5wr", "qty": 6, "product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "General Down Lights"}, {"id": "mq5gm8ckqh02", "qty": 5, "product": "A4", "module": "adjustable", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": null, "finish": "white", "wetLocation": false, "notes": "Art Lights"}]}, {"id": "mq5godjmq6xk", "name": "Gym", "dimmingOverride": null, "fixtures": [{"id": "mq5ilvcw08vi", "qty": 6, "product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "General Downlight"}, {"id": "mq5imeoipubh", "qty": 2, "product": "A4", "module": "adjustable", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": null, "finish": "white", "wetLocation": false, "notes": "Art Lights"}, {"id": "mq5inokpkclu", "qty": 2, "product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": null, "finish": "white", "wetLocation": false, "notes": "Bathroom \u2014 Current 6\" downlight"}]}, {"id": "mq5j672wvu3r", "name": "Master / Office Hallway", "dimmingOverride": null, "fixtures": [{"id": "mq5j7ulp9ly6", "qty": 2, "product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": null, "finish": "white", "wetLocation": false, "notes": "General Down lights"}, {"id": "mq5j87xpx4dr", "qty": 4, "product": "A4", "module": "adjustable", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": null, "finish": "white", "wetLocation": false, "notes": "Art Lights"}]}, {"id": "mq5jb7lyi1tv", "name": "Top Of Stairs Hallway", "dimmingOverride": null, "fixtures": [{"id": "mq5jbxuf5v88", "qty": 6, "product": "A2", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": null, "finish": "white", "wetLocation": false, "notes": "2\" Downlights"}, {"id": "mq5jcugi1klq", "qty": 4, "product": "A4", "module": "adjustable", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": null, "finish": "white", "wetLocation": false, "notes": "Bed Hall Art Lights"}, {"id": "mq5jdlr8yu04", "qty": 3, "product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "General Down Lights"}]}, {"id": "mq5jgwawv5mp", "name": "Guest Bed & Babies Room", "dimmingOverride": null, "fixtures": [{"id": "mq5jhy7gpkhw", "qty": 6, "product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "Babies Room \u2014 Current 6\" Down lights"}, {"id": "mq5jiifaqr8v", "qty": 6, "product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "Upper Guest Bed \u2014 Current 6\" Down Lights"}]}, {"id": "mq5jn74qphjg", "name": "Playroom", "dimmingOverride": null, "fixtures": [{"id": "mq5jnuups1m0", "qty": 4, "product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "General Down lights"}, {"id": "mq5jo5h92hcn", "qty": 1, "product": "A4", "module": "adjustable", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": null, "finish": "white", "wetLocation": false, "notes": "Art Lights"}, {"id": "mq5jue31cq1u", "qty": 3, "product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "Playroom Hallway \u2014 Currently 6: Down lights"}, {"id": "mq5juz66wzj7", "qty": 3, "product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "Bathroom \u2014 Currently 4\""}]}, {"id": "mq5jontf466m", "name": "Game Room", "dimmingOverride": null, "fixtures": [{"id": "mq5jpdiuv8pm", "qty": 3, "product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "General Down Lights \u2014 Currently 6\""}, {"id": "mq5jpymyruin", "qty": 3, "product": "A4", "module": "adjustable", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": null, "finish": "white", "wetLocation": false, "notes": "Art Lights"}]}, {"id": "mq5jqa11lpdx", "name": "Her Office", "dimmingOverride": null, "fixtures": [{"id": "mq5jqylanrth", "qty": 5, "product": "A4", "module": "downlight", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": "std", "finish": "white", "wetLocation": false, "notes": "General Down Lights \u2014 Currently 6\" downlights"}, {"id": "mq5jri1rmua8", "qty": 2, "product": "A4", "module": "adjustable", "shape": "round", "construction": "retrofit", "ncType": "standard", "lumens": 1000, "cct": "2700K", "dimming": "dali2", "beamSpread": null, "trim": null, "finish": "white", "wetLocation": false, "notes": "Art Lights"}]}]}]};
 
 // ═══════════════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════════════
-App.init();
+document.getElementById('file-import').addEventListener('change',e=>{
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      const d=JSON.parse(ev.target.result);
+      if(d.jobs&&Array.isArray(d.jobs)){
+        if(confirm(`Import ${d.jobs.length} job(s)?`)){
+          const existing=new Set(S.jobs.map(j=>j.id));
+          d.jobs.forEach(j=>{
+            migrateJobFixtures(j);
+            if(!existing.has(j.id))S.jobs.push(j);
+          });
+          markDirty();save();toast('Imported ✓');App.render();
+        }
+      }else{alert('Unrecognized format.');}
+    }catch{alert('Invalid JSON.');}
+  };
+  reader.readAsText(file);e.target.value='';
+});
+
+(function init(){
+  const data=DB.load();
+  if(data?.jobs)S.jobs=data.jobs.map(j=>{migrateJobFixtures(j);return j;});
+  // Seed Taghavi if not present
+  if(!S.jobs.find(j=>j.id===TAGHAVI_SEED.jobs[0]?.id)){
+    TAGHAVI_SEED.jobs.forEach(j=>{migrateJobFixtures(j);S.jobs.push(j);});
+    DB.save({v:1,jobs:S.jobs});
+  }
+  App.render();
+})();
 </script>
 </body>
 </html>
