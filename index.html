@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="theme-color" content="#0D0D0D">
+<meta name="theme-color" content="#0D0D0D" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F4F5F7" media="(prefers-color-scheme: light)">
 <title>DMF Spec</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -13,19 +14,68 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0D0D0D;--s1:#181818;--s2:#222;--s3:#2A2A2A;
-  --gold:#C8A96E;--gold-d:rgba(200,169,110,.18);--gold-b:rgba(200,169,110,.35);
-  --txt:#fff;--txt2:rgba(255,255,255,.55);--txt3:rgba(255,255,255,.28);
-  --bdr:rgba(255,255,255,.07);
+  /* Shared / layout */
+  --gold:#C8A96E;--gold-d:rgba(200,169,110,.18);--gold-b:rgba(200,169,110,.38);
   --danger:#FF5252;--danger-d:rgba(255,82,82,.14);
   --warn:#FFB74D;--warn-d:rgba(255,183,77,.14);
-  --ok:#69F0AE;--ok-d:rgba(105,240,174,.12);
-  --px:#B39DDB;--px-d:rgba(179,157,219,.15);
-  --da:#64B5F6;--da-d:rgba(100,181,246,.14);
-  --tr:#90A4AE;
+  --ok:#66BB6A;--ok-d:rgba(102,187,106,.13);
+  --px:#9575CD;--px-d:rgba(149,117,205,.15);
+  --da:#42A5F5;--da-d:rgba(66,165,245,.14);
+  --tr:#78909C;
   --nav:60px;--hdr:54px;
   --sb:env(safe-area-inset-bottom,0px);
   --st:env(safe-area-inset-top,0px);
+  --trans:background .2s,color .2s,border-color .2s,box-shadow .2s;
+}
+
+/* ── DARK THEME (default) ── */
+:root,[data-theme="dark"]{
+  --bg:#0D0D0D;--s1:#181818;--s2:#222;--s3:#2A2A2A;
+  --txt:#FFFFFF;--txt2:rgba(255,255,255,.55);--txt3:rgba(255,255,255,.28);
+  --bdr:rgba(255,255,255,.08);
+  --hdr-bg:rgba(13,13,13,.94);
+  --card-shadow:none;
+  --chip-bg:#222;
+  --input-bg:#222;
+  --toggle-off:#2A2A2A;
+}
+
+/* ── LIGHT THEME ── */
+[data-theme="light"]{
+  --bg:#F4F5F7;--s1:#FFFFFF;--s2:#F0F1F4;--s3:#E8E9ED;
+  --txt:#111111;--txt2:rgba(0,0,0,.55);--txt3:rgba(0,0,0,.35);
+  --bdr:rgba(0,0,0,.09);
+  --hdr-bg:rgba(255,255,255,.94);
+  --card-shadow:0 1px 4px rgba(0,0,0,.08);
+  --chip-bg:#EBEBEE;
+  --input-bg:#F0F1F4;
+  --toggle-off:#D0D2D8;
+  --gold:#B5893A;--gold-d:rgba(181,137,58,.13);--gold-b:rgba(181,137,58,.38);
+  --danger:#D32F2F;--danger-d:rgba(211,47,47,.1);
+  --ok:#2E7D32;--ok-d:rgba(46,125,50,.1);
+  --px:#6A1B9A;--px-d:rgba(106,27,154,.1);
+  --da:#1565C0;--da-d:rgba(21,101,192,.1);
+  --tr:#546E7A;
+}
+
+/* System preference (only if no manual override) */
+@media(prefers-color-scheme:light){
+  :root:not([data-theme]){
+    --bg:#F4F5F7;--s1:#FFFFFF;--s2:#F0F1F4;--s3:#E8E9ED;
+    --txt:#111111;--txt2:rgba(0,0,0,.55);--txt3:rgba(0,0,0,.35);
+    --bdr:rgba(0,0,0,.09);
+    --hdr-bg:rgba(255,255,255,.94);
+    --card-shadow:0 1px 4px rgba(0,0,0,.08);
+    --chip-bg:#EBEBEE;
+    --input-bg:#F0F1F4;
+    --toggle-off:#D0D2D8;
+    --gold:#B5893A;--gold-d:rgba(181,137,58,.13);--gold-b:rgba(181,137,58,.38);
+    --danger:#D32F2F;--danger-d:rgba(211,47,47,.1);
+    --ok:#2E7D32;--ok-d:rgba(46,125,50,.1);
+    --px:#6A1B9A;--px-d:rgba(106,27,154,.1);
+    --da:#1565C0;--da-d:rgba(21,101,192,.1);
+    --tr:#546E7A;
+  }
 }
 html{font-size:16px}
 body{
@@ -33,6 +83,7 @@ body{
   background:var(--bg);color:var(--txt);
   min-height:100dvh;overscroll-behavior:none;
   -webkit-tap-highlight-color:transparent;
+  transition:var(--trans);
 }
 button{cursor:pointer;border:none;background:none;color:inherit;font:inherit;touch-action:manipulation}
 input,textarea,select{font:inherit;color:inherit;background:none;border:none;outline:none}
@@ -54,7 +105,7 @@ a{color:inherit;text-decoration:none}
   position:fixed;top:0;left:0;right:0;z-index:100;
   height:calc(var(--hdr) + var(--st));
   padding-top:var(--st);
-  background:rgba(13,13,13,.94);
+  background:var(--hdr-bg);
   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   border-bottom:1px solid var(--bdr);
   display:flex;align-items:center;padding:var(--st) 14px 0;gap:10px;
@@ -80,7 +131,7 @@ a{color:inherit;text-decoration:none}
   position:fixed;bottom:0;left:0;right:0;z-index:100;
   height:calc(var(--nav) + var(--sb));
   padding-bottom:var(--sb);
-  background:rgba(13,13,13,.94);
+  background:var(--hdr-bg);
   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   border-top:1px solid var(--bdr);
   display:flex;align-items:stretch;
@@ -106,7 +157,7 @@ a{color:inherit;text-decoration:none}
 .fab:active{transform:scale(.91);opacity:.9}
 
 /* CARDS */
-.card{background:var(--s1);border:1px solid var(--bdr);border-radius:14px;padding:15px;margin-bottom:10px}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:14px;padding:15px;margin-bottom:10px;box-shadow:var(--card-shadow)}
 .card-tap{cursor:pointer;transition:background .12s}
 .card-tap:active{background:var(--s2)}
 
@@ -152,7 +203,7 @@ a{color:inherit;text-decoration:none}
 .chips-scroll::-webkit-scrollbar{display:none}
 .chip{
   padding:8px 14px;border-radius:100px;
-  border:1.5px solid var(--bdr);background:var(--s2);
+  border:1.5px solid var(--bdr);background:var(--chip-bg);
   color:var(--txt2);font-size:13px;font-weight:500;
   white-space:nowrap;flex-shrink:0;
   transition:background .1s,border-color .1s,color .1s;
@@ -170,12 +221,12 @@ a{color:inherit;text-decoration:none}
 .flabel{font-size:12px;font-weight:600;color:var(--txt2);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px}
 .fbadge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;background:var(--gold-d);color:var(--gold);text-transform:none;letter-spacing:0}
 .finput{
-  width:100%;background:var(--s2);border:1.5px solid var(--bdr);
+  width:100%;background:var(--input-bg);border:1.5px solid var(--bdr);
   border-radius:12px;padding:12px 14px;font-size:15px;
   transition:border-color .15s;-webkit-appearance:none;
 }
 .finput:focus{border-color:var(--gold)}
-.qty-wrap{display:flex;align-items:center;background:var(--s2);border:1.5px solid var(--bdr);border-radius:12px;overflow:hidden}
+.qty-wrap{display:flex;align-items:center;background:var(--input-bg);border:1.5px solid var(--bdr);border-radius:12px;overflow:hidden}
 .qty-btn{width:52px;height:52px;display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--gold);transition:background .1s}
 .qty-btn:active{background:var(--s3)}
 .qty-val{flex:1;text-align:center;font-size:24px;font-weight:700}
@@ -185,7 +236,7 @@ a{color:inherit;text-decoration:none}
 .toggle-info{}
 .toggle-lbl{font-size:15px;font-weight:500}
 .toggle-sub{font-size:12px;color:var(--txt2);margin-top:2px}
-.tog{width:50px;height:30px;border-radius:15px;background:var(--s3);position:relative;transition:background .2s;flex-shrink:0;cursor:pointer}
+.tog{width:50px;height:30px;border-radius:15px;background:var(--toggle-off);position:relative;transition:background .2s;flex-shrink:0;cursor:pointer}
 .tog.on{background:var(--gold)}
 .tog::after{content:'';position:absolute;width:26px;height:26px;border-radius:50%;background:#fff;top:2px;left:2px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
 .tog.on::after{transform:translateX(20px)}
@@ -922,7 +973,9 @@ function renderHeader(){
   let act='';
   if(v==='job'){const j=getJob();if(j)act=`<button class="hdr-btn" onclick="App.editJobSettings('${j.id}')">✏️ Edit</button>`;}
   if(v==='jobs')act=`<button class="hdr-btn" onclick="App.importJSON()">📥 Import</button>`;
-  action.innerHTML=act;
+  // Always show theme toggle
+  const themeBtn=`<button class="hdr-btn theme-btn" onclick="App.toggleTheme()" title="Toggle theme" style="padding:0;width:32px;justify-content:center">${document.documentElement.getAttribute('data-theme')==='light'?'🌙':'☀️'}</button>`;
+  action.innerHTML=themeBtn+(act?'&nbsp;'+act:'');
 }
 
 function renderNav(){
@@ -1417,6 +1470,15 @@ const App={
     },250);
   },
   closeModal(){document.getElementById('modal-bg')?.remove()},
+  toggleTheme(){
+    const root=document.documentElement;
+    const cur=root.getAttribute('data-theme')||'dark';
+    const next=cur==='dark'?'light':'dark';
+    root.setAttribute('data-theme',next);
+    try{localStorage.setItem('dmf-theme',next)}catch{}
+    renderHeader();
+    toast(next==='light'?'Light mode ☀️':'Dark mode 🌙');
+  },
   addRoom(){
     const j=getJob();if(!j)return;
     const name=prompt('Room name:','');if(!name?.trim())return;
@@ -1584,6 +1646,8 @@ document.getElementById('file-import').addEventListener('change',e=>{
 });
 
 (function init(){
+  // Apply saved theme preference
+  try{const t=localStorage.getItem('dmf-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch{}
   const data=DB.load();
   if(data?.jobs)S.jobs=data.jobs.map(j=>{migrateJobFixtures(j);return j;});
   // Seed Taghavi if not present
